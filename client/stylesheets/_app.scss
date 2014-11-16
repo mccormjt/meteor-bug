@@ -1,0 +1,74 @@
+.app {
+  
+  .header {
+    background-color: $primary-color;
+    height: 65px;
+
+    .hamburger {
+      padding: 20px;
+      color: $text-color;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      margin: 0 0 13px 0;
+    }
+
+    span {
+      color: $text-color;
+      font-size: 22px;
+      padding: 25px;
+    }
+  }
+
+  .controls {
+    background-color: $secondary-color;
+    height: 50px;
+  }
+
+  .now-playing {
+    background-color: $primary-color;
+    height: 130px;
+  }
+
+  .song-queue {
+    background-color: $text-sub-text-2;
+    height: 500px;
+  }
+
+  .add-music {
+    background-color: $secondary-color;
+    height: 100%;
+    width: 100%;
+    padding: 12px;
+    position: absolute;
+    top: 100%;
+    margin-top: -60px;
+    transition: top 0.3s ease;
+
+    &.active {
+      top: 125px;
+
+      h4::after {
+        content: '\f0d7';
+      }
+    }
+
+    h4 {
+      color: $text-color;
+      text-align: center;
+      cursor: pointer;
+      width: 150px;
+      padding: 10px;
+      margin: auto;
+      font-family: fontAwesome;
+
+      &::after {
+        content: '\f0d8';
+        font-size: 20px;
+        padding-left: 12px;
+      }
+    }
+  }
+}

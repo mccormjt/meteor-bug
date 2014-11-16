@@ -3,13 +3,20 @@
 @import 'animations/spinning';
 @import 'animations/loading_bars';
 @import 'animations/clouds';
-@import 'landing';
+@import 'home';
+@import 'app';
 
 * {
     margin: 0;
     padding: 0;
 }
 
+html, body, main {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
 
 /* ---------------- Broadcast slider CSS ------------ */
 .slider-frame {

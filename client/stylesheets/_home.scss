@@ -1,0 +1,281 @@
+@import 'animations/clouds';
+
+.home {
+
+  height: 100%;
+  background: rgb(30, 87, 153); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(30, 87, 153, 1)), color-stop(50%, rgba(41, 137, 216, 1)), color-stop(100%, rgba(125, 185, 232, 1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* IE10+ */
+  background: linear-gradient(to bottom, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e5799', endColorstr='#7db9e8', GradientType=0); /* IE6-9 */
+
+  h1 {
+    color: black;
+    font-size: 5.5em;
+    text-align: center;
+    text-shadow: 0.01em 0.01em 0.05em black;
+    padding-top: 0.5em;
+
+    span:nth-child(2) {
+      font-style: italic;
+      font-weight: normal;
+    }
+  }
+
+  h2 {
+    text-shadow: 0.05em 0.05em 0.1em black;
+    text-align: center;
+    color: #ffffff;
+    font-size: 2em;
+    font-weight: normal;
+    padding: 0 0 2em 0;
+    font-style: italic;
+  }
+
+  #findNearCloudsOptions, #createOptions, #backButton, #findOptionsRefresh {
+    display: none;
+  }
+
+
+  $options-dark-blue: #080068;
+  #optionHolder {
+    position: relative;
+    z-index: 1000;
+    text-align: center;
+    margin: 0 3em 3em 3em;
+    font-family: sans-serif;
+
+    button.sky {
+      color: white;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0.1em 0.1em 0.1em black;
+      text-shadow: 1px 1px 2px darken($options-dark-blue,  20%);
+      cursor: pointer;
+      outline: none;
+      margin: 1em;
+      padding: 0.55em;
+      width: 6.5em;
+      font-size: 1.5em;
+
+      background: #1b00ba; /* Old browsers */
+      background: -moz-linear-gradient(top,  #1b00ba 0%, #130377 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1b00ba), color-stop(100%,#130377)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top,  #1b00ba 0%,#130377 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top,  #1b00ba 0%,#130377 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top,  #1b00ba 0%,#130377 100%); /* IE10+ */
+      background: linear-gradient(to bottom,  #1b00ba 0%,#130377 100%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1b00ba', endColorstr='#130377',GradientType=0 ); /* IE6-9 */
+
+
+      &:hover {
+        background: $options-dark-blue;
+      }
+    }
+  }
+
+  .extra-options {
+    display: table;
+    vertical-align: middle;
+    margin: auto;
+
+    & i {
+      cursor: pointer;
+    }
+  }
+
+  #backButton {
+    width: 2.5em;
+    height: 2.5em;
+    border-radius: 100%;
+    background: url('../images/backArrow.png') no-repeat center;
+    background-size: 100% 100%;
+    border: white solid 0.15em;
+    @include transition(box-shadow 0.20s ease-in-out);
+
+
+    &:hover {
+      box-shadow: 0 0 0 0.15em white;
+    }
+  }
+
+  #findOptionsRefresh {
+    padding: 0.1em;
+    padding-left: 2em;
+    color: black;
+
+    i {
+      font-size: 2.5em;
+      text-shadow: 1px 1px 2px black;
+      @include transition(color 0.20s ease-in-out);
+    }
+
+    &.spinning i {
+      @include spin(1200ms);
+      cursor: default;
+      color: whitesmoke;
+    }
+
+    html:not(.touch) & i:hover {
+      color: whitesmoke;
+    }
+  }
+
+
+  #createOptions {
+    white-space: nowrap;
+
+    #createName {
+      margin: 20px auto;
+      width: 341px;
+      height: 15px;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 23px;
+      outline: none;
+      border-radius: 0.5em;
+      border: 2px solid #DDDDDD;
+
+      $trans: border 0.30s ease-in-out, box-shadow 0.30s ease-in-out;
+      @include transition($trans);
+
+
+      &:focus {
+        box-shadow: 0 0 15px rgba(81, 203, 238, 1);
+        border: 2px solid rgba(81, 203, 238, 0.8);
+      }
+    }
+
+    #createName_go {
+      width: 5em;
+      margin: 0.5em;
+
+      &.loadingNewCloud {
+        background: $options-dark-blue url('../images/ajax-loader-blue.gif') no-repeat center;
+        background-size: 1em 1em;
+        cursor: auto;
+        opacity: 0.7;
+
+        & span {
+          opacity: 0;
+        }
+      }
+    }
+
+
+    #broadcastSliderHolder {
+      text-align: center;
+      margin: auto;
+    }
+
+    .slider-frame {
+      margin: 1em 2.5em 1em 1em;
+    }
+
+    #broadcastError {
+      width: 20em;
+      color: #ab0000;
+      display: none;
+      font-size: 1em;
+      font-weight: bold;
+      border-radius: 0.5em;
+      text-shadow: 0 0 0 1px black;
+      padding: 1em 1.5em;
+      background-color: rgba(10, 10, 10, 0.4);
+      margin: 0.5em auto;
+    }
+  }
+
+
+  #findNearCloudsOptions {
+    height: 0;
+    width: 30em;
+    margin: 1em auto 0 auto;
+    background-color: rgba(90, 90, 90, 0.7);
+    text-align: center;
+    overflow: hidden;
+    border-radius: 0.5em;
+
+    #nearClouds {
+      width: 100%;
+      height: 85%;
+
+      p {
+        /* p for no results message */
+        padding: 3em;
+        text-shadow: 0.1em 0.1em 0.3em black;
+        color: #ffffff;
+        font-size: 1.7em;
+        font-family: sans-serif;
+      }
+
+      div {
+        text-shadow: 0.1em 0.1em 0.3em black;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 16px 25px;
+        height: 60px;
+        clear: both;
+        cursor: pointer;
+        @include transition(background-color 0.20s ease-in-out);
+
+        &:hover {
+          background-color: rgba(90, 90, 90, 0.8);
+        }
+      }
+
+      span {
+        height: 100%;
+      }
+
+      span:nth-child(1) {
+        float: left;
+      }
+
+      span:nth-child(2) {
+        float: right;
+      }
+    }
+
+
+    #enterID {
+      width: 100%;
+      height: 51px;
+      white-space: nowrap;
+
+      input, button {
+        font-size: 1.1em;
+        height: 100%;
+        font-weight: bold;
+        outline: none;
+        border: none;
+        border-radius: 0 !important;
+      }
+
+      input {
+        text-indent: 22px;
+        color: black;
+        width: 80%;
+        background-color: #5c5c5c;
+        box-shadow: inset 0px 1px 2px 1px rgba(54, 54, 54, 0.28);
+      }
+
+
+      button {
+        color: white;
+        width: 20%;
+        background-color: #848484;
+        @include transition(background-color 0.20s ease-in-out);
+
+        &:hover {
+          background-color: #4a4a4a;
+        }
+      }
+
+    }
+  }
+}

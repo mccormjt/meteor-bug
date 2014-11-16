@@ -1,0 +1,36 @@
+<template name='app'>
+  <main class='container-fluid app'>
+    <div class='row header'>
+      <div col='col-xs-12'>
+        <i class='fa fa-bars fa-2x hamburger'></i>
+        <img src='/images/logo_box.png' />
+        <span>{{ name }}</span>
+      </div>
+    </div>
+
+    <div class='row controls'>
+      <div col='col-xs-8'>
+      </div>
+      <div col='col-xs-4'>
+      </div>
+    </div>
+
+    <div class='row now-playing'>
+      <div col='col-xs-2'>
+      </div>
+      <div col='col-xs-10'>
+      </div>
+    </div>
+
+    <div class='row song-queue'>
+      <div col='col-xs-12'>
+      </div>
+    </div>
+
+    <div class='row add-music'>
+      <div col='col-xs-12'>
+        {{> addMusic }}
+      </div>
+    </div>
+  </main>
+</template>
