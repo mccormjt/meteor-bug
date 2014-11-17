@@ -4,7 +4,6 @@
 # but you can also edit it by hand.
 
 meteor-platform
-autopublish
 insecure
 iron:router
 chrismbeckett:fontawesome4
@@ -12,4 +11,3 @@ pfafman:font-awesome-4
 stevezhu:sass
 mizzao:jquery-ui
 mizzao:bootstrap-3
-

@@ -1,0 +1,121 @@
+.add-music {
+  color: $text-color;
+  background-color: $secondary-color;
+  height: 100%;
+  width: 100%;
+  padding: 12px;
+  position: absolute;
+  top: 100%;
+  margin-top: -60px;
+  transition: top 0.3s ease;
+
+  &.active {
+    top: 125px;
+
+    h4::after {
+      content: '\f0d7';
+    }
+  }
+
+  h4 {
+    text-align: center;
+    cursor: pointer;
+    width: 150px;
+    padding: 10px;
+    margin: auto;
+    font-family: fontAwesome;
+
+    &::after {
+      content: '\f0d8';
+      font-size: 20px;
+      padding-left: 12px;
+    }
+  }
+
+  .search {
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+
+    input {
+      border-radius: 5px;
+      margin: 20px auto;
+      width: 400px;
+      outline: none;
+      border: none;
+      padding: 12px 45px 12px 25px;
+      font-size: 16px;
+      background-color: $third-color;
+      box-shadow: inset 1px 1px 3px darken($secondary-color, 8%);
+      text-align: center;
+
+      @include placeholder {
+        color: $text-sub-text-2;
+        text-align: center;
+      }
+    }
+
+    &::after {
+      content: '\f002';
+      font-family: fontAwesome;
+      color: $text-sub-text-2;
+      font-size: 18px;
+      transition: text-shadow 0.2s ease;
+      position: absolute;
+      margin: 32px 0 0 -35px;
+    }
+
+    &.focused::after {
+      text-shadow:  0.5px  0.5px 6px rgba(230, 230, 250, 0.8),
+                   -0.5px -0.5px 6px rgba(230, 230, 250, 0.8);
+    }
+  }
+
+  .songResultHolder {
+    overflow-y: auto;
+    height: 550px;
+    width: 420px;
+    margin: auto;
+    padding: 12px;
+
+    .songResult {
+      width: 100%;
+      margin: 15px auto;
+      height: 66px;
+      background-color: $primary-color;
+      border-radius: 5px;
+      box-shadow: 1px 1px 3px $third-color;
+
+      span {
+        float: left;
+        border-radius: 5px 0 0 5px;
+        background: black url('/images/blankart.jpg');
+        background-size: cover;
+        width: 66px;
+        height: 66px;
+      }
+
+      .song-name, .artist-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0;
+        padding: 0 15px;
+      }
+
+      .song-name {
+        padding-top: 12px;
+      }
+
+      .artist-name {
+        color: $third-color;
+      }
+
+      i {
+        float: right;
+        margin: 20px;
+        @include primary-hover;
+      }
+    }
+  }
+}

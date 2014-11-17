@@ -1,3 +1,21 @@
 <template name='addMusic'>
   <h4>ADD MUSIC</h4>
+  <div class='search'>
+    <input type='text' placeholder='Song, artist, album' />
+  </div>
+
+  <div class='songResultHolder'>
+    {{#each songs }}
+      <div class='songResult'>
+        <span></span>
+        <i class='fa fa-plus-circle fa-2x'></i>
+        <p class='song-name'>
+          {{ songName }}
+        </p>
+        <p class='artist-name'>
+          {{ artistName }}
+        </p>
+      </div>
+    {{/each }}
+  </div>
 </template>

@@ -11,3 +11,21 @@
   -o-transition: $trans;
   transition: $trans;
 }
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}  
+}
+
+
+@mixin primary-hover {
+  transition: color 0.15s ease;
+  color: $text-color;
+  cursor: pointer;
+
+  &:hover, &.active {
+    color: $secondary-color;
+  }
+}

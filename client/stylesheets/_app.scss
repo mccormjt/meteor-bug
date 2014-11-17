@@ -4,9 +4,9 @@
     background-color: $primary-color;
     height: 65px;
 
-    .hamburger {
-      padding: 20px;
-      color: $text-color;
+    .hamburger, .users {
+      margin: 22px;
+      @include primary-hover;
     }
 
     img {
@@ -29,46 +29,14 @@
 
   .now-playing {
     background-color: $primary-color;
-    height: 130px;
+    height: 120px;
   }
 
   .song-queue {
     background-color: $text-sub-text-2;
-    height: 500px;
-  }
-
-  .add-music {
-    background-color: $secondary-color;
-    height: 100%;
-    width: 100%;
-    padding: 12px;
-    position: absolute;
-    top: 100%;
-    margin-top: -60px;
-    transition: top 0.3s ease;
-
-    &.active {
-      top: 125px;
-
-      h4::after {
-        content: '\f0d7';
-      }
-    }
-
-    h4 {
-      color: $text-color;
-      text-align: center;
-      cursor: pointer;
-      width: 150px;
-      padding: 10px;
-      margin: auto;
-      font-family: fontAwesome;
-
-      &::after {
-        content: '\f0d8';
-        font-size: 20px;
-        padding-left: 12px;
-      }
-    }
+    height: 510px;
   }
 }
+
+
+
