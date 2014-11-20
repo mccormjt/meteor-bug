@@ -3,13 +3,11 @@ var PAUSED_CLASS = 'paused';
 
 Template.controls.created = function() {
   self = this;
-  self.isOutput = !! Router.current().params.query.output;
-  self.isAdmin  = !! Router.current().params.query.admin;
 }
 
 Template.controls.rendered = function() {
   self.playPauseButton = this.$('.play-pause');
-  if (self.isOutput) { renderAudioPlayer() }
+  if (Util.isOutputDevice()) { renderAudioPlayer() }
 };
 
 Template.controls.helpers({
@@ -30,26 +28,6 @@ function renderAudioPlayer() {
   self.autorun(updatePlayerPauseState);
   $(self.player).on('ended', skipNowPlayingSong);
 }
-
-// function updatePlayerSrc() {
-//   var cloud              = Clouds.findOne(),
-//       nowPlayingSongId   = cloud.nowPlayingSongId,
-//       nowPlayingSong     = Songs.findOne(nowPlayingSongId),
-//       nextSong           = Songs.findOne();
-
-//   var useCurrentSong     = !self.player.src && nowPlayingSong,
-//       useNextSong        = !useCurrentSong  && !nowPlayingSong && nextSong,
-//       updateToSong       =  useCurrentSong  ||  useNextSong;
-
-//   if (updateToSong) {
-//     Backend.getGrooveSharkStreamingUrl(updateToSong.groovesharkSongId, function(data) {
-//       self.player.src = data.stream_url;
-//       updatePlayerPauseState();
-//     });
-//   } else if (!nowPlayingSongId) {
-//     self.player.src = '';
-//   }
-// }
 
 function updatePlayerSrc() {
   var nowPlayingSongId = Clouds.findOne().nowPlayingSongId,
@@ -78,7 +56,7 @@ function getplayerPauseStateClass() {
 }
 
 function getControlsVisibleClass() {
-  if (!self.isAdmin) return 'hide';
+  if (!Util.isAdmin()) return 'hide';
 }
 
 function skipNowPlayingSong() {
@@ -90,11 +68,3 @@ function togglePauseState() {
       isPaused = !cloud.isPaused;
   Clouds.update({ _id: cloud._id }, { $set: { isPaused: isPaused } });
 }
-
-
-
-
-
-
-
-
