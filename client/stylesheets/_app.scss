@@ -24,17 +24,20 @@
 
   .controls {
     background-color: $secondary-color;
-    height: 50px;
+    height: 55px;
   }
 
   .now-playing {
     background-color: $primary-color;
-    height: 120px;
+    height: 110px;
+    box-shadow: 0 2px 4px $third-color;
+    position: relative;
+    z-index: 5;
   }
 
   .song-queue {
     background-color: $text-sub-text-2;
-    height: 510px;
+    height: 520px;
   }
 }
 

@@ -4,17 +4,13 @@
     <input type='text' placeholder='Song, artist, album' />
   </div>
 
-  <div class='songResultHolder'>
-    {{#each songs }}
-      <div class='songResult'>
-        <span></span>
-        <i class='fa fa-plus-circle fa-2x'></i>
-        <p class='song-name'>
-          {{ songName }}
-        </p>
-        <p class='artist-name'>
-          {{ artistName }}
-        </p>
+  <div class='song-result-holder'>
+    {{#each songResults }}
+      <div class='song {{ inQueue }}'>
+        <span class='album-art'></span>
+        <span class='fa queue-status'></span>
+        <p class='song-name'> {{ songName }} </p>
+        <p class='artist-name'> {{ artistName }} </p>
       </div>
     {{/each }}
   </div>

@@ -1,7 +1,7 @@
 <template name='app'>
   <main class='container-fluid app'>
     <div class='row header'>
-      <div col='col-xs-12'>
+      <div class='col-xs-12'>
         <i class='fa fa-bars fa-2x hamburger'></i>
         <img src='/images/logo_box.png' />
         <i class='pull-right fa fa-users fa-2x users'></i>
@@ -10,26 +10,25 @@
     </div>
 
     <div class='row controls'>
-      <div col='col-xs-8'>
-      </div>
-      <div col='col-xs-4'>
+      <div class='col-xs-12'>
+        {{> controls }}
       </div>
     </div>
 
     <div class='row now-playing'>
-      <div col='col-xs-2'>
-      </div>
-      <div col='col-xs-10'>
+      <div class='col-xs-12'>
+        {{> nowPlaying }}
       </div>
     </div>
 
     <div class='row song-queue'>
-      <div col='col-xs-12'>
+      <div class='col-xs-12'>
+        {{> songQueue }}
       </div>
     </div>
 
     <div class='row add-music'>
-      <div col='col-xs-12'>
+      <div class='col-xs-12'>
         {{> addMusic }}
       </div>
     </div>

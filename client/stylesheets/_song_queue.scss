@@ -1,0 +1,9 @@
+.song-queue-holder {
+
+  @extend %song-holder;
+  height: 500px;
+
+  .votes {
+    float: right;
+  }
+}

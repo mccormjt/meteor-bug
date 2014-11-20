@@ -12,7 +12,7 @@
   transition: $trans;
 }
 
-@mixin placeholder {
+@mixin input-placeholder {
   &::-webkit-input-placeholder {@content}
   &:-moz-placeholder           {@content}
   &::-moz-placeholder          {@content}

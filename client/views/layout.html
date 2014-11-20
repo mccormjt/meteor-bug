@@ -1,13 +1,13 @@
-<template name='layout'>
-  <head>
-    <meta name="viewport"
-          content="user-scalable=no, initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, width=device-width, height=device-height, target-densitydpi=device-dpi"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="mobile-web-app-capable" content="yes"/>
-    <meta charset="UTF-8"/>
-    <title>Cloud List (beta)</title>
-  </head>
+<head>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta charset="UTF-8"/>
+  <title>Cloud List (beta)</title>
+</head>
 
+<template name='layout'>
+  <meta name="viewport"
+        content="user-scalable=no, initial-scale={{ viewport }}, maximum-scale={{ viewport }}, minimum-scale={{ viewport }}, width=device-width, height=device-height, target-densitydpi=device-dpi"/>
   <body>
     {{> yield}}
   </body>

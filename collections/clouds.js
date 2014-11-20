@@ -1,8 +1,5 @@
 Clouds = new Meteor.Collection('clouds');
-
-if (Meteor.isServer) {
-    Clouds._ensureIndex({ location: '2dsphere' });
-}
+if (Meteor.isServer) { Clouds._ensureIndex({ location: '2dsphere' }) }
 
 var MAX_NEAR_CLOUD_METERS = 600;
 
@@ -19,7 +16,7 @@ Meteor.methods({
             mongoLocation = locationToMongo(location);
         }
 
-        var cloud   = { location: mongoLocation, name: name, isPublic: isPublic },
+        var cloud   = { location: mongoLocation, name: name, isPublic: isPublic, nowPlayingSongId: null, isPaused: true },
             cloudId = Clouds.insert(cloud);
         return cloudId;
     },
