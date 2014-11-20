@@ -1,4 +1,14 @@
 .app {
+  box-shadow: 5px 5px 15px black;
+  border-radius: 0.1px;
+  margin-left: 0;
+  z-index: 50;
+  position: relative;
+  transition: margin-left 0.35s ease;
+
+  &.shift-left {
+    margin-left: -$pane-width;
+  }
   
   .header {
     background-color: $primary-color;
@@ -37,7 +47,7 @@
 
   .song-queue {
     background-color: $text-sub-text-2;
-    height: 520px;
+    height: 100%;
   }
 }
 

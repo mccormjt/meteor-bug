@@ -7,7 +7,7 @@
   z-index: 10;
   top: 100%;
   margin-top: -60px;
-  transition: top 0.3s ease; 
+  transition: top 0.3s ease;
 
   h4 {
     text-align: center;
@@ -16,11 +16,11 @@
     padding: 20px;
     margin: 0 0 20px 0;
     background-color: $third-color;
-    font-family: fontAwesome;
     box-shadow: 0 -1px 1px black,
                 0  1px 1px black;
 
     &::after {
+      font-family: fontAwesome;
       content: '\f0d8';
       font-size: 20px;
       padding-left: 12px;
