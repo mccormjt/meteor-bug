@@ -1,23 +1,15 @@
-$('body').ready(setViewportMetaTag); 
+var VIEWPORT = 'viewport';
 
-function setViewportMetaTag() {
-  var scale = viewportSize(),
-      head  = $('head');
-  $('<meta>', {
-    name:         'viewport',
-    content:      'user-scalable=no'
-                  + ', initial-scale='  + scale
-                  + ', maximum-scale='  + scale
-                  + ', minimum-scale='  + scale
-                  + ', width=device-width, height=device-height, target-densitydpi=device-dpi'
-  }).appendTo(head);
-}
+Template.layout.helpers({
+  viewport: function() { return Session.get(VIEWPORT) || 1 }
+});
+
+Template.layout.rendered = function() {  Session.set(VIEWPORT, viewportSize()) };
 
 function viewportSize() {
-  var width           = $('body').width(),
+  var width           = $(window).width(),
       viewportRatio   = 0.002,
       viewportScale   = width * viewportRatio,
       roundedScale    = Math.round(viewportScale * 100) / 100;
-      console.log('HERE', roundedScale);
   return Math.min(roundedScale, 1);
 }
