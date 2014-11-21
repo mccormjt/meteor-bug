@@ -4,9 +4,7 @@ Template.layout.helpers({
   viewport: function() { return Session.get(VIEWPORT) || 1 }
 });
 
-
-$(window).resize(function() { Session.set(VIEWPORT, viewportSize()) });
-Template.layout.rendered = function() { $(window).resize() };
+Template.layout.rendered = function() {  Session.set(VIEWPORT, viewportSize()) };
 
 function viewportSize() {
   var width           = $(window).width(),
