@@ -9,6 +9,20 @@
   margin-top: -60px;
   transition: top 0.3s ease;
 
+  .no-results {
+    color: $text-color;
+    font-size: 20px;
+    width: 150px;
+    margin: auto;
+    text-align: center;
+    text-shadow: 2px 2px 3px black;
+
+    span {
+      font-size: 25px;
+      padding: 10px;
+    }
+  }
+
   h4 {
     text-align: center;
     cursor: pointer;
@@ -51,6 +65,19 @@
     top: -95px;
     opacity: 0;
 
+    &.searching {
+      input {
+        background-image: url('/images/ajax-loader-dark.gif');
+        background-repeat: no-repeat;
+        background-size: 25px 25px;
+        background-position: 360px 14px;
+      }
+
+      &:after {
+        display: none;
+      }
+    }
+
     input {
       cursor: pointer;
       border-radius: 5px;
@@ -77,7 +104,7 @@
       font-size: 18px;
       transition: color 0.25s ease;
       position: absolute;
-      margin: 32px 0 0 -35px;
+      margin: 34px 0 0 -35px;
     }
 
     &.focused::after {
@@ -114,10 +141,3 @@
     }
   }
 }
-
-
-
-
-
-
-
