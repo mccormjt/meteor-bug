@@ -29,3 +29,22 @@
     color: $secondary-color;
   }
 }
+
+%box-item-holder {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 530px;
+  width: 420px;
+  margin: auto;
+  padding: 12px;
+  padding-bottom: 25px;
+
+  > div {
+    width: 100%;
+    margin: 15px auto;
+    height: 66px;
+    background-color: $primary-color;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px $third-color;
+  }
+}

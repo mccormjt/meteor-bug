@@ -16,9 +16,9 @@ Meteor.methods({
             mongoLocation = locationToMongo(location);
         }
 
-        var cloud   = { location: mongoLocation, name: name, isPublic: isPublic, nowPlayingSongId: null, isPaused: true },
-            cloudId = Clouds.insert(cloud);
-        return cloudId;
+        var cloud = { name: name, isPublic: isPublic, nowPlayingSongId: null, isPaused: true };
+        mongoLocation && _.extend(cloud, { location: mongoLocation });
+        return Clouds.insert(cloud);
     },
 
 

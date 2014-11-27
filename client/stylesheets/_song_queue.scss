@@ -1,6 +1,6 @@
 .song-queue-holder {
 
-  @extend %song-holder;
+  @extend %box-item-holder;
   height: 500px;
 
   .votes {

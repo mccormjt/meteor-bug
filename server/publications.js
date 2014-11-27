@@ -9,3 +9,11 @@ Meteor.publish('songQueue', function(cloudId) {
 Meteor.publish('lock', function() {
   return Lock.find();
 });
+
+Meteor.publish('cloudUsers', function(cloudId) {
+  return Meteor.users.find({ cloudId: cloudId });
+});
+
+Meteor.publish('cloudUserData', function(cloudId) {
+  return CloudUserData.find({ cloudId: cloudId });
+});

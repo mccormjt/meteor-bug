@@ -92,7 +92,7 @@
       text-align: center;
 
       @include input-placeholder {
-        color: $text-sub-text-2;
+        color: $text-sub-color-2;
         text-align: center;
       }
     }
@@ -100,7 +100,7 @@
     &::after {
       content: '\f002';
       font-family: fontAwesome;
-      color: $text-sub-text-2;
+      color: $text-sub-color-2;
       font-size: 18px;
       transition: color 0.25s ease;
       position: absolute;
@@ -113,7 +113,7 @@
   }
 
   .song-result-holder {
-    @extend %song-holder;
+    @extend %box-item-holder;
 
     .queue-status {
       float: right;

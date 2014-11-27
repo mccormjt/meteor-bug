@@ -247,10 +247,10 @@ function flashFieldForError($input, fadeBackToColor, message) {
     }
 }
 
-function loadAppWithParams(cloudID, name, isAdmin) {
-    var adminParam = "";
-    if (isAdmin) adminParam = '&admin=yes&output=yes';
-    Router.go('app', { cloudId: cloudID });
+function loadAppWithParams(cloudId, name, isOwner) {
+    Meteor.call('ensureCloudUserData', Meteor.userId(), cloudId, isOwner, function() {
+        Router.go('app', { cloudId: cloudId });
+    });
 }
 
 function getCurrentLocation() {

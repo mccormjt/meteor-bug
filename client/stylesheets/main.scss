@@ -11,6 +11,7 @@
 @import 'song_queue';
 @import 'add_music';
 @import 'users_pane';
+@import 'user';
 @import 'lock';
 
 
@@ -20,10 +21,11 @@
 }
 
 html, body, main {
-height: 100%;
-width: 100%;
-overflow: hidden;
-position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: $third-color;
 }
 
 /* ---------------- Broadcast slider CSS ------------ */
