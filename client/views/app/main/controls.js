@@ -8,6 +8,7 @@ Template.controls.created = function() {
 Template.controls.rendered = function() {
   self.playPauseButton = this.$('.play-pause');
   self.player = new Audio();
+  $(self.player).on('ended', skipNowPlayingSong);
   Tracker.autorun(updatePlayerSrc);
   Tracker.autorun(updatePlayerPauseState);
 };
@@ -26,10 +27,8 @@ Template.controls.helpers({
 
 Template.controls.events({
   'click .skip':          skipNowPlayingSong,
-  'click .play-pause':    togglePauseState,
-  'ended audio':          skipNowPlayingSong
+  'click .play-pause':    togglePauseState
 });
-
 
 function updatePlayerSrc() {
   if (!App.isOutput()) {
