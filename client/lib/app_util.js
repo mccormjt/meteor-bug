@@ -7,7 +7,8 @@ App = new function() {
 
     self.getCloudUserProperty = function(userId, property) {
         userId = userId || Meteor.userId();
-        return CloudUsers.findOne({ userId: userId, cloudId: self.cloudId() })[property];
+        var cloudUser = CloudUsers.findOne({ userId: userId, cloudId: self.cloudId() });
+        return cloudUser && cloudUser[property];
     };
 
     self.isOwner = function(userId) {

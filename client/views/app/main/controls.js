@@ -31,11 +31,8 @@ Template.controls.events({
 });
 
 function updatePlayerSrc() {
-  if (!App.isOutput()) {
-    clearPlayerSrc();
-    return;
-  }
-
+  if (!App.isOutput()) return clearPlayerSrc();
+  
   var nowPlayingSongId = Clouds.findOne().nowPlayingSongId,
       songHasChanged   = nowPlayingSongId != self.lastNowPlayingSongId;
 
