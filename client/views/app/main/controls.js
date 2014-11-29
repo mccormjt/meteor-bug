@@ -7,29 +7,36 @@ Template.controls.created = function() {
 
 Template.controls.rendered = function() {
   self.playPauseButton = this.$('.play-pause');
-  if (Util.isOutputDevice()) { renderAudioPlayer() }
+  self.player = new Audio();
+  Tracker.autorun(updatePlayerSrc);
+  Tracker.autorun(updatePlayerPauseState);
+};
+
+Template.controls.destroyed = function() {
+  clearPlayerSrc();
 };
 
 Template.controls.helpers({
   controlsVisibleClass:   getControlsVisibleClass,
-  playerPauseStateClass:  getplayerPauseStateClass
+  playerPauseStateClass:  getplayerPauseStateClass,
+  updatePlayerSrc:        updatePlayerSrc,
+  clearPlayerSrc:         clearPlayerSrc,
+  updatePlayerPauseState: updatePlayerPauseState
 });
 
 Template.controls.events({
   'click .skip':          skipNowPlayingSong,
-  'click .play-pause':    togglePauseState
+  'click .play-pause':    togglePauseState,
+  'ended audio':          skipNowPlayingSong
 });
 
 
-function renderAudioPlayer() {
-  self.player = new Audio();
-  self.playPauseButton.before(self.player);
-  self.autorun(updatePlayerSrc);
-  self.autorun(updatePlayerPauseState);
-  $(self.player).on('ended', skipNowPlayingSong);
-}
-
 function updatePlayerSrc() {
+  if (!App.isOutput()) {
+    clearPlayerSrc();
+    return;
+  }
+
   var nowPlayingSongId = Clouds.findOne().nowPlayingSongId,
       songHasChanged   = nowPlayingSongId != self.lastNowPlayingSongId;
 
@@ -43,12 +50,17 @@ function updatePlayerSrc() {
       updatePlayerPauseState();
     });
   } else {
-    self.player.src = '';
+    clearPlayerSrc();
   }
 }
 
-function updatePlayerPauseState() {
+function updatePlayerPauseState() { 
+  if (!App.isOutput()) return;
   Clouds.findOne().isPaused ? self.player.pause() : self.player.play();
+}
+
+function clearPlayerSrc() {
+  self.player.src = self.lastNowPlayingSongId = '';
 }
 
 function getplayerPauseStateClass() {
@@ -56,7 +68,7 @@ function getplayerPauseStateClass() {
 }
 
 function getControlsVisibleClass() {
-  if (!Util.isAdmin()) return 'hide';
+  if (!App.isAdmin()) return 'hide';
 }
 
 function skipNowPlayingSong() {

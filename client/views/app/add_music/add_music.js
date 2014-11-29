@@ -43,8 +43,7 @@ function hasNoResults() {
 }
 
 function insertSong(event) {
-  Meteor.call('insertSong', this.songName, this.artistName,
-               this.songID, Clouds.findOne()._id);
+  Meteor.call('insertSong', this.songName, this.artistName, this.songID, App.cloudId());
 }
 
 function loadSearchResults(query) {

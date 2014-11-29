@@ -1,0 +1,15 @@
+<template name='cloudUser'>
+  <div class='user'>
+    <div class='user-details'>
+      <i class='fa {{ userTypeClass }} fa-2x'></i>
+      <span class='display-name'>{{ username }}</span>
+      <p class='karma'>{{ prefixedKarma }}</p>
+    </div>
+
+    <div class='user-permissions'>
+      <i class='fa fa-volume-off fa-3x output {{ isOutputActiveClass }} {{ canSetOutputClass }}'></i>
+      <i class='fa fa-user fa-3x admin        {{ isAdminActiveClass  }} {{ canSetAdminClass  }}'></i>
+      <i class='fa fa-ban fa-3x ban           {{ isBannedActiveClass }} {{ canSetBannedClass }}'></i>
+    </div>
+  </div>
+</template>

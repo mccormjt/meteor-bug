@@ -1,20 +1,20 @@
 <template name='usersPane'>
   <div class='users-pane'>
-    <h1>Contributors</h1>
+    <h1>Contributors <span>({{ contributors.length }})</span></h1>
     <div class='sort-bar'>
       <label>Sort By</label>
       <select class='form-control'>
-        <option selected>Karma</option>
-        <option>Output</option>
-        <option>Admin</option>
-        <option>Banned</option>
+        <option value='voteScore' selected>Karma</option>
+        <option value='isOutput'>Output</option>
+        <option value='isAdmin'>Admin</option>
+        <option value='isBanned'>Banned</option>
       </select>
     </div>
 
     <div class='user-holder'>
-      {{> user }}
-      {{> user }}
-      {{> user }}
+      {{#each contributors }}
+        {{> cloudUser }}
+      {{/each}}
     </div>
   </div>
 </template>

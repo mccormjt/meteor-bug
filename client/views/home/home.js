@@ -248,7 +248,7 @@ function flashFieldForError($input, fadeBackToColor, message) {
 }
 
 function loadAppWithParams(cloudId, name, isOwner) {
-    Meteor.call('ensureCloudUserData', Meteor.userId(), cloudId, isOwner, function() {
+    Meteor.call('ensureCurrentCloudUser', cloudId, isOwner, function() {
         Router.go('app', { cloudId: cloudId });
     });
 }

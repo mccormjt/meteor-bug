@@ -9,7 +9,7 @@
 
   &.show-user-permissions {
 
-    .user-details .fa-info-circle {
+    .user-details i.fa {
       color: $text-color;
     }
 
@@ -41,21 +41,31 @@
     }
 
     .karma {
-      width: 60px;
+      width: 58px;
       float: right;
       text-align: center;
       font-weight: bold;
       color: $text-sub-color-1;
       font-size: 19px;
       margin-top: 7px;
+      letter-spacing: 1.5px;
     }
     
-    .fa-info-circle {
+    i.fa {
+      width: 46px;
       float: right;
       color: $third-color;
       padding: 7px 10px 0 10px;
       cursor: pointer;
       transition: color 0.3s ease;
+    }
+
+    i.fa.fa-user {
+      color: rgba(255, 102, 0, 0.3);
+    }
+
+    i.fa.fa-star, i.fa.fa-user.is-self {
+      color: rgb(209, 209, 30);
     }
   }
 
@@ -78,10 +88,23 @@
       padding-top: 14px;
       color: $primary-color;
       transition: all 0.3s ease;
+
+      &::before {
+        opacity: 0.2;
+      }
+
+      &.can-set {
+        text-shadow: 1px 1px 2px $third-color;
+
+        &::before {
+          opacity: 1;
+        }
+      }
     }
 
     .active {
       color: $text-color;
+      text-shadow: none;
     }
 
     .output {
