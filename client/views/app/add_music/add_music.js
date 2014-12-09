@@ -14,7 +14,7 @@ Template.addMusic.events({
   'click input':   showAddMusicPane,
   'focus input':   toggleSearchFocusClass,
   'blur  input':   toggleSearchFocusClass,
-  'click .queue-status:not(.songResult.in-queue .queue-status)':  insertSong
+  'click .queue-status:not(.songResult.in-queue .queue-status)':  addSongToQueue
 });
 
 
@@ -42,8 +42,11 @@ function hasNoResults() {
   return results && !results.length;
 }
 
-function insertSong(event) {
-  Meteor.call('insertSong', this.songName, this.artistName, this.songID, App.cloudId());
+function addSongToQueue(event) {
+  var self = this;
+  Meteor.call('insertSong', self.songName, self.artistName, self.songID, function() {
+    Meteor.call('voteForSong', self.songID, 1); 
+  });
 }
 
 function loadSearchResults(query) {

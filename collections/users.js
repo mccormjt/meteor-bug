@@ -11,23 +11,26 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   setUserCloud: setUserCloud,
-  setCurrentUserCloud: setCurrentUserCloud
+  upsertUserSongVote: upsertUserSongVote
 });
 
 
-function setCurrentUserCloud(cloudId) {
-  setUserCloud(Meteor.userId(), cloudId);
+function setUserCloud(cloudId) {
+  check(cloudId, String);
+  setUserProfileProperty(Meteor.userId(), 'currentCloudId', cloudId);
 }
 
 
-function setUserCloud(userId, cloudId) {
-  check(userId,  String);
-  check(cloudId, String);
-  setUserProfileProperty(userId, 'currentCloudId', cloudId);
+function upsertUserSongVote(groovesharkSongId, vote) {
+  var songVoteProperty = 'songVotes.' + groovesharkSongId;
+  setUserProfileProperty(Meteor.userId(), songVoteProperty, vote);
 }
 
 
 function setUserProfileProperty(userId, propName, propVal) {
+  check(userId,   String);
+  check(propName, String);
+
   var property = {};
   property['profile.' + propName] = propVal;
   Meteor.users.update({ _id: userId }, { $set: property });
@@ -38,7 +41,7 @@ function createTempUser() {
   var uniqueName  = uniqueNamePair(),
       password    = randString(),
       credentials = { email: uniqueName, password: password },
-      userFields  = _.extend(credentials, { username: uniqueName, profile: { isTemp: true } });
+      userFields  = _.extend(credentials, { username: uniqueName, profile: { isTemp: true, songVotes: {} } });
   Accounts.createUser(userFields);
   return credentials;
 }
@@ -46,19 +49,27 @@ function createTempUser() {
 
 function uniqueNamePair() {
   var words = ['happy', 'joe', 'party', 'crazy', 'fight', 'black', 'red', 'white', 'joker', 'batman', 'freak', 
-                'dancer', 'french', 'american', 'snow', 'club', 'rave', 'runner', 'jesus', 'jack', 'bam', 'viva',
-                'super', 'flower', 'dog', 'cat', 'frog', 'fish', 'dolphin', 'butterfly', 'bull', 'dark', 'samon', 
-                'champ', 'boom', 'jumper', 'fly', 'spinner', 'singer', 'rap', 'god', 'rapper', 'rum', 'song', 'bad', 'bowl'];
+              'dancer', 'french', 'american', 'snow', 'club', 'rave', 'runner', 'jesus', 'jack', 'bam', 'viva',
+              'super', 'flower', 'dog', 'cat', 'frog', 'fish', 'dolphin', 'butterfly', 'bull', 'dark', 'samon', 
+              'champ', 'boom', 'jumper', 'fly', 'spinner', 'singer', 'rap', 'god', 'rapper', 'rum', 'song', 'bad', 
+              'bowl', 'frat', 'star', 'eye', 'mountain', 'strike', 'light', 'slam', 'pow', 'punch', 'drunk', 'boulder',
+              'sex', 'feat', 'angel', 'burn', 'ages', 'bomb', 'blade', 'blaze', 'chrome', 'chaos', 'claw', 'jade', 
+              'omni', 'shade', 'scar', 'storm', 'steel', 'vortex', 'wing', 'void', 'tornadic', 'xeno', 'plasma', 'zap',
+              'fire', 'lightning', 'zoom', 'flash', 'school', 'demon', 'chill', 'ice', 'time', 'radio', 'jammer', 'jam',
+              'machine', 'munch', 'stack', 'voice', 'scarlet', 'letter', 'hope', 'sound', 'smooth', 'samon', 'high', 'low'];
 
-  var name      = _.sample(words, 2).join('-'),
-      numOfName = Meteor.users.find({ email: name }).count(),
-      suffix    = numOfName ? '-' + (numOfName+1) : '';
-  return name + suffix;
+  var name = _.sample(words, 2).join('-');
+  while (usernameExists(name)) name += '_' + randString(3);
+  return name;
 }
 
+function usernameExists(username) {
+  return !! Meteor.users.findOne({ username: username });
+}
 
-function randString() {
-  var text     = '',
+function randString(length) {
+  var length   = length || 12,
+      text     = '',
       possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('');
-  return _.sample(possible, 12).join('');
+  return _.sample(possible, length).join('');
 }

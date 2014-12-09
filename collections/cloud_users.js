@@ -5,12 +5,13 @@ if (Meteor.isServer) {
   CloudUsers._ensureIndex({ cloudId: 1 });
 
   Meteor.methods({
-    ensureCurrentCloudUser: ensureCurrentCloudUser,
+    ensureCloudUser: ensureCloudUser,
     setCloudUserProperty:   setCloudUserProperty
   });
 }
 
-function ensureCurrentCloudUser(cloudId, isOwner) {
+function ensureCloudUser(isOwner, cloudId) {
+  cloudId = cloudId || App.cloudId();
   check(cloudId, String);
   var user     = Meteor.user(),
       query    = { userId: user._id, cloudId: cloudId },

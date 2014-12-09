@@ -122,10 +122,8 @@ function NearCloudsOptions() {
 
         function setupEventHandlingForNearCloudClick() {
             $('#nearClouds div').click(function () {
-                var $cloud = $(this),
-                    cloudID = $cloud.attr('id'),
-                    name = $('span:first-child', $cloud).html();
-                loadAppWithParams(cloudID, name, false);
+                var cloudId = $(this).attr('id');
+                loadAppWithParams(cloudId, false);
             });
         };
     }
@@ -136,7 +134,7 @@ function NearCloudsOptions() {
         if (fieldValue) {
             $.when(verifyCloudID(fieldValue))
                 .done(function (cloud) {
-                    loadAppWithParams(cloud._id, cloud.name, false);
+                    loadAppWithParams(cloud._id, false);
                 })
                 .fail(function () {
                     $enterID_field.val("");
@@ -218,7 +216,7 @@ function CreateNewCloudOptions() {
 
             function setup(location) {
                 Meteor.call('createCloud', cloudName, isPublic, location, function(error, cloudId) {
-                    loadAppWithParams(cloudId, cloudName, true);
+                    loadAppWithParams(cloudId, true);
                 });
             }
         }
@@ -247,8 +245,8 @@ function flashFieldForError($input, fadeBackToColor, message) {
     }
 }
 
-function loadAppWithParams(cloudId, name, isOwner) {
-    Meteor.call('ensureCurrentCloudUser', cloudId, isOwner, function() {
+function loadAppWithParams(cloudId, isOwner) {
+    Meteor.call('ensureCloudUser', isOwner, cloudId, function() {
         Router.go('app', { cloudId: cloudId });
     });
 }

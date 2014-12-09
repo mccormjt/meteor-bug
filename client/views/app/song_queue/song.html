@@ -1,0 +1,15 @@
+<template name='song'>
+  <div class='song'>
+    <span class='album-art'></span>
+
+    <div class='vote-controls'>
+      <p class='fa fa-chevron-up upvote {{ activeVoteClassFor 1 }}'></p>
+      <p class='vote-count'> {{ voteCount }} </p>
+      <p class='fa fa-chevron-down downvote {{ activeVoteClassFor -1 }}'></p>
+    </div>
+
+    <p class='song-name'> {{ songName }} </p>
+    <p class='artist-name'> {{ artistName }} </p>
+    <p class='added-by'>@{{ addedByUsername }}</p>
+  </div>
+</template>

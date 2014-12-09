@@ -115,6 +115,14 @@
   .song-result-holder {
     @extend %box-item-holder;
 
+    .song {
+      height: 66px;
+    }
+
+    .album-art {
+      width: 66px;
+    }
+
     .queue-status {
       float: right;
       margin: 19.5px;
