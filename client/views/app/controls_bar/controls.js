@@ -5,71 +5,79 @@ Template.controls.created = function() {
   self = this;
 }
 
+
 Template.controls.rendered = function() {
   self.playPauseButton = this.$('.play-pause');
   self.player = new Audio();
   $(self.player).on('ended', skipNowPlayingSong);
-  Tracker.autorun(updatePlayerSrc);
+  Tracker.autorun(ensureNowPlayingSrc);
   Tracker.autorun(updatePlayerPauseState);
 };
+
 
 Template.controls.destroyed = function() {
   clearPlayerSrc();
 };
 
+
 Template.controls.helpers({
   controlsVisibleClass:   getControlsVisibleClass,
-  playerPauseStateClass:  getplayerPauseStateClass,
-  updatePlayerSrc:        updatePlayerSrc,
-  clearPlayerSrc:         clearPlayerSrc,
-  updatePlayerPauseState: updatePlayerPauseState
+  playerPauseStateClass:  getplayerPauseStateClass
 });
+
 
 Template.controls.events({
   'click .skip':          skipNowPlayingSong,
   'click .play-pause':    togglePauseState
 });
 
-function updatePlayerSrc() {
-  if (!App.isOutput()) return clearPlayerSrc();
-  
-  var nowPlayingSongId = Clouds.findOne().nowPlayingSongId,
-      songHasChanged   = nowPlayingSongId != self.lastNowPlayingSongId;
 
-  if (!songHasChanged) return;
-  self.lastNowPlayingSongId = nowPlayingSongId;
-  var nextSong = Songs.findOne(nowPlayingSongId);
-
-  if (nextSong) {
-    Backend.getGrooveSharkStreamingUrl(nextSong.groovesharkSongId, function(data) {
-      self.player.src = data.stream_url;
-      updatePlayerPauseState();
-    });
+function ensureNowPlayingSrc() {
+  if (App.isOutput()) {
+    var nowPlayingSongId = App.cloud().nowPlayingSongId;
+    if (nowPlayingSongId) return;
+    var nextSong = App.songQueue().fetch()[0];
+    nextSong ? loadSong(nextSong) : clearPlayerSrc();
   } else {
     clearPlayerSrc();
   }
 }
+
+
+function loadSong(song) {
+  Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
+    self.player.src = data.stream_url;
+    updatePlayerPauseState();
+  });
+  Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: song._id } });
+}
+
 
 function updatePlayerPauseState() { 
   if (!App.isOutput()) return;
   Clouds.findOne().isPaused ? self.player.pause() : self.player.play();
 }
 
+
 function clearPlayerSrc() {
-  self.player.src = self.lastNowPlayingSongId = '';
+  self.player.src = '';
 }
+
 
 function getplayerPauseStateClass() {
   if (Clouds.findOne().isPaused) return PAUSED_CLASS;
 }
 
+
 function getControlsVisibleClass() {
   if (!App.isAdmin()) return 'hide';
 }
 
+
 function skipNowPlayingSong() {
-  Songs.remove({ _id: Clouds.findOne().nowPlayingSongId });
+  Meteor.call('skipNowPlayingSong');
 }
+
 
 function togglePauseState() {
   var cloud    = Clouds.findOne(),

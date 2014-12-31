@@ -20,6 +20,7 @@ function voteForSong(event) {
       isUpvote = voteChoice.hasClass('upvote'),
       voteVal  = alreadySelectedVote ? 0 : (isUpvote ? 1 : -1);
   Meteor.call('voteForSong', this.groovesharkSongId, voteVal);
+  Meteor.call('upsertUserSongVote', this.songName, this.artistName, this.groovesharkSongId, voteVal);
 }
 
 function activeVoteClassFor(voteVal) {

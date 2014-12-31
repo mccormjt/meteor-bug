@@ -2,28 +2,59 @@ Songs = new Meteor.Collection('songs');
 if (Meteor.isServer) { 
   Songs._ensureIndex({ cloudId: 1, groovesharkSongId: 1 }, { unique: true });
   Songs._ensureIndex({ cloudId: 1 });
-
-  Meteor.methods({
-    voteForSong: voteForSong,
-    upsertUserSongVotesIntoCloud: upsertUserSongVotesIntoCloud
-  });
 }
 
 Meteor.methods({
-
-  insertSong: function(songName, artistName, groovesharkSongId) {
-    check(songName, String);
-    check(artistName, String);
-    check(groovesharkSongId, Match.OneOf(String, Number));
-    return Songs.insert({ addedByUserId: Meteor.userId(), songName: songName, artistName: artistName,
-                          groovesharkSongId: groovesharkSongId, cloudId: App.cloudId(), userVotes: {}, voteCount: 0 });
-  },
-
-  removeSong: function(songId) {
-    check(songId, String);
-    Songs.remove({ _id: songId })
-  }
+  voteForSong: voteForSong,
+  upsertUserSongVotesIntoCloud: upsertUserSongVotesIntoCloud,
+  addSongToQueue: addSongToQueue,
+  queueSong: queueSong,
+  unqueueSong: unqueueSong,
+  skipNowPlayingSong: skipNowPlayingSong
 });
+
+
+function findOrCreateSong(songName, artistName, groovesharkSongId) {
+  check(songName, String);
+  check(artistName, String);
+  check(groovesharkSongId, Match.OneOf(String, Number));
+
+  var song = findCloudSong(groovesharkSongId);
+  if (!song) {
+    song = { songName: songName, artistName: artistName, isQueued: false, voteCount: 0,
+              groovesharkSongId: groovesharkSongId, cloudId: App.cloudId(), userVotes: {} };
+    song._id = Songs.insert(song);
+  }
+  return song;
+}
+
+
+function addSongToQueue(songName, artistName, groovesharkSongId) {
+  var song = findOrCreateSong(songName, artistName, groovesharkSongId);
+  voteForSong(groovesharkSongId, 1);
+  Meteor.call('upsertUserSongVote', songName, artistName, groovesharkSongId, 1);
+  queueSong(song._id);
+}
+
+function skipNowPlayingSong() {
+  unqueueSong(App.cloud().nowPlayingSongId);
+  Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: '' } });
+}
+
+function setIsQueued(songId, isQueued, addedByUserId) {
+  check(songId, String);
+  Songs.update({ _id: songId }, { $set: { isQueued: isQueued, addedByUserId: addedByUserId } });
+}
+
+
+function queueSong(songId) { 
+  setIsQueued(songId, true, Meteor.userId());
+}
+
+
+function unqueueSong(songId) { 
+  setIsQueued(songId, false, '');
+}
 
 
 function checkSongVoteParams(groovesharkSongId, vote) {
@@ -33,14 +64,7 @@ function checkSongVoteParams(groovesharkSongId, vote) {
 }
 
 
-function voteForSong(groovesharkSongId, vote) {
-  checkSongVoteParams(groovesharkSongId, vote);
-  Meteor.call('upsertUserSongVote', groovesharkSongId, vote);
-  updateSongVote(groovesharkSongId, vote);
-}
-
-
-function updateSongVote(groovesharkSongId, newVote) {
+function voteForSong(groovesharkSongId, newVote) {
   checkSongVoteParams(groovesharkSongId, newVote);
   var song              = findCloudSong(groovesharkSongId),
       usersLastVote     = usersVoteFromSong(song),
@@ -53,14 +77,16 @@ function updateSongVote(groovesharkSongId, newVote) {
 
   userVote['userVotes.' + Meteor.userId()] = newVote;
   Songs.update(songQuery, { $set: userVote, $inc: adjustedVote });
-  
 }
 
 
 function upsertUserSongVotesIntoCloud() {
   var userSongVotes = _.pairs(App.userSongVotes());
   _.each(userSongVotes, function(vote) {
-    updateSongVote(vote[0], vote[1]);
+    var song = vote[1],
+        groovesharkSongId = vote[0],
+        cloudSong = findOrCreateSong(song.songName, song.artistName, groovesharkSongId);
+    voteForSong(groovesharkSongId, song.vote);
   });
 }
 

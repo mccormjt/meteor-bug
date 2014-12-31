@@ -21,9 +21,10 @@ function setUserCloud(cloudId) {
 }
 
 
-function upsertUserSongVote(groovesharkSongId, vote) {
+function upsertUserSongVote(songName, artistName, groovesharkSongId, vote) {
   var songVoteProperty = 'songVotes.' + groovesharkSongId;
-  setUserProfileProperty(Meteor.userId(), songVoteProperty, vote);
+  var songVote = { songName: songName, artistName: artistName, vote: vote };
+  setUserProfileProperty(Meteor.userId(), songVoteProperty, songVote);
 }
 
 

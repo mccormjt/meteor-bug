@@ -6,7 +6,7 @@ Template.addMusic.rendered = initAddMusicTemplate;
 Template.addMusic.helpers({
   songResults:     getSongResults,
   hasNoResults:    hasNoResults,
-  inQueueClass:    function() { return Songs.findOne({ groovesharkSongId: this.songID }) ? 'in-queue' : '' }
+  inQueueClass:    function() { return isQueued(this.songID) ? 'in-queue' : '' }
 });
 
 Template.addMusic.events({
@@ -33,6 +33,10 @@ function initAddMusicTemplate() {
   this.searchInput.typeWatch(options);
 }
 
+function isQueued(groovesharkSongId) {
+  return !! Songs.findOne({ groovesharkSongId: groovesharkSongId, isQueued: true });
+}
+
 function getSongResults() { 
   return Session.get(SONG_SEARCH_RESULTS);
 }
@@ -43,10 +47,7 @@ function hasNoResults() {
 }
 
 function addSongToQueue(event) {
-  var self = this;
-  Meteor.call('insertSong', self.songName, self.artistName, self.songID, function() {
-    Meteor.call('voteForSong', self.songID, 1); 
-  });
+  Meteor.call('addSongToQueue', this.songName, this.artistName, this.songID);
 }
 
 function loadSearchResults(query) {
