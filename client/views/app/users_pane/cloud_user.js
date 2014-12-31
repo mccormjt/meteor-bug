@@ -24,8 +24,18 @@ Template.cloudUser.events({
 
 function prefixedKarma() {
   var prefix = '';
-  if (this.voteScore > 0) prefix = '+';
-  return prefix + this.voteScore;
+  var karma = this.voteScore + sumUsersSongLikes(this.userId);
+  if (karma > 0) prefix = '+';
+  return prefix + karma;
+}
+
+
+function sumUsersSongLikes(userId) {
+  var total = 0;
+  Songs.find({ isQueued: true, addedByUserId: userId }).map(function(song) {
+    total += song.voteCount;
+  });
+  return total;
 }
 
 function userTypeClass() {

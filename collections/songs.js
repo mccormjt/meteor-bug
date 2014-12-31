@@ -2,6 +2,7 @@ Songs = new Meteor.Collection('songs');
 if (Meteor.isServer) { 
   Songs._ensureIndex({ cloudId: 1, groovesharkSongId: 1 }, { unique: true });
   Songs._ensureIndex({ cloudId: 1 });
+  Songs._ensureIndex({ _id: 1 });
 }
 
 Meteor.methods({
@@ -52,7 +53,9 @@ function queueSong(songId) {
 }
 
 
-function unqueueSong(songId) { 
+function unqueueSong(songId) {
+  var song = Songs.findOne(songId);
+  CloudUsers.update({ userId: Meteor.userId(), cloudId: App.cloudId() }, { $inc: { voteScore: song.voteCount } }) 
   setIsQueued(songId, false, '');
 }
 
