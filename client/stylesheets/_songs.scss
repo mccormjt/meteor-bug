@@ -16,13 +16,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
-  padding: 0 15px;
+  padding: 1px 15px;
 }
 
 .song-name {
   color: $text-color;
   padding-top: 10px;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .artist-name {
@@ -32,8 +32,8 @@
 }
 
 .added-by {
-  font-size: 15px;
-  color: $text-sub-color-2;
+  font-size: 14px;
+  color: $text-sub-color-1;
 }
 
 .vote-controls {
