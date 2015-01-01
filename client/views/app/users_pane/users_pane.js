@@ -16,8 +16,8 @@ Template.usersPane.events({
 function getSortedContributors() {
   var sortOption               = Session.get(SORT_OPTION),
       contributors             = CloudUsers.find().map(addKarmaToUser),
-      karmaSortedContributors  = _.sortBy(contributors, (function(user) { return -user.karma })),
-      fullySortedContributors  = sortOption && _.sortBy(karmaSortedContributors, function(user) { return !user[sortOption] });
+      karmaSortedContributors  = _.sortBy(contributors, sortOptionExtractor('karma')),
+      fullySortedContributors  = sortOption && _.sortBy(karmaSortedContributors, sortOptionExtractor(sortOption));
   return fullySortedContributors || karmaSortedContributors;
 }
 
@@ -43,12 +43,11 @@ function changeSortOption(event) {
 }
 
 
-
-
-
-
-
-
-
-
-
+function sortOptionExtractor(option) {
+    return function(cloudUser) {
+        var val = cloudUser[option];
+        if (Match.test(val, Number )) return -val;
+        if (Match.test(val, Boolean)) return !val;
+        return val;
+    }
+}
