@@ -16,12 +16,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
-  padding: 1px 15px;
+  padding: 0 15px;
 }
 
 .song-name {
   color: $text-color;
-  padding-top: 10px;
+  padding-top: 12px;
   font-size: 18px;
 }
 
@@ -34,6 +34,10 @@
 .added-by {
   font-size: 14px;
   color: $text-sub-color-1;
+}
+
+.song-info {
+  float: left;
 }
 
 .vote-controls {
@@ -49,7 +53,7 @@
     color: $third-color;
     margin: -5px 0;
     cursor: pointer;
-    text-shadow: 1px 1px 2px darken($third-color, 2%);
+    text-shadow: 1px 1px 2px darken($third-color, 4%);
 
     &.active {
       text-shadow: none;

@@ -1,7 +1,5 @@
 <template name='nowPlaying'>
   {{#with nowPlayingSong }}
-    <img class='album-art' src='/images/blankart.jpg' />
-    <p class='song-name'> {{ songName }} </p>
-    <p class='artist-name'> {{ artistName }} </p>
+      {{> song }}
   {{/with}}
 </template>
