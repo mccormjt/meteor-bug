@@ -34,10 +34,9 @@ Template.controls.events({
 
 function ensureNowPlayingSrc() {
   var nowPlayingSongId = App.cloud().nowPlayingSongId;
-
   if (App.isOutput() && App.anySongsQueued()) {
     if (nowPlayingSongId) {
-      !self.player.src && loadSong(Songs.findOne(nowPlayingSongId));
+      !playerSrc() && loadSong(Songs.findOne(nowPlayingSongId));
     } else {
       loadSong(App.songQueue().fetch()[0]);
     }
@@ -62,6 +61,9 @@ function updatePlayerPauseState() {
   App.cloud().isPaused ? self.player.pause() : self.player.play();
 }
 
+function playerSrc() {
+  return $(self.player).attr('src');
+}
 
 function clearPlayerSrc() {
   self.player.src = '';
