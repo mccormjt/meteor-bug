@@ -38,7 +38,9 @@ function addSongToQueue(songName, artistName, groovesharkSongId) {
 }
 
 function skipNowPlayingSong() {
-  unqueueSong(App.cloud().nowPlayingSongId);
+  var nowPlayingSongId = App.cloud().nowPlayingSongId;
+  if (!nowPlayingSongId) return;
+  unqueueSong(nowPlayingSongId);
   Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: '' } });
 }
 

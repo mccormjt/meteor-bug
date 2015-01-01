@@ -33,11 +33,14 @@ Template.controls.events({
 
 
 function ensureNowPlayingSrc() {
-  if (App.isOutput()) {
-    var nowPlayingSongId = App.cloud().nowPlayingSongId;
-    if (nowPlayingSongId) return;
-    var nextSong = App.songQueue().fetch()[0];
-    nextSong ? loadSong(nextSong) : clearPlayerSrc();
+  var nowPlayingSongId = App.cloud().nowPlayingSongId;
+
+  if (App.isOutput() && App.anySongsQueued()) {
+    if (nowPlayingSongId) {
+      !self.player.src && loadSong(Songs.findOne(nowPlayingSongId));
+    } else {
+      loadSong(App.songQueue().fetch()[0]);
+    }
   } else {
     clearPlayerSrc();
   }
@@ -46,6 +49,7 @@ function ensureNowPlayingSrc() {
 
 function loadSong(song) {
   Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
+    if (song._id != App.cloud().nowPlayingSongId) return;
     self.player.src = data.stream_url;
     updatePlayerPauseState();
   });
@@ -55,7 +59,7 @@ function loadSong(song) {
 
 function updatePlayerPauseState() { 
   if (!App.isOutput()) return;
-  Clouds.findOne().isPaused ? self.player.pause() : self.player.play();
+  App.cloud().isPaused ? self.player.pause() : self.player.play();
 }
 
 
