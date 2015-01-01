@@ -3,12 +3,13 @@ CloudUsers = new Meteor.Collection('cloudUsers');
 if (Meteor.isServer) { 
   CloudUsers._ensureIndex({ cloudId: 1, userId: 1 }, { unique: true });
   CloudUsers._ensureIndex({ cloudId: 1 });
-
-  Meteor.methods({
-    ensureCloudUser: ensureCloudUser,
-    setCloudUserProperty:   setCloudUserProperty
-  });
 }
+
+Meteor.methods({
+  ensureCloudUser: ensureCloudUser,
+  setCloudUserProperty:   setCloudUserProperty
+});
+
 
 function ensureCloudUser(isOwner, cloudId) {
   cloudId = cloudId || App.cloudId();
