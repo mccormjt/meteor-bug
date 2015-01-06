@@ -2,9 +2,9 @@
   
   {{> usersPane }}
 
-  <main class='container-fluid app'>
+  <main class='app'>
     <div class='main-cover-pane'></div>
-    <div class='row header'>
+    <div class='header'>
       <div class='col-xs-12'>
         <i class='fa fa-bars fa-2x hamburger'></i>
         <img src='/images/logo_box.png' />
@@ -13,28 +13,20 @@
       </div>
     </div>
 
-    <div class='row controls'>
-      <div class='col-xs-12'>
+    <div class='controls'>
         {{> controls }}
-      </div>
     </div>
 
-    <div class='row now-playing'>
-      <div class='col-xs-12'>
+    <div class='now-playing'>
         {{> nowPlaying }}
-      </div>
     </div>
 
-    <div class='row song-queue'>
-      <div class='col-xs-12'>
+    <div class='song-queue'>
         {{> songQueue }}
-      </div>
     </div>
 
-    <div class='row add-music'>
-      <div class='col-xs-12'>
+    <div class='add-music'>
         {{> addMusic }}
-      </div>
     </div>
   </main>
 </template>

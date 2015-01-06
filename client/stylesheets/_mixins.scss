@@ -32,7 +32,7 @@
 
 @mixin site-scrollbar {
   &::-webkit-scrollbar {
-      width: 0px;
+      width: 0;
   }
 
   &:hover::-webkit-scrollbar {
@@ -54,10 +54,10 @@
   @include site-scrollbar;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  height: 530px;
+  height: 85%;
   width: 410px;
   margin: auto;
-  padding: 10px 15px 150px 15px;
+  padding: 10px 15px 20% 15px;
 
   > div {
     width: 100%;
