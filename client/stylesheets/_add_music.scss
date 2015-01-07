@@ -36,7 +36,7 @@
     span {
       position: relative;
       top: 2px;
-      padding-left: 50px;
+      padding-left: 60px;
 
       &:before {
         background: url('/images/grooveshark_symbol_white.png') no-repeat center;
@@ -46,14 +46,14 @@
         display: inline-block;
         position: absolute;
         top: -17px;
-        left: -7px;
+        left: 0;
       }
     }
 
     i {
       float: right;
       margin-top: -10px;
-      display: none;
+      opacity: 0;
       color: $primary-color;
       font-size: 42px;
       text-shadow: 1px 1px 3px darken($third-color, 5%);
@@ -64,7 +64,7 @@
     top: 125px;
 
     i {
-      display: inline;
+      opacity: 1;
     }
 
     & .search {
