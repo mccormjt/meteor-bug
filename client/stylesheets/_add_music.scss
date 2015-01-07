@@ -33,19 +33,38 @@
     box-shadow: 0 -1px 1px black,
                 0  1px 1px black;
 
-    &::after {
-      font-family: fontAwesome;
-      content: '\f0d8';
-      font-size: 20px;
-      padding-left: 12px;
+    span {
+      position: relative;
+      top: 2px;
+      padding-left: 50px;
+
+      &:before {
+        background: url('/images/grooveshark_symbol_white.png') no-repeat center;
+        background-size: 100%;
+        @include size(55px, 55px);
+        content: ' ';
+        display: inline-block;
+        position: absolute;
+        top: -17px;
+        left: -7px;
+      }
+    }
+
+    i {
+      float: right;
+      margin-top: -10px;
+      display: none;
+      color: $primary-color;
+      font-size: 42px;
+      text-shadow: 1px 1px 3px darken($third-color, 5%);
     }
   }
 
   &.active {
     top: 125px;
 
-    h4::after {
-      content: '\f0d7';
+    i {
+      display: inline;
     }
 
     & .search {
