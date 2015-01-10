@@ -16,7 +16,7 @@ Meteor.methods({
             mongoLocation = locationToMongo(location);
         }
 
-        var cloud = { name: name, isPublic: isPublic, nowPlayingSongId: null, isPaused: true };
+        var cloud = { name: name, isPublic: isPublic, nowPlayingSongId: null, isPaused: true, volume: 0.6 };
         mongoLocation && _.extend(cloud, { location: mongoLocation });
         return Clouds.insert(cloud);
     },
@@ -46,6 +46,12 @@ Meteor.methods({
     findCloud: function(id) {
         check(id, String);
         return Clouds.find({ _id: id }).fetch()[0];
+    },
+
+
+    setCloudVolume: function(volumeLevel) {
+        check(volumeLevel, String);
+        Clouds.update({ _id: App.cloudId() }, { $set: { volume: volumeLevel } });
     }
 
 });

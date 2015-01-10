@@ -7,11 +7,9 @@ Template.controls.created = function() {
 
 
 Template.controls.rendered = function() {
-  self.playPauseButton = this.$('.play-pause');
-  self.player = new Audio();
-  $(self.player).on('ended', skipNowPlayingSong);
-  Tracker.autorun(ensureNowPlayingSrc);
-  Tracker.autorun(updatePlayerPauseState);
+  setupAudioPlayer();
+  setupVolumeSlider();
+  self.autorun(initializeControls);
 };
 
 
@@ -21,7 +19,6 @@ Template.controls.destroyed = function() {
 
 
 Template.controls.helpers({
-  controlsVisibleClass:   getControlsVisibleClass,
   playerPauseStateClass:  getplayerPauseStateClass
 });
 
@@ -30,6 +27,48 @@ Template.controls.events({
   'click .skip':          skipNowPlayingSong,
   'click .play-pause':    togglePauseState
 });
+
+
+function initializeControls() {
+  if (App.isAdmin()) {
+    $(self.firstNode).fadeIn(300);
+    self.volumeSlider.rangeslider({ polyfill: false });
+  } else {
+    $(self.firstNode).hide();
+    self.volumeSlider.rangeslider('destroy');
+  }
+}
+
+function setupAudioPlayer() {
+  self.playPauseButton = this.$('.play-pause');
+  self.player = new Audio();
+  $(self.player).on('ended', skipNowPlayingSong);
+  self.autorun(ensureNowPlayingSrc);
+  self.autorun(updatePlayerPauseState);
+}
+
+
+function setupVolumeSlider() {
+  self.volumeSlider = $('.volume-slider input');
+  self.autorun(syncLocalVolumeFromMaster)
+  self.volumeSlider.change(updateMasterCloudVolumeFromSlider);
+}
+
+
+function updateMasterCloudVolumeFromSlider() {
+  var newVolume  = self.volumeSlider.val();
+  var hasChanged = newVolume != App.cloud().volume;
+  hasChanged && Meteor.call('setCloudVolume', newVolume);
+}
+
+
+function syncLocalVolumeFromMaster() {
+  var volume = App.cloud().volume;
+  if (self.player.volume != volume) {
+    self.player.volume = volume;
+    self.volumeSlider.val(volume).change();
+  }
+}
 
 
 function ensureNowPlayingSrc() {
@@ -72,11 +111,6 @@ function clearPlayerSrc() {
 
 function getplayerPauseStateClass() {
   if (Clouds.findOne().isPaused) return PAUSED_CLASS;
-}
-
-
-function getControlsVisibleClass() {
-  if (!App.isAdmin()) return 'hide';
 }
 
 
