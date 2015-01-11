@@ -31,8 +31,12 @@
 }
 
 @mixin site-scrollbar {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
+    padding: 100px;
   }
 
   &::-webkit-scrollbar-track, &::-webkit-scrollbar-thumb {
@@ -54,12 +58,10 @@
 
 %box-item-holder {
   @include site-scrollbar;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   height: 85%;
-  width: 410px;
+  width: 412px;
   margin: auto;
-  padding: 10px 15px 35% 15px;
+  padding: 10px 5px 35% 8px;
 
   > div {
     width: 100%;
