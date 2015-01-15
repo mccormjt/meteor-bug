@@ -308,22 +308,3 @@ function verifyCloudID(id) {
 
     return defer;
 }
-
-
-// ==========================================================================================
-// ============================ Security Locking For Beta ===================================
-// function checkLock() {
-//     function getLockState() {
-//         var path = 'http://johnthomasmccormack.com/HOST/cloudlist/';
-//         var getUrl = path + 'secureCheck.php?isLocked=isLocked';
-//         return $.getJSON(getUrl);
-//     }
-
-//     return getLockState().done(function (data) {
-//         if (data.isLocked == 1) {
-//             window.location.href = "/denied.html";
-//         }
-//     });
-// }
-// checkLock();
-// setInterval(checkLock, 10000);

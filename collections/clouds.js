@@ -1,12 +1,22 @@
 Clouds = new Meteor.Collection('clouds');
-if (Meteor.isServer) { Clouds._ensureIndex({ location: '2dsphere' }) }
-
 var MAX_NEAR_CLOUD_METERS = 600;
 
+if (Meteor.isServer) { 
+    Clouds._ensureIndex({ location: '2dsphere' });
+
+    Meteor.methods({
+        createCloud:     createCloud,
+        findCloudsNear:  findCloudsNear,
+        findCloud:       findCloud
+    });
+}
 
 Meteor.methods({
+    setCloudVolume: setCloudVolume
+});
 
-    createCloud: function(name, isPublic, location) {
+
+function createCloud(name, isPublic, location) {
         check(name, String);
         check(isPublic, Boolean);
         var mongoLocation;
@@ -16,46 +26,37 @@ Meteor.methods({
             mongoLocation = locationToMongo(location);
         }
 
-        var cloud = { name: name, isPublic: isPublic, nowPlayingSongId: null, isPaused: true, volume: 0.6 };
+        var cloud = { _id: createCloudId(), name: name, isPublic: isPublic, 
+                        nowPlayingSongId: null, isPaused: true, volume: 0.55 };
         mongoLocation && _.extend(cloud, { location: mongoLocation });
         return Clouds.insert(cloud);
-    },
+}
 
 
-    findCloudsNear: function(location) {
-        if (Meteor.isClient) return;
-        checkLocation(location);
+function findCloudsNear(location) {
+    checkLocation(location);
 
-        var query = 
-        { 
-            location: { $nearSphere: { 
-                $geometry:    locationToMongo(location),
-                $maxDistance: MAX_NEAR_CLOUD_METERS + location.accuracy * 2
-            }},
-            isPublic: true
-        };
+    var query = 
+    { 
+        location: { $nearSphere: { 
+            $geometry:    locationToMongo(location),
+            $maxDistance: MAX_NEAR_CLOUD_METERS + location.accuracy * 2
+        }},
+        isPublic: true
+    };
 
-        var clouds = Clouds.find(query, {limit: 5}).fetch();
-        _.each(clouds, function(cloud) {
-            cloud.distance = distance(location.lat, location.long, cloud.location.coordinates[1], cloud.location.coordinates[0]);
-        });
-        return clouds;
-    },
-
-
-    findCloud: function(id) {
-        check(id, String);
-        return Clouds.find({ _id: id }).fetch()[0];
-    },
+    var clouds = Clouds.find(query, {limit: 5}).fetch();
+    _.each(clouds, function(cloud) {
+        cloud.distance = distance(location.lat, location.long, cloud.location.coordinates[1], cloud.location.coordinates[0]);
+    });
+    return clouds;
+}
 
 
-    setCloudVolume: function(volumeLevel) {
-        check(volumeLevel, String);
-        Clouds.update({ _id: App.cloudId() }, { $set: { volume: volumeLevel } });
-    }
-
-});
-
+function setCloudVolume(volumeLevel) {
+    check(volumeLevel, String);
+    Clouds.update({ _id: App.cloudId() }, { $set: { volume: volumeLevel } });
+}
 
 function checkLocation(location) {
     check(location, {lat: Number, long: Number, accuracy: Number})
@@ -77,4 +78,25 @@ function distance(lat1, lon1, lat2, lon2) {
 
     dist = Math.acos(dist) * 180/Math.PI
     return dist * 60 * 1.1515 // to miles
+}
+
+function getRandIntStrOfLength(length) {
+    var number = '';
+    for (var i = 0; i < length; i++) {
+        number += _.random(0, 9);
+    }
+    return number;
+}
+
+function createCloudId() {
+    var id = getRandIntStrOfLength(6);
+    while (findCloud(id)) {
+        id += getRandIntStrOfLength(1);
+    }
+    return id;
+}
+
+function findCloud(id) {
+    check(id, String);
+    return Clouds.find({ _id: id }).fetch()[0];
 }
