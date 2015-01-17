@@ -22,7 +22,7 @@ function findOrCreateSong(songName, artistName, groovesharkSongId) {
 
   var song = findCloudSong(groovesharkSongId);
   if (!song) {
-    song = { songName: songName, artistName: artistName, isQueued: false, voteCount: 0,
+    song = { songName: songName, artistName: artistName, isQueued: false, voteCount: 0, timeQueued: null,
               groovesharkSongId: groovesharkSongId, cloudId: App.cloudId(), userVotes: {} };
     song._id = Songs.insert(song);
   }
@@ -46,7 +46,11 @@ function skipNowPlayingSong() {
 
 function setIsQueued(songId, isQueued, addedByUserId) {
   check(songId, String);
-  Songs.update({ _id: songId }, { $set: { isQueued: isQueued, addedByUserId: addedByUserId } });
+  check(isQueued, Boolean);
+  check(addedByUserId, String);
+  var songParams = { isQueued: isQueued, addedByUserId: addedByUserId };
+  isQueued && _.extend(songParams, { timeQueued: Date.now() });
+  Songs.update({ _id: songId }, { $set: songParams });
 }
 
 
