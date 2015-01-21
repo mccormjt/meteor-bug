@@ -15,3 +15,5 @@ mrt:isolate-value
 jabbslad:basic-auth
 accounts-password
 
+mdg:geolocation
+ovcharik:howler

@@ -1,10 +1,6 @@
-var VIEWPORT = 'viewport';
-
-Template.layout.helpers({
-  viewport: function() { return Session.get(VIEWPORT) || 1 }
-});
-
-Template.layout.rendered = function() {  Session.set(VIEWPORT, viewportSize()) };
+Template.layout.rendered = function() {
+  $('head').prepend(generateViewPortTag(viewportSize()));
+};
 
 function viewportSize() {
   var width           = $(window).width(),
@@ -12,4 +8,12 @@ function viewportSize() {
       viewportScale   = width * viewportRatio,
       roundedScale    = Math.round(viewportScale * 100) / 100;
   return Math.min(roundedScale, 1);
+}
+
+function generateViewPortTag(viewportSize) {
+  return '<meta name="viewport" content="user-scalable=no,'
+          + 'initial-scale=' + viewportSize + ','
+          + 'maximum-scale=' + viewportSize + ','
+          + 'minimum-scale=' + viewportSize + ','
+          + 'width=device-width, height=device-height, target-densitydpi=device-dpi"/>';
 }

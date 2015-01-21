@@ -14,7 +14,7 @@ Template.controls.rendered = function() {
 
 
 Template.controls.destroyed = function() {
-  clearPlayerSrc();
+  self.player.clearSrc();
 };
 
 
@@ -41,8 +41,7 @@ function initializeControls() {
 
 function setupAudioPlayer() {
   self.playPauseButton = this.$('.play-pause');
-  self.player = new Audio();
-  $(self.player).on('ended', skipNowPlayingSong);
+  self.player = new CrossPlayer(skipNowPlayingSong);
   self.autorun(ensureNowPlayingSrc);
   self.autorun(updatePlayerPauseState);
 }
@@ -63,10 +62,10 @@ function updateMasterCloudVolumeFromSlider() {
 
 
 function syncLocalVolumeFromMaster() {
-  var volume = App.cloud().volume;
-  if (self.player.volume != volume) {
-    self.player.volume = volume;
-    self.volumeSlider.val(volume).change();
+  var cloudVolume = App.cloud().volume;
+  if (self.player.volume() != cloudVolume) {
+    self.player.volume(cloudVolume);
+    self.volumeSlider.val(cloudVolume).change();
   }
 }
 
@@ -75,12 +74,12 @@ function ensureNowPlayingSrc() {
   var nowPlayingSongId = App.cloud().nowPlayingSongId;
   if (App.isOutput() && App.anySongsQueued()) {
     if (nowPlayingSongId) {
-      !playerSrc() && loadSong(Songs.findOne(nowPlayingSongId));
+      !self.player.src() && loadSong(Songs.findOne(nowPlayingSongId));
     } else {
       loadSong(App.songQueue().fetch()[0]);
     }
   } else {
-    clearPlayerSrc();
+    self.player.clearSrc();
   }
 }
 
@@ -88,7 +87,7 @@ function ensureNowPlayingSrc() {
 function loadSong(song) {
   Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
     if (song._id != App.cloud().nowPlayingSongId) return;
-    self.player.src = data.stream_url;
+    self.player.src(data.stream_url);
     updatePlayerPauseState();
   });
   Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: song._id } });
@@ -100,14 +99,6 @@ function updatePlayerPauseState() {
   App.cloud().isPaused ? self.player.pause() : self.player.play();
 }
 
-function playerSrc() {
-  return $(self.player).attr('src');
-}
-
-function clearPlayerSrc() {
-  self.player.src = '';
-}
-
 
 function getplayerPauseStateClass() {
   if (Clouds.findOne().isPaused) return PAUSED_CLASS;
@@ -115,6 +106,7 @@ function getplayerPauseStateClass() {
 
 
 function skipNowPlayingSong() {
+   Meteor.call('log', 'SKIP');
   Meteor.call('skipNowPlayingSong');
 }
 
