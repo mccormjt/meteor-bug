@@ -106,7 +106,6 @@ function getplayerPauseStateClass() {
 
 
 function skipNowPlayingSong() {
-   Meteor.call('log', 'SKIP');
   Meteor.call('skipNowPlayingSong');
 }
 
