@@ -1,5 +1,5 @@
 Template.layout.rendered = function() {
-  $('head').prepend(generateViewPortTag(viewportSize()));
+  $('meta[name="viewport"]').attr('content', generateViewPortContent(viewportSize()));
 };
 
 function viewportSize() {
@@ -10,10 +10,9 @@ function viewportSize() {
   return Math.min(roundedScale, 1);
 }
 
-function generateViewPortTag(viewportSize) {
-  return '<meta name="viewport" content="user-scalable=no,'
-          + 'initial-scale=' + viewportSize + ','
-          + 'maximum-scale=' + viewportSize + ','
-          + 'minimum-scale=' + viewportSize + ','
-          + 'width=device-width, height=device-height, target-densitydpi=device-dpi"/>';
+function generateViewPortContent(viewportSize) {
+  return    'initial-scale=' + viewportSize + ', '
+          + 'maximum-scale=' + viewportSize + ', '
+          + 'minimum-scale=' + viewportSize + ', '
+          + 'width=device-width, height=device-height, target-densitydpi=device-dpi';
 }
