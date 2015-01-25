@@ -12,7 +12,8 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-    setCloudVolume: setCloudVolume
+    setCloudVolume:         setCloudVolume,
+    setCloudNowPlayingTime: setCloudNowPlayingTime
 });
 
 
@@ -27,7 +28,7 @@ function createCloud(name, isPublic, location) {
         }
 
         var cloud = { _id: createCloudId(), name: name, isPublic: isPublic, 
-                        nowPlayingSongId: null, isPaused: true, volume: 0.55 };
+                        nowPlayingSongId: null, nowPlayingTime: 0, isPaused: true, volume: 0.55 };
         mongoLocation && _.extend(cloud, { location: mongoLocation });
         return Clouds.insert(cloud);
 }
@@ -56,6 +57,11 @@ function findCloudsNear(location) {
 function setCloudVolume(volumeLevel) {
     check(volumeLevel, String);
     Clouds.update({ _id: App.cloudId() }, { $set: { volume: volumeLevel } });
+}
+
+function setCloudNowPlayingTime(time) {
+    check(time, Number);
+    Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingTime: time } });
 }
 
 function checkLocation(location) {
