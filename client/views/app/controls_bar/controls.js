@@ -95,10 +95,8 @@ function loadSong(song) {
         if (song._id != App.cloud().nowPlayingSongId) return;
         var time = App.cloud().nowPlayingTime;
         self.player.src(data.stream_url);
-        setTimeout(function() {
-            self.player.setCurrentTime(time);
-            updatePlayerPauseState();
-        }, 300);
+        self.player.setCurrentTime(time);
+        updatePlayerPauseState();
     });
     Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: song._id } });
 }

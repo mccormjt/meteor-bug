@@ -2,8 +2,6 @@ CrossPlayer = function(endedCallback, reloadCallback) {
     var player       = {},
         errorHandler = new playerErrorHandler(player, endedCallback, reloadCallback);
 
-window.errorHandler = errorHandler;
-window.player = player;
     if (Meteor.isCordova) {
         document.addEventListener("deviceready", 
             function() { setupMobilePlayer(player, endedCallback, errorHandler) }, false);
@@ -36,7 +34,10 @@ function setupDesktopPlayer(player, onendedFn, errorHandler) {
     };
 
     player.setCurrentTime = function(currentTimeVal) {
-        audio.currentTime = currentTimeVal;
+        audio.oncanplay = function() {
+            audio.currentTime = currentTimeVal;
+            audio.oncanplay = null;
+        };
     };
 
     player.src = function(src) {
