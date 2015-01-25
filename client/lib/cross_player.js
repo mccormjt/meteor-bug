@@ -65,7 +65,8 @@ function setupMobilePlayer(player, onendedFn, errorHandler) {
 
     player.volume = function(volumeVal) {
         if (!volumeVal) return volume;
-        media && media.setVolume(volumeVal) && (volume = volumeVal);
+        volume = volumeVal;
+        media && media.setVolume(volumeVal);
     };
 
     player.getCurrentTime = function(callback) {
@@ -84,6 +85,7 @@ function setupMobilePlayer(player, onendedFn, errorHandler) {
         media = new Media(setSrc, mediaEnd, handleError, updateMediaStatus);
         src = setSrc;
         updatePlayPauseState(status);
+        player.volume(volume);
     };
 
     player.clearSrc = function() {
