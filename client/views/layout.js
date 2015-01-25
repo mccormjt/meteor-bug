@@ -16,3 +16,10 @@ function generateViewPortContent(viewportSize) {
           + 'minimum-scale=' + viewportSize + ', '
           + 'width=device-width, height=device-height, target-densitydpi=device-dpi';
 }
+
+document.addEventListener('deviceready', function () {
+     // Android customization
+    cordova.plugins.backgroundMode.setDefaults({ text:'CrowdPlay Running'});
+    // Enable background mode
+    cordova.plugins.backgroundMode.enable();
+}, false);
