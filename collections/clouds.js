@@ -3,11 +3,14 @@ var MAX_NEAR_CLOUD_METERS = 600;
 
 if (Meteor.isServer) { 
     Clouds._ensureIndex({ location: '2dsphere' });
+    Clouds._ensureIndex({ createdByUserId: 1 });
+    Clouds._ensureIndex({ _id: 1 });
 
     Meteor.methods({
-        createCloud:     createCloud,
-        findCloudsNear:  findCloudsNear,
-        findCloud:       findCloud
+        createCloud:            createCloud,
+        findCloudsNear:         findCloudsNear,
+        findCloud:              findCloud,
+        updateCloudActiveness:  updateCloudActiveness
     });
 }
 
@@ -20,15 +23,16 @@ Meteor.methods({
 function createCloud(name, isPublic, location) {
         check(name, String);
         check(isPublic, Boolean);
-        var mongoLocation;
+        Meteor.call('softDeleteUsersClouds');
 
+        var mongoLocation;
         if (isPublic) {
             checkLocation(location);
             mongoLocation = locationToMongo(location);
         }
 
-        var cloud = { _id: createCloudId(), name: name, isPublic: isPublic, 
-                        nowPlayingSongId: null, nowPlayingTime: 0, isPaused: true, volume: 0.55 };
+        var cloud = { _id: createCloudId(), name: name, isPublic: isPublic, createdByUserId: Meteor.userId(),
+                        lastActiveAt: Date.now(), nowPlayingSongId: '', nowPlayingTime: 0, isPaused: true, volume: 0.55 };
         mongoLocation && _.extend(cloud, { location: mongoLocation });
         return Clouds.insert(cloud);
 }
@@ -105,4 +109,8 @@ function createCloudId() {
 function findCloud(id) {
     check(id, String);
     return Clouds.find({ _id: id }).fetch()[0];
+}
+
+function updateCloudActiveness() {
+    Clouds.update({ _id: App.cloudId() }, { $set: { lastActiveAt: Date.now() } });
 }

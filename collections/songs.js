@@ -51,6 +51,7 @@ function setIsQueued(songId, isQueued, addedByUserId) {
   var songParams = { isQueued: isQueued, addedByUserId: addedByUserId };
   isQueued && _.extend(songParams, { timeQueued: Date.now() });
   Songs.update({ _id: songId }, { $set: songParams });
+  Meteor.call('updateCloudActiveness');
 }
 
 

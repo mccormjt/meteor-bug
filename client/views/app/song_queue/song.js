@@ -11,7 +11,6 @@ Template.song.events({
 
 
 function addedByUsername() {
-  Util.log('USERNAME-ID', this.addedByUserId);
   return CloudUsers.findOne({ userId: this.addedByUserId }).username;
 }
 
