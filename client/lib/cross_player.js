@@ -142,7 +142,7 @@ function playerErrorHandler(player, failedSongCallback, reloadCallback) {
             startResetTimer();
             setTimeout(reloadCallback, 250); // in case of multiple error calls
         }
-        Meteor.call('log', 'ERROR', error);
+        Util.log('ERROR', error);
     };
 
     handler.reset = function() {
