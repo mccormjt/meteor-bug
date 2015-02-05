@@ -1,10 +1,12 @@
 <template name='controls'>
-  <div class='player-controls'>
-    <span class='fa play-pause {{ playerPauseStateClass }}'></span>
-    <span class='fa skip'></span>
-    <div class='volume-slider'>
-      <input type='range' min='0.0' step='0.05' max='1.0' />
-      <i class='fa fa-volume-up'></i>
+  <div class='controls'>
+    <div class='player-controls'>
+      <span class='fa play-pause {{ playerPauseStateClass }}'></span>
+      <span class='fa skip'></span>
+      <div class='volume-slider'>
+        <input type='range' min='0.0' step='0.05' max='1.0' />
+        <i class='fa fa-volume-up'></i>
+      </div>
     </div>
   </div>
 </template>

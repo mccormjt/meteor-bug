@@ -30,11 +30,12 @@ Template.controls.events({
 
 
 function initializeControls() {
+    var playerControls = self.$('.player-controls');
     if (App.isAdmin()) {
-        $(self.firstNode).fadeIn(300);
+        playerControls.fadeIn(300);
         self.volumeSlider.rangeslider({ polyfill: false });
     } else {
-        $(self.firstNode).hide();
+        playerControls.hide();
         self.volumeSlider.rangeslider('destroy');
     }
 }
@@ -91,14 +92,20 @@ function reloadNowPlaying() {
 
 
 function loadSong(song) {
+    if (self.isLoadingSong) return;
+    self.isLoadingSong = true;
+    Meteor.call('setCloudLoadingSongState', true);
     Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
         if (song._id != App.cloud().nowPlayingSongId) return;
         var time = App.cloud().nowPlayingTime;
-        self.player.src(data.stream_url);
-        setTimeout(function() {
-            self.player.setCurrentTime(time);
-            updatePlayerPauseState();
-        }, 300);
+        self.player.src(data.stream_url, function() {
+            setTimeout(function() {
+                self.isLoadingSong = false;
+                Meteor.call('setCloudLoadingSongState', false);
+                self.player.setCurrentTime(time);
+                updatePlayerPauseState();
+            }, 300);
+        });
     });
     Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: song._id } });
 }

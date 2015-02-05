@@ -1,4 +1,7 @@
 Lock = new Meteor.Collection('lock');
+if (Meteor.isServer) {
+  ensureLock();
+}
 
 Meteor.methods({
   lock:   function() { setLockState(true)  },
@@ -12,4 +15,8 @@ function setLockState(isLocked) {
 
 function isLocked() {
   return Lock.findOne().isLocked;
+}
+
+function ensureLock() {
+  !Lock.findOne() && setLockState(true);
 }

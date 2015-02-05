@@ -2,12 +2,12 @@ CrossPlayer = function(endedCallback, reloadCallback) {
     var player       = {},
         errorHandler = new playerErrorHandler(player, endedCallback, reloadCallback);
 
-    if (Meteor.isCordova) {
-        document.addEventListener("deviceready", 
-            function() { setupMobilePlayer(player, endedCallback, errorHandler) }, false);
-    } else {
+     if (Meteor.isCordova) {
+         document.addEventListener("deviceready", 
+             function() { setupMobilePlayer(player, endedCallback, errorHandler) }, false);
+     } else {
         setupDesktopPlayer(player, endedCallback, errorHandler);
-    }
+     }
 
     return player;
 };
@@ -40,11 +40,15 @@ function setupDesktopPlayer(player, onendedFn, errorHandler) {
         };
     };
 
-    player.src = function(src) {
+    player.src = function(src, callback) {
         if (!src) return $(audio).attr('src');
         errorHandler.resetOnNewSong();
         $(audio).attr('src', src);
         audio.load();
+        audio.oncanplaythrough = function() {
+            audio.oncanplaythrough = null;
+            callback && callback();
+        }
     };
 
     player.clearSrc = function() {
@@ -78,15 +82,17 @@ function setupMobilePlayer(player, onendedFn, errorHandler) {
         media.seekTo(currentTimeVal * 1000);
     };
 
-    player.src = function(setSrc) {
+    player.src = function(setSrc, callback) {
         if (!setSrc) return src;
         if (src == setSrc) return;
         player.clearSrc();
         errorHandler.resetOnNewSong();
-        media = new Media(setSrc, mediaEnd, handleError, updateMediaStatus);
-        src = setSrc;
-        updatePlayPauseState(status);
-        player.volume(volume);
+        setTimeout(function() {
+            src = setSrc;
+            media = new Media(setSrc, mediaEnd, handleError, updateMediaStatus);
+            player.volume(volume);
+            callback && callback();
+        }, 100);
     };
 
     player.clearSrc = function() {

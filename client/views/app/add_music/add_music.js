@@ -20,7 +20,7 @@ Template.addMusic.events({
 
 function initAddMusicTemplate() {
   self = this;
-  self.musicPane      = $('.add-music');
+  self.musicPane      = this.$('.add-music');
   self.searchHolder   = this.$('.search');
   self.searchInput    = this.$('input');
 

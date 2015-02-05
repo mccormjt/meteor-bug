@@ -11,7 +11,8 @@ Template.song.events({
 
 
 function addedByUsername() {
-  return CloudUsers.findOne({ userId: this.addedByUserId }).username;
+  var cloudUser = CloudUsers.findOne({ userId: this.addedByUserId });
+  if (cloudUser) return cloudUser.username;
 }
 
 function voteForSong(event) {

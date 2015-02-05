@@ -31,5 +31,5 @@ Template.songQueue.rendered = function() {
   //   }
    };
 
-  this.firstNode._uihooks = hooks;
+  this.find('.song-queue-holder')._uihooks = hooks;
 };

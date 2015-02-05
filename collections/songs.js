@@ -62,7 +62,7 @@ function queueSong(songId) {
 
 function unqueueSong(songId) {
   var song = Songs.findOne(songId);
-  CloudUsers.update({ userId: Meteor.userId(), cloudId: App.cloudId() }, { $inc: { voteScore: song.voteCount } }) 
+  CloudUsers.update({ userId: song.addedByUserId, cloudId: App.cloudId() }, { $inc: { voteScore: song.voteCount } }) 
   setIsQueued(songId, false, '');
 }
 

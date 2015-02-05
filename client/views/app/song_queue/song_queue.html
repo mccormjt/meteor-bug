@@ -1,7 +1,9 @@
 <template name='songQueue'>
-  <div class='song-queue-holder'>
-    {{#each songQueue }}
-      {{> song }}
-    {{/each}}
+  <div class='song-queue'>
+    <div class='song-queue-holder'>
+      {{#each songQueue }}
+        {{> song }}
+      {{/each}}
+    </div>
   </div>
 </template>

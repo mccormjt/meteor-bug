@@ -15,8 +15,9 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-    setCloudVolume:         setCloudVolume,
-    setCloudNowPlayingTime: setCloudNowPlayingTime
+    setCloudVolume:            setCloudVolume,
+    setCloudNowPlayingTime:    setCloudNowPlayingTime,
+    setCloudLoadingSongState:  setCloudLoadingSongState
 });
 
 
@@ -31,8 +32,9 @@ function createCloud(name, isPublic, location) {
             mongoLocation = locationToMongo(location);
         }
 
-        var cloud = { _id: createCloudId(), name: name, isPublic: isPublic, createdByUserId: Meteor.userId(),
-                        lastActiveAt: Date.now(), nowPlayingSongId: '', nowPlayingTime: 0, isPaused: true, volume: 0.55 };
+        var cloud = { _id: createCloudId(), name: name, isPublic: isPublic, createdByUserId: Meteor.userId(), 
+                        lastActiveAt: Date.now(), nowPlayingSongId: '', nowPlayingTime: 0, isPaused: true, 
+                        volume: 0.55, isLoadingSong: false };
         mongoLocation && _.extend(cloud, { location: mongoLocation });
         return Clouds.insert(cloud);
 }
@@ -113,4 +115,9 @@ function findCloud(id) {
 
 function updateCloudActiveness() {
     Clouds.update({ _id: App.cloudId() }, { $set: { lastActiveAt: Date.now() } });
+}
+
+function setCloudLoadingSongState(isLoading) {
+    check(isLoading, Boolean);
+    Clouds.update({ _id: App.cloudId() }, { $set: { isLoadingSong: isLoading } });
 }
