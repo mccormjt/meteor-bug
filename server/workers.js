@@ -1,1 +1,1 @@
-Meteor.setInterval(Util.wrapMeteorMethod('softDeleteInactiveClouds', 60), Util.hoursToMiliseconds(1));
+Meteor.setInterval(Util.wrapMeteorMethod('softDeleteInactiveClouds', 60), Time.hoursToMiliseconds(1));

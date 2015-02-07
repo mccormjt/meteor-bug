@@ -8,7 +8,7 @@ if (Meteor.isServer) {
 }
 
 function softDeleteInactiveClouds(olderThanHours) {
-    var minAge         = Date.now() - Util.hoursToMiliseconds(olderThanHours),
+    var minAge         = Date.now() - Time.hoursToMiliseconds(olderThanHours),
         inactiveQuery  = { lastActiveAt: { $lt: minAge } };
     softDeleteClouds(inactiveQuery);
 }
