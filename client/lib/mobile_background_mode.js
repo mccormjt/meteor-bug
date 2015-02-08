@@ -1,23 +1,27 @@
-document.addEventListener('deviceready', function () {
-	Tracker.autorun ( function(comp) {
-		if (!Meteor.isCordova) {
-			return comp.stop();	
-		} else if (App.isOutput()) {
-      		// Android customization
-      		cordova.plugins.backgroundMode.setDefaults({ text:'CrowdPlay Running'});
-      		cordova.plugins.backgroundMode.enable();
-    	} else {
-    		cordova.plugins.backgroundMode.disable();
-    	}
-	});
-}, false);
+var backgroundModeInactivityCheck;
 
-Meteor.methods({
-    disableInactiveCloudBackgroundMode: disableInactiveCloudBackgroundMode
+Meteor.startup(function setupBackgroundMode() {
+    if (!Meteor.isCordova) return;
+    Meteor.methods({
+        disableInactiveCloudBackgroundMode: disableInactiveCloudBackgroundMode
+    });
+    document.addEventListener('deviceready', function() {
+        Tracker.autorun(updateBackgroundModeState);
+    });
 });
 
-function disableInactiveCloudBackgroundMode(olderThanHours){
-	if (Time.isCloudActive(olderThanHours)){
-		cordova.plugins.backgroundMode.disable();
-	}
+function updateBackgroundModeState() {
+    if (App.isOutput()) {
+        cordova.plugins.backgroundMode.setDefaults({ text:'CrowdPlay Running'}); // Android customization
+        cordova.plugins.backgroundMode.enable();
+        backgroundModeInactivityCheck = setInterval(Util.wrapMeteorMethod('disableInactiveCloudBackgroundMode', 0.5), Time.hoursToMiliseconds(0.09));
+    } else {
+        clearInterval(backgroundModeInactivityCheck);
+        cordova.plugins.backgroundMode.disable();
+    }
+}
+
+function disableInactiveCloudBackgroundMode(maxHoursOfInactivity){
+    var isCloudInactive = Time.isOlderThan(App.cloud().lastActiveAt, maxHoursOfInactivity);
+    isCloudInactive && cordova.plugins.backgroundMode.disable();
 }

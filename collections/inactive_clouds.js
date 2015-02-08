@@ -5,6 +5,12 @@ if (Meteor.isServer) {
       softDeleteInactiveClouds: softDeleteInactiveClouds,
       softDeleteUsersClouds:    softDeleteUsersClouds
     });
+
+    SyncedCron.add({
+        name:     'Soft Delete Clouds that have not been used in a while',
+        schedule: function(parser) { return parser.text('every 1 hour') }, 
+        job:      Util.wrapMeteorMethod('softDeleteInactiveClouds', 60)
+    });
 }
 
 function softDeleteInactiveClouds(olderThanHours) {
@@ -29,4 +35,5 @@ function softDeleteClouds(cloudsToDeleteQuery) {
         CloudUsers.remove(cloudQuery);
         Clouds.remove(cloud._id);
     });
+    return clouds.count() + ' clouds have been soft deleted';
 }

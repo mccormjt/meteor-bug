@@ -1,1 +1,0 @@
-Meteor.setInterval(Util.wrapMeteorMethod('disableInactiveCloudBackgroundMode', 0.5), Time.hoursToMiliseconds(0.09));
