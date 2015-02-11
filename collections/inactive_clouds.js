@@ -35,5 +35,5 @@ function softDeleteClouds(cloudsToDeleteQuery) {
         CloudUsers.remove(cloudQuery);
         Clouds.remove(cloud._id);
     });
-    return clouds.count() + ' clouds have been soft deleted';
+    return clouds.length + ' clouds have been soft deleted';
 }
