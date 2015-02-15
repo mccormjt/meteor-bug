@@ -9,19 +9,19 @@ if (Meteor.isServer) {
     SyncedCron.add({
         name:     'Soft Delete Clouds that have not been used in a while',
         schedule: function(parser) { return parser.text('every 1 hour') }, 
-        job:      Util.wrapMeteorMethod('softDeleteInactiveClouds', 60)
+        job:      function() { return softDeleteInactiveClouds(60) }
     });
 }
 
 function softDeleteInactiveClouds(olderThanHours) {
     var minAge         = Date.now() - Time.hoursToMiliseconds(olderThanHours),
         inactiveQuery  = { lastActiveAt: { $lt: minAge } };
-    softDeleteClouds(inactiveQuery);
+    return softDeleteClouds(inactiveQuery);
 }
 
 function softDeleteUsersClouds() {
     var usersCloudsQuery = { createdByUserId: Meteor.userId() };
-    softDeleteClouds(usersCloudsQuery);
+    return softDeleteClouds(usersCloudsQuery);
 }
 
 function softDeleteClouds(cloudsToDeleteQuery) {
@@ -35,5 +35,5 @@ function softDeleteClouds(cloudsToDeleteQuery) {
         CloudUsers.remove(cloudQuery);
         Clouds.remove(cloud._id);
     });
-    return clouds.length + ' clouds have been soft deleted';
+    return clouds.length;
 }

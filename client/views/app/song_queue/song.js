@@ -6,7 +6,7 @@ Template.song.helpers({
 });
 
 Template.song.events({
-  'click .upvote, click .downvote': voteForSong
+  'click .upvote, click .downvote': voteForCloudSong
 });
 
 
@@ -15,20 +15,20 @@ function addedByUsername() {
   if (cloudUser) return cloudUser.username;
 }
 
-function voteForSong(event) {
+function voteForCloudSong(event) {
   var voteChoice = $(event.target),
       alreadySelectedVote = voteChoice.hasClass(ACTIVE_VOTE_CLASS),
       isUpvote = voteChoice.hasClass('upvote'),
       voteVal  = alreadySelectedVote ? 0 : (isUpvote ? 1 : -1);
-  Meteor.call('voteForSong', this.groovesharkSongId, voteVal);
-  Meteor.call('upsertUserSongVote', this.songName, this.artistName, this.groovesharkSongId, voteVal);
+  Meteor.call('voteForCloudSong', this.guid, voteVal);
+  Meteor.call('upsertUserSongVote', this, voteVal);
 }
 
 function activeVoteClassFor(voteVal) {
-  var songVote = findSong(this.groovesharkSongId);
+  var songVote = findSong(this.guid);
   return songVote.userVotes[Meteor.userId()] == voteVal && ACTIVE_VOTE_CLASS;
 }
 
-function findSong(groovesharkSongId) {
-  return Songs.findOne({ groovesharkSongId: groovesharkSongId });
+function findSong(guid) {
+  return Songs.findOne({ guid: guid });
 }
