@@ -22,7 +22,7 @@ function ensureCloudUser(isOwner, cloudId) {
     var isOwner  = !! isOwner,
         userData = _.extend(query, 
           { isOwner: isOwner, isAdmin: isOwner, isOutput: isOwner, isBanned: false, 
-            voteScore: 0, userId: user._id, username: user.username });
+            voteScore: 0, userId: user._id, username: user.username, engagements: {}, lastActiveAt: Date.now() });
     CloudUsers.insert(userData);
   }
 }

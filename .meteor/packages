@@ -18,3 +18,4 @@ accounts-password
 mdg:geolocation
 aldeed:console-me
 percolate:synced-cron
+percolate:migrations
