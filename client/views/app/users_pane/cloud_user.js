@@ -55,12 +55,12 @@ function toggleUserPermissionsPane(event, template) {
   user.toggleClass(SHOW_USER_PERMISSIONS_CLASS);
 }
 
-function toggleOutputUserAuthFn(context) {
+function toggleOutputUserAuthFn() {
   var isOwner = App.isOwner(),
       currentOutputUser  = CloudUsers.findOne({ isOutput: true }),
       unsetCurrentOutput = isOwner && currentOutputUser && currentOutputUser.userId != this.userId 
 
-  unsetCurrentOutput && CloudUsers.update({ _id: currentOutputUser._id }, { $set: { isOutput: false } });
+  unsetCurrentOutput && Meteor.call('setCloudUserProperty', currentOutputUser.userId, App.cloudId(), 'isOutput', false);
   return isOwner;
 }
 

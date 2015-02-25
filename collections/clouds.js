@@ -16,7 +16,9 @@ if (Meteor.isServer) {
 
 Meteor.methods({
     setCloudVolume:            setCloudVolume,
+    setCloudNowPlayingSongId:  setCloudNowPlayingSongId,
     setCloudNowPlayingTime:    setCloudNowPlayingTime,
+    setIsCloudPaused:          setIsCloudPaused,
     setCloudLoadingSongState:  setCloudLoadingSongState
 });
 
@@ -59,15 +61,40 @@ function findCloudsNear(location) {
     return clouds;
 }
 
+function setCloudProperty(property, value, hasPermission) {
+    if (!hasPermission) return;
+    var setter = {};
+    setter[property] = value;
+    Clouds.update({ _id: App.cloudId() }, { $set: setter });
+}
 
 function setCloudVolume(volumeLevel) {
     check(volumeLevel, String);
-    Clouds.update({ _id: App.cloudId() }, { $set: { volume: volumeLevel } });
+    setCloudProperty('volume', volumeLevel, App.isAdmin());
 }
 
 function setCloudNowPlayingTime(time) {
     check(time, Number);
-    Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingTime: time } });
+    setCloudProperty('nowPlayingTime', time, App.isOutput());
+}
+
+function setCloudNowPlayingSongId(songId) {
+    check(songId, String);
+    setCloudProperty('nowPlayingSongId', songId, App.isAdmin() || App.isOutput());
+}
+
+function setIsCloudPaused(isPaused) {
+    check(isPaused, Boolean);
+    setCloudProperty('isPaused', isPaused, App.isAdmin());
+}
+
+function updateCloudActiveness() {
+    setCloudProperty('lastActiveAt', Date.now(), true);
+}
+
+function setCloudLoadingSongState(isLoading) {
+    check(isLoading, Boolean);
+    setCloudProperty('isLoadingSong', isLoading, App.isOutput());
 }
 
 function checkLocation(location) {
@@ -111,13 +138,4 @@ function createCloudId() {
 function findCloud(id) {
     check(id, String);
     return Clouds.find({ _id: id }).fetch()[0];
-}
-
-function updateCloudActiveness() {
-    Clouds.update({ _id: App.cloudId() }, { $set: { lastActiveAt: Date.now() } });
-}
-
-function setCloudLoadingSongState(isLoading) {
-    check(isLoading, Boolean);
-    Clouds.update({ _id: App.cloudId() }, { $set: { isLoadingSong: isLoading } });
 }

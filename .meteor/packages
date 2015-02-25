@@ -4,7 +4,6 @@
 # but you can also edit it by hand.
 
 meteor-platform
-insecure
 iron:router
 chrismbeckett:fontawesome4
 pfafman:font-awesome-4

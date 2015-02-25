@@ -107,7 +107,7 @@ function loadSong(song) {
             }, 300);
         });
     });
-    Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: song._id } });
+    Meteor.call('setCloudNowPlayingSongId', song._id);
 }
 
 
@@ -132,7 +132,7 @@ function skipNowPlayingSong() {
 function togglePauseState() {
     var cloud    = Clouds.findOne(),
         isPaused = !cloud.isPaused;
-    Clouds.update({ _id: cloud._id }, { $set: { isPaused: isPaused } });
+    Meteor.call('setIsCloudPaused', isPaused);
 }
 
 
