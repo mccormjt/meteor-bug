@@ -14,7 +14,7 @@ Meteor.methods({
 
 
 Songs.createSongGuid = function(songName, artistName) {
-  return (songName + '@' + artistName).toLowerCase();
+  return (songName + '@' + artistName).replace(/[\. ,:-]+/g, '').toLowerCase();
 }
 
 
@@ -27,7 +27,7 @@ function findOrCreateSong(songName, artistName, groovesharkSongId) {
   var song = findCloudSong(guid);
 
   if (!song) {
-    song = { guid: guid, songName: songName, artistName: artistName, isQueued: false, voteCount: 0,
+    song = { guid: guid, songName: songName, artistName: artistName, isQueued: false, voteCount: 0, priority: 0,
               timeQueued: null, groovesharkSongId: groovesharkSongId, cloudId: App.cloudId(), userVotes: {} };
     song._id = Songs.insert(song);
   }
@@ -43,29 +43,30 @@ function skipNowPlayingSong() {
 }
 
 
-function setIsQueued(songId, isQueued, addedByUserId) {
+function setIsQueued(songId, isQueued, priority, addedByUserId) {
   check(songId, String);
   check(isQueued, Boolean);
   check(addedByUserId, String);
-  var songParams = { isQueued: isQueued, addedByUserId: addedByUserId };
+  var songParams = { isQueued: isQueued, addedByUserId: addedByUserId, priority: priority };
   isQueued && _.extend(songParams, { timeQueued: Date.now() });
   Songs.update({ _id: songId }, { $set: songParams });
   Meteor.call('updateCloudActiveness');
 }
 
 
-function queueSong(songName, artistName, groovesharkSongId) {
+function queueSong(songName, artistName, groovesharkSongId, priority) {
   var song = findOrCreateSong(songName, artistName, groovesharkSongId);
   voteForCloudSong(song.guid, 1);
   Meteor.call('upsertUserSongVote', song, 1);
-  setIsQueued(song._id, true, Meteor.userId());
+  Meteor.call('incNumSongsAddedForCloudUser');
+  setIsQueued(song._id, true, priority, Meteor.userId());
 }
 
 
 function unqueueSong(songId) {
   var song = Songs.findOne(songId);
   CloudUsers.update({ userId: song.addedByUserId, cloudId: App.cloudId() }, { $inc: { voteScore: song.voteCount } }) 
-  setIsQueued(songId, false, '');
+  setIsQueued(songId, false, 0, '');
 }
 
 

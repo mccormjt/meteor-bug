@@ -1,38 +1,44 @@
 CloudUsers = new Meteor.Collection('cloudUsers');
 
 if (Meteor.isServer) { 
-  CloudUsers._ensureIndex({ cloudId: 1, userId: 1 }, { unique: true });
-  CloudUsers._ensureIndex({ cloudId: 1 });
+    CloudUsers._ensureIndex({ cloudId: 1, userId: 1 }, { unique: true });
+    CloudUsers._ensureIndex({ cloudId: 1 });
 }
 
 Meteor.methods({
-  ensureCloudUser: ensureCloudUser,
-  setCloudUserProperty:   setCloudUserProperty
+    ensureCloudUser:               ensureCloudUser,
+    setCloudUserProperty:          setCloudUserProperty,
+    incNumSongsAddedForCloudUser:  incNumSongsAddedForCloudUser
 });
 
 
 function ensureCloudUser(isOwner, cloudId) {
-  cloudId = cloudId || App.cloudId();
-  check(cloudId, String);
-  var user     = Meteor.user(),
-      query    = { userId: user._id, cloudId: cloudId },
-      exists   = CloudUsers.findOne(query);
+    cloudId = cloudId || App.cloudId();
+    check(cloudId, String);
+    var user     = Meteor.user(),
+        query    = { userId: user._id, cloudId: cloudId },
+        exists   = CloudUsers.findOne(query);
 
-  if (!exists) {
-    var isOwner  = !! isOwner,
-        userData = _.extend(query, 
-          { isOwner: isOwner, isAdmin: isOwner, isOutput: isOwner, isBanned: false, 
-            voteScore: 0, userId: user._id, username: user.username, engagements: {}, lastActiveAt: Date.now() });
-    CloudUsers.insert(userData);
-  }
+    if (!exists) {
+        var isOwner  = !! isOwner,
+            userData = _.extend(query, 
+                  { isOwner: isOwner, isAdmin: isOwner, isOutput: isOwner, isBanned: false, 
+                    voteScore: 0, numSongsAdded: 0, userId: user._id, username: user.username, 
+                    engagements: {}, lastActiveAt: Date.now() });
+        CloudUsers.insert(userData);
+    }
 }
 
 function setCloudUserProperty(userId, cloudId, propName, propVal) {
-  check(userId,   String);
-  check(cloudId,  String);
-  check(propName, String);
+    check(userId,   String);
+    check(cloudId,  String);
+    check(propName, String);
 
-  var property = {};
-  property[propName] = propVal;
-  CloudUsers.update({ userId: userId, cloudId: cloudId }, { $set: property });
+    var property = {};
+    property[propName] = propVal;
+    CloudUsers.update({ userId: userId, cloudId: cloudId }, { $set: property });
+}
+
+function incNumSongsAddedForCloudUser() {
+    CloudUsers.update({ userId: Meteor.userId(), cloudId: App.cloudId() }, { $inc: { numSongsAdded: 1 } });
 }

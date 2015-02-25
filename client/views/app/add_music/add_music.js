@@ -4,86 +4,106 @@ var SONG_SEARCH_RESULTS = 'songSearchResults',
 Template.addMusic.rendered = initAddMusicTemplate;
 
 Template.addMusic.helpers({
-  songResults:     getSongResults,
-  hasNoResults:    hasNoResults,
-  inQueueClass:    inQueueClass
+    songResults:     getSongResults,
+    hasNoResults:    hasNoResults,
+    inQueueClass:    inQueueClass
 });
 
 Template.addMusic.events({
-  'click h4':      hideAddMusicPane,
-  'click input':   showAddMusicPane,
-  'focus input':   toggleSearchFocusClass,
-  'blur  input':   toggleSearchFocusClass,
-  'click .queue-status:not(.songResult.in-queue .queue-status)':  queueSong
+    'click h4':      hideAddMusicPane,
+    'click input':   showAddMusicPane,
+    'focus input':   toggleSearchFocusClass,
+    'blur  input':   toggleSearchFocusClass,
+    'click .queue-status:not(.songResult.in-queue .queue-status)':  queueSong
 });
 
 
 function initAddMusicTemplate() {
-  self = this;
-  self.musicPane      = this.$('.add-music');
-  self.searchHolder   = this.$('.search');
-  self.searchInput    = this.$('input');
+    self = this;
+    self.musicPane      = this.$('.add-music');
+    self.searchHolder   = this.$('.search');
+    self.searchInput    = this.$('input');
+    setupTypeWatch();
+}
 
-  var options = {
-    callback: loadSearchResults,
-    wait: 400,
-    captureLength: 0
-  }
-
-  this.searchInput.typeWatch(options);
+function setupTypeWatch() {
+    self.searchInput.typeWatch({
+        callback: loadSearchResults,
+        wait: 400,
+        captureLength: 0
+    });
 }
 
 function isQueued(guid) {
-  return !! Songs.findOne({ guid: guid, isQueued: true });
+    return !! Songs.findOne({ guid: guid, isQueued: true });
 }
 
 function inQueueClass() {
-  var guid = Songs.createSongGuid(this.songName, this.artistName);
-  return isQueued(guid) ? 'in-queue' : ''
+    var guid = Songs.createSongGuid(this.songName, this.artistName);
+    return isQueued(guid) ? 'in-queue' : ''
 }
 
 function getSongResults() { 
-  return Session.get(SONG_SEARCH_RESULTS);
+    return Session.get(SONG_SEARCH_RESULTS);
 }
 
 function hasNoResults() {
-  var results = getSongResults();
-  return results && !results.length;
+    var results = getSongResults();
+    return results && !results.length;
 }
 
 function queueSong(event) {
-  Meteor.call('queueSong', this.songName, this.artistName, this.songID);
+    Meteor.call('queueSong', this.songName, this.artistName, this.songID, getSongPriorityForUser());
 }
 
 function loadSearchResults(query) {
-  self.searchHolder.addClass(SEARCHING_CLASS);
-  if (query) {
-    Backend.getQueryResultsFromGrooveShark(query, function(results) {
-      Session.set(SONG_SEARCH_RESULTS, results);
-      self.searchHolder.removeClass(SEARCHING_CLASS);
-    });
-  } else {
-    clearMusicPane();
-  }
+    self.searchHolder.addClass(SEARCHING_CLASS);
+    if (query) {
+        Backend.getQueryResultsFromGrooveShark(query, function(results) {
+            Session.set(SONG_SEARCH_RESULTS, results);
+            self.searchHolder.removeClass(SEARCHING_CLASS);
+        });
+    } else {
+        clearMusicPane();
+    }
 }
 
 function clearMusicPane() {
-  Session.set(SONG_SEARCH_RESULTS, null);
-  self.searchInput.val('');
-  self.searchHolder.removeClass(SEARCHING_CLASS);
+    Session.set(SONG_SEARCH_RESULTS, null);
+    self.searchInput.val('');
+    self.searchHolder.removeClass(SEARCHING_CLASS);
 }
 
 function showAddMusicPane() {
-  clearMusicPane();
-  self.musicPane.addClass('active');
-  $('html, body').scrollTop(0);
+    clearMusicPane();
+    self.musicPane.addClass('active');
+    $('html, body').scrollTop(0);
 }
 
 function hideAddMusicPane() {
-  clearMusicPane();
-  self.musicPane.removeClass('active');
+    clearMusicPane();
+    self.musicPane.removeClass('active');
 }
 
 function toggleSearchFocusClass() {
-  self.searchHolder.toggleClass('focused');
+    self.searchHolder.toggleClass('focused');
+}
+
+function getSongPriorityForUser() {
+    var userId = Meteor.userId(),
+        highestOverallPriority,
+        usersLowestPriority;
+
+    Songs.find({ isQueued: true }).forEach(function(song) {
+        if (song.addedByUserId == userId) {
+            usersLowestPriority || (usersLowestPriority = song.priority);
+            usersLowestPriority = Math.max(usersLowestPriority, song.priority);
+        } else if (!usersLowestPriority) {
+            highestOverallPriority || (highestOverallPriority = song.priority);
+            highestOverallPriority = Math.min(highestOverallPriority, song.priority);
+        }
+  });
+
+  usersLowestPriority && usersLowestPriority++;
+  return usersLowestPriority || highestOverallPriority || 1;
 }
