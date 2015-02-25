@@ -206,7 +206,7 @@ function CreateNewCloudOptions() {
 
         function setupNewCloud() {
             var isPublic  = broadcastSliderButton.isOn,
-                cloudName = getEscapedCloudName();
+                cloudName = $createNameField.val();
 
             if (isPublic) {
                 $.when(getCurrentLocation()).then(setup);
@@ -219,10 +219,6 @@ function CreateNewCloudOptions() {
                     loadAppWithParams(cloudId, true);
                 });
             }
-        }
-
-        function getEscapedCloudName() {
-            return $createNameField.val().toLowerCase().replace(/ +/g, '_').replace(/[0-9]/g, '').replace(/[^a-z0-9-_]/g, '').trim();
         }
     }
 
