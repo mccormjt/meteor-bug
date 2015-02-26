@@ -15,6 +15,7 @@ Template.controls.rendered = function() {
 
 Template.controls.destroyed = function() {
     self.player.clearSrc();
+    $(window).off('keyup');
 };
 
 
