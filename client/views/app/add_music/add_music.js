@@ -10,11 +10,11 @@ Template.addMusic.helpers({
 });
 
 Template.addMusic.events({
-    'click h4':      HashChanger.clearHash,
-    'click input':   HashChanger.hashSetterFnFor('add-music'),
-    'focus input':   toggleSearchFocusClass,
-    'blur  input':   toggleSearchFocusClass,
-    'click .queue-status:not(.songResult.in-queue .queue-status)':  queueSong
+    'click h4':                    HashChanger.clearHash,
+    'click input':                 HashChanger.hashSetterFnFor('add-music'),
+    'focus input, blur input':     toggleSearchFocusClass,
+    'keyup input':                 Util.stopEventPropagation,
+    'click .queue-status:not(.songResult.in-queue .queue-status)':  queueSong,
 });
 
 

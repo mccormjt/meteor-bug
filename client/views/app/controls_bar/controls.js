@@ -46,6 +46,7 @@ function setupAudioPlayer() {
     self.autorun(ensureNowPlayingSrc);
     self.autorun(updatePlayerPauseState);
     trackNowPlayingTime();
+    $(window).keyup(function(e) { e.keyCode == 32 && togglePauseState() });
 }
 
 
