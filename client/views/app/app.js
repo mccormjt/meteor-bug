@@ -6,11 +6,12 @@ Template.app.rendered = function() {
   self.mainApp        = this.$('.app');
   self.usersPane      = this.$('.users-pane'),
   self.mainCoverPane  = this.$('.main-cover-pane');
+  HashChanger.listenFor('contributors', openUsersPane, closeUsersPane);
 };
 
 Template.app.events({
-  'click .users': openUsersPane,
-  'click .main-cover-pane': closeUsersPane
+  'click .users': HashChanger.hashSetterFnFor('contributors'),
+  'click .main-cover-pane': HashChanger.clearHash
 });
 
 
