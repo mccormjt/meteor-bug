@@ -5,11 +5,20 @@ HashChanger = new function() {
         lastHash           = '',
         toFnTable          = {},
         fromFnTable        = {};
+        
 
+    self.currentHash = function() {
+        return location.hash || '#';
+    };
 
     self.listenFor = function(hash, toFn, fromFn) {
         addFnForTable(toFnTable,   hash, toFn);
         addFnForTable(fromFnTable, hash, fromFn);
+    };
+
+    self.stopListeningFor = function(hash) {
+        hash = '#' + hash;
+        toFnTable[hash] = fromFnTable[hash] = undefined;
     };
 
     self.hashSetterFnFor = function(hash) {
@@ -21,7 +30,8 @@ HashChanger = new function() {
 
     self.clearHash = function() {
         (self.hashSetterFnFor(''))();
-    }
+    };
+
 
     function addFnForTable(table, hash, fn) {
         if (!(typeof(hash) == 'string' && fn)) return;
@@ -35,7 +45,7 @@ HashChanger = new function() {
     }
 
     function handleHashChange() {
-        var currentHash = location.hash || '#';
+        var currentHash = self.currentHash();
         if (currentHash == lastHash) return;
 
         var handlers      = [],
@@ -55,8 +65,9 @@ HashChanger = new function() {
         isInternalHashSet = false;
     }
 
+
     (function initHashChanger() {
         self.clearHash();
-        $(window).hashchange(handleHashChange);
+        $(window).on('navigate', handleHashChange);
     })();
 };

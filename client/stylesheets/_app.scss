@@ -1,34 +1,44 @@
 .app {
-  box-shadow: 5px 5px 15px black;
+  box-shadow: 3px 3px 12px black, -3px -3px 12px black;
   border-radius: 0.1px;
   margin-left: 0;
   z-index: 50;
   position: relative;
-  transition: margin-left 0.35s ease;
-
-  &.shift-left {
-    margin-left: -$pane-width;
-  }
   
   .header {
     background-color: $primary-color;
     height: 65px;
+    padding: 8px;
+    box-sizing: border-box;
 
     .hamburger, .users {
-      margin: 22px;
+      font-size: 35px;
+      margin: 6px 12px;
       @include primary-hover;
+    }
+
+    .hamburger {
+      font-size: 40px;
+      float: left;
+    }
+
+    .users {
+      margin-top: 8px;
+      float: right;
     }
 
     img {
       width: 50px;
       height: 50px;
-      margin: 0 0 13px 0;
+      margin: 0 20px;
     }
 
     span {
       color: $text-color;
       font-size: 22px;
-      padding: 25px;
+      padding: 10px;
+      position: relative;
+      top: 5px;
     }
   }
 

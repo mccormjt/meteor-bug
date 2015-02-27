@@ -1,7 +1,22 @@
 var self;
 var SONG_SEARCH_RESULTS = 'songSearchResults',
     SEARCHING_CLASS     = 'searching';
-Template.addMusic.rendered = initAddMusicTemplate;
+
+Template.addMusic.created = function() {
+    self = this;
+    HashChanger.listenFor('add-music', showAddMusicPane, hideAddMusicPane);
+};
+
+Template.addMusic.rendered = function() {
+    self.musicPane      = this.$('.add-music');
+    self.searchHolder   = this.$('.search');
+    self.searchInput    = this.$('input');
+    setupTypeWatch();
+};
+
+Template.addMusic.destroyed = function() {
+    HashChanger.stopListeningFor('add-music');
+};
 
 Template.addMusic.helpers({
     songResults:     getSongResults,
@@ -17,15 +32,6 @@ Template.addMusic.events({
     'click .queue-status:not(.songResult.in-queue .queue-status)':  queueSong,
 });
 
-
-function initAddMusicTemplate() {
-    self = this;
-    self.musicPane      = this.$('.add-music');
-    self.searchHolder   = this.$('.search');
-    self.searchInput    = this.$('input');
-    setupTypeWatch();
-    HashChanger.listenFor('add-music', showAddMusicPane, hideAddMusicPane);
-}
 
 function setupTypeWatch() {
     self.searchInput.typeWatch({

@@ -1,28 +1,74 @@
 var self;
-var OPEN_USERS_PANE_CLASS = 'shift-left';
+    paneShiftPercent = '82%',
+    animateTime      = 350,
+    isMenuPaneOpen   = false,
+    isUsersPaneOpen  = false;
+
+Template.app.created = function() {
+    self = this;
+    HashChanger.listenFor('menu', openMenuPane, closeMenuPane);
+    HashChanger.listenFor('contributors', openUsersPane, closeUsersPane);
+}
 
 Template.app.rendered = function() {
-  self = this;
-  self.mainApp        = this.$('.app');
-  self.usersPane      = this.$('.users-pane'),
-  self.mainCoverPane  = this.$('.main-cover-pane');
-  HashChanger.listenFor('contributors', openUsersPane, closeUsersPane);
+    self.mainApp        = this.$('.app');
+    self.menuPane       = this.$('.menu-pane'),
+    self.usersPane      = this.$('.users-pane'),
+    self.mainCoverPane  = this.$('.main-cover-pane');
+
+    var swipeSelector = '.song-queue, .menu-pane, .users-pane, .main-cover-pane';
+    $(document).on('swipeleft',  swipeSelector,  shiftAppRight);
+    $(document).on('swiperight', swipeSelector,  shiftAppLeft);
 };
 
+Template.app.destroyed = function() {
+    HashChanger.stopListeningFor('menu');
+    HashChanger.stopListeningFor('contributors');
+}
+
 Template.app.events({
-  'click .users': HashChanger.hashSetterFnFor('contributors'),
-  'click .main-cover-pane': HashChanger.clearHash
+    'click .hamburger':         HashChanger.hashSetterFnFor('menu'),
+    'click .users':             HashChanger.hashSetterFnFor('contributors'),
+    'click .main-cover-pane':   HashChanger.clearHash
 });
 
+function openMenuPane() {
+    isMenuPaneOpen = true;
+    toggleAppPane(self.menuPane, paneShiftPercent, 'fadeIn');
+}
 
 function openUsersPane() {
-  self.mainApp.addClass(OPEN_USERS_PANE_CLASS);
-  self.mainCoverPane.fadeIn(300);
-  self.usersPane.fadeIn(300);
+    isUsersPaneOpen = true;
+    toggleAppPane(self.usersPane, '-' + paneShiftPercent, 'fadeIn');
+}
+
+function closeMenuPane() {
+    isMenuPaneOpen = false;
+    toggleAppPane(self.menuPane, '0', 'fadeOut');
 }
 
 function closeUsersPane() {
-  self.mainApp.removeClass(OPEN_USERS_PANE_CLASS);
-  self.mainCoverPane.fadeOut(300);
-  self.usersPane.fadeOut(500);
+    isUsersPaneOpen = false;
+    toggleAppPane(self.usersPane, '0', 'fadeOut');
+}
+
+function toggleAppPane(pane, shiftAppTo, fadeDirection) {
+    self.mainApp.velocity('stop').velocity({ marginLeft: shiftAppTo }, { duration: animateTime, easing: 'ease' });
+    self.mainCoverPane.add(pane).velocity('stop').velocity(fadeDirection, { duration: animateTime, easing: 'ease' });
+}
+
+function shiftAppLeft() {
+    if (isUsersPaneOpen) {
+        HashChanger.clearHash();
+    } else if (!isMenuPaneOpen) {
+         HashChanger.hashSetterFnFor('menu')();
+    }
+}
+
+function shiftAppRight() {
+    if (isMenuPaneOpen) {
+        HashChanger.clearHash();
+    } else if (!isUsersPaneOpen) {
+        HashChanger.hashSetterFnFor('contributors')();
+    }
 }
