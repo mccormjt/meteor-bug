@@ -1,11 +1,15 @@
 HashChanger = new function() {
     var self               = this,
         isInternalHashSet  = false,
-        statesTraversed    = 0
+        statesTraversed    = 0,
         lastHash           = '',
         toFnTable          = {},
         fromFnTable        = {};
         
+    Meteor.startup(function() {
+        self.clearHash();
+        $(window).hashchange(handleHashChange);
+    });
 
     self.currentHash = function() {
         return location.hash || '#';
@@ -29,7 +33,7 @@ HashChanger = new function() {
     };
 
     self.clearHash = function() {
-        (self.hashSetterFnFor(''))();
+        self.hashSetterFnFor('')();
     };
 
 
@@ -64,10 +68,4 @@ HashChanger = new function() {
         }
         isInternalHashSet = false;
     }
-
-
-    (function initHashChanger() {
-        self.clearHash();
-        $(window).on('navigate', handleHashChange);
-    })();
-};
+}
