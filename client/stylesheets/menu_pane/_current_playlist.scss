@@ -1,0 +1,36 @@
+.current-playlist {
+
+  .row {
+    margin: 0;
+    margin-bottom: 15px;
+
+    div:nth-child(2) {
+      padding-left: 50px;
+    }
+  }
+
+  .input-group-addon {
+    cursor: pointer;
+    background-color: darkgrey;
+    font-weight: bold;
+  }
+
+  h3 {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 20px;
+  }
+
+  input {
+    cursor: text !important;
+  }
+
+  p {
+    color: $third-color;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

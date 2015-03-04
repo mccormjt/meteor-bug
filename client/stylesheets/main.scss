@@ -10,7 +10,8 @@
 @import 'now_playing';
 @import 'song_queue';
 @import 'add_music';
-@import 'menu_pane';
+@import 'menu_pane/menu_pane';
+@import 'menu_pane/current_playlist';
 @import 'users_pane';
 @import 'user';
 @import 'lock';

@@ -1,5 +1,5 @@
 var self;
-    paneShiftPercent = '82%',
+    paneShiftPercent = '415px',
     animateTime      = 350,
     isMenuPaneOpen   = false,
     isUsersPaneOpen  = false;

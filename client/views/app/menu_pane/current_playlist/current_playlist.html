@@ -1,0 +1,40 @@
+<template name='currentPlaylist'>
+  <li class='current-playlist'>
+    <h2>
+      <i class='fa fa-list-ul'></i>
+      <span>Current Playlist</span>
+    </h2>
+
+    <div>
+      <div class='row'>
+        <div class='col col-sm-6'>
+          <h3>Name</h3>
+          <p>{{ cloud.name }}</p>
+        </div>
+
+        <div class='col col-sm-6'>
+          <h3>ID</h3>
+          <p>{{ cloud._id }}</p>
+        </div>
+      </div>
+
+      <div class='row'>
+        <div class='col col-sm-6'>
+          <h3>Contributors</h3>
+          <p>{{ contributorCount }}</p>
+        </div>
+
+        <div class='col col-sm-6'>
+          <h3>Songs</h3>
+          <p>{{ songsQueuedCount }}</p>
+        </div>
+      </div>
+
+      <h3>Link</h3>
+      <div class='input-group'>
+        <div class='input-group-addon'>copy</div>
+        <input type='text' class='form-control' value='{{urlFor route="app" cloudId=cloud._id }}' disabled>
+      </div>
+    </div>
+  </li>
+</template>

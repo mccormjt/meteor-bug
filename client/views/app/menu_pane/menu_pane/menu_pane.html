@@ -1,0 +1,20 @@
+<template name='menuPane'>
+  <div class='menu-pane'>
+    <h1>
+      <a href='/'>
+        <i class='fa fa-home'></i>
+        <span>CrowdPlay</span>
+      </a>
+    </h1>
+
+    <ul>
+        {{> currentPlaylist }}
+
+        {{> displayName }}
+
+        {{> login }}
+
+        {{> feedback }}
+    </ul>
+  </div>
+</template>
