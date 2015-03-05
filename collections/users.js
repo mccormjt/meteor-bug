@@ -5,7 +5,7 @@ Accounts.config({
 
 if (Meteor.isServer) {
   Meteor.methods({
-    createTempUser: createTempUser,
+    createTempUser: createTempUser
   });
 }
 
@@ -14,6 +14,26 @@ Meteor.methods({
   upsertUserSongVote:   upsertUserSongVote,
   updateUsername:       updateUsername
 });
+
+
+if (Meteor.isServer) {
+  Accounts.onCreateUser(function mergeTempProfileWithNew(options, user) {
+    var hasLoggedInBefore = user.profile && user.profile.hasLoggedInBefore,
+        isOauth = user.services && (user.services.facebook || user.services.twitter);
+console.log('HERE', options, '!!!!!!!!!!!!', user);
+    user.profile = user.profile || { hasLoggedInBefore: false, songVotes: {} };
+    if (!hasLoggedInBefore && isOauth) {
+      var tempUser      = Meteor.user();
+      var mergedProfile = _.extend(user.profile, options.profile || {}, tempUser.profile);
+      user._id          = tempUser._id;
+      user.username     = tempUser.username;
+      user.profile      = mergedProfile;
+      user.profile.hasLoggedInBefore = true;
+      Meteor.users.remove(tempUser._id);
+    }
+    return user;
+  });
+}
 
 
 Meteor.users.isValidUsername = function(username) {
@@ -49,10 +69,11 @@ function createTempUser() {
   var uniqueName  = uniqueNamePair(),
       password    = randString(),
       credentials = { email: uniqueName, password: password },
-      userFields  = _.extend(credentials, { username: uniqueName, profile: { isTemp: true, songVotes: {} } });
+      userFields  = _.extend(credentials, { username: uniqueName });
   Accounts.createUser(userFields);
   return credentials;
 }
+
 
 function updateUsername(name) {
   check(name, String);
@@ -64,6 +85,7 @@ function updateUsername(name) {
   CloudUsers.update({ cloudId: Meteor.user().profile.currentCloudId, userId: userId }, { $set: { username: uniqueName } });
   return uniqueName;
 }
+
 
 function uniqueNamePair() {
   var words = ['happy', 'joe', 'party', 'crazy', 'fight', 'black', 'red', 'white', 'joker', 'batman', 'freak', 

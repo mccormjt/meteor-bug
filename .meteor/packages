@@ -19,3 +19,6 @@ aldeed:console-me
 percolate:synced-cron
 percolate:migrations
 percolate:velocityjs
+accounts-facebook
+service-configuration
+accounts-twitter
