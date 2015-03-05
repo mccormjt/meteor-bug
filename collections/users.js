@@ -10,9 +10,15 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  setUserCloud: setUserCloud,
-  upsertUserSongVote: upsertUserSongVote
+  setUserCloud:         setUserCloud,
+  upsertUserSongVote:   upsertUserSongVote,
+  updateUsername:       updateUsername
 });
+
+
+Meteor.users.isValidUsername = function(username) {
+  return username != Meteor.user().username && username.length >= 4;
+}
 
 
 function setUserCloud(cloudId) {
@@ -48,6 +54,16 @@ function createTempUser() {
   return credentials;
 }
 
+function updateUsername(name) {
+  check(name, String);
+  if (!Meteor.users.isValidUsername(name)) return;
+  name = name.replace(/\s+/g, '-');
+  var uniqueName = getUniqueUsernameFrom(name);
+  var userId = Meteor.userId();
+  Meteor.users.update(userId, { $set: { username: uniqueName } });
+  CloudUsers.update({ cloudId: Meteor.user().profile.currentCloudId, userId: userId }, { $set: { username: uniqueName } });
+  return uniqueName;
+}
 
 function uniqueNamePair() {
   var words = ['happy', 'joe', 'party', 'crazy', 'fight', 'black', 'red', 'white', 'joker', 'batman', 'freak', 
@@ -61,6 +77,10 @@ function uniqueNamePair() {
               'machine', 'munch', 'stack', 'voice', 'scarlet', 'letter', 'hope', 'sound', 'smooth', 'samon', 'high', 'low'];
 
   var name = _.sample(words, 2).join('-');
+  return getUniqueUsernameFrom(name);
+}
+
+function getUniqueUsernameFrom(name) {
   while (usernameExists(name)) name += '_' + randString(3);
   return name;
 }
