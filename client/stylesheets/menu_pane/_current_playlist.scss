@@ -3,6 +3,7 @@
   .row {
     margin: 0;
     margin-bottom: 15px;
+    border-bottom: 1px solid $third-color;
 
     div:nth-child(2) {
       padding-left: 90px;
@@ -35,7 +36,7 @@
     span {
       border-radius: 0 5px 5px 0;
       background-color: #ddd;
-      width: 272px;
+      width: 295px;
       overflow-x: auto;
     }
   }

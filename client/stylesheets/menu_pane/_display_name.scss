@@ -1,0 +1,22 @@
+.display-name {
+
+  .display-name-holder {
+    padding: 0;
+
+    input {
+      color: black;
+      cursor: pointer;
+      width: 100%;
+      outline: none;
+      border: none;
+      border-radius: 0;
+      padding: 25px;
+      font-size: 20px;
+      font-weight: bold;
+      background-color: white;
+      box-shadow: inset 1px 1px 3px black;
+      display: inline-block;
+      text-align: center;
+    }
+  }
+}
