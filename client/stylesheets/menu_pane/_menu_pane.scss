@@ -75,9 +75,8 @@
         transform: translate(0, 0);
       }
 
-
-      &:hover, &.active {
-        background-color: darken($primary-color, 10%);
+      &.active, .no-touch &:hover {
+        background-color: darken($primary-color, 12%);
         color: white;
       }
 
@@ -89,7 +88,7 @@
     & > div {
       padding: 35px;
       display: none;
-      background-color: lighten($primary-color, 7%);
+      background-color: lighten($primary-color, 5%);
       box-shadow: inset 0 2px 4px black;
     }
   }

@@ -6,9 +6,9 @@ Template.menuPane.created = function() {
 };
 
 Template.menuPane.rendered = function() {
-    self.$('li').on('swipe', function(e) {
+    self.$('li').on('swipeleft swiperight swipe', function(e) {
+        e.stopPropagation();
         e.preventDefault();
-        Util.stopEventPropagation();
     });
 };
 

@@ -5,14 +5,39 @@
     margin-bottom: 15px;
 
     div:nth-child(2) {
-      padding-left: 50px;
+      padding-left: 90px;
     }
   }
 
-  .input-group-addon {
-    cursor: pointer;
-    background-color: darkgrey;
-    font-weight: bold;
+  .invite-url {
+    margin-bottom: 50px;
+
+    h3 {
+      margin-bottom: 10px;
+    }
+
+    button, span {
+      color: black;
+      font-weight: bold;
+      padding: 10px;
+      display: inline-block;
+      float: left;
+    }
+
+    button {
+      border-radius: 5px 0 0 5px;
+      background-color: #ccc;
+      outline: none;
+      border: none;
+      border-right: 1px #bbb solid;
+    }
+
+    span {
+      border-radius: 0 5px 5px 0;
+      background-color: #ddd;
+      width: 272px;
+      overflow-x: auto;
+    }
   }
 
   h3 {
