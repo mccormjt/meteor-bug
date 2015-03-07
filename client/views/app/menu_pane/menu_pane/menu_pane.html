@@ -12,7 +12,11 @@
 
         {{> displayName }}
 
-        {{> login }}
+        {{#if isLoggedIn }}
+          {{> account }}
+        {{else}}
+          {{> login }}
+        {{/if}}
 
         {{> feedback }}
     </ul>

@@ -77,10 +77,12 @@ function syncLocalVolumeFromMaster() {
 function ensureNowPlayingSrc(computation, reload) {
     var nowPlayingSongId = App.cloud().nowPlayingSongId;
     if (App.isOutput() && App.anySongsQueued()) {
-        if (nowPlayingSongId) {
-            (!self.player.src() || reload) && loadSong(Songs.findOne(nowPlayingSongId));
+        var nowPlayingSong = nowPlayingSongId && Songs.findOne(nowPlayingSongId);
+        if (nowPlayingSong) {
+            (!self.player.src() || reload) && loadSong(nowPlayingSong);
         } else {
-            loadSong(App.songQueue().fetch()[0]);
+            self.player.clearSrc();
+            loadSong(App.songQueue()[0]);
         }
     } else {
         self.player.clearSrc();
