@@ -5,7 +5,7 @@ Template.displayName.rendered = function() {
     self = this;
     self.displayNameHolder = self.$('.display-name-holder');
     self.displayName       = self.$('input', self.displayNameHolder);
-    resetDisplayNameToLastSaved();
+    self.autorun(updateDisplayName);
     setupDisplayNameTypeWatch();
 };
 
@@ -37,17 +37,19 @@ function stopEditingDisplayName() {
     self.displayNameHolder.removeClass(EDITING_NAME_CLASS + ' invalid');
 
     if (Meteor.users.isValidUsername(username)) {
-        Meteor.call('updateUsername', username, resetDisplayNameToLastSaved);
+        Meteor.call('updateUsername', username);
         self.displayNameHolder.addClass('saving');
         clearTimeout(self.savingTimer);
         self.savingTimer = setTimeout(function() {
             self.displayNameHolder.removeClass('saving');
         }, 1500);
-    } else {
-        resetDisplayNameToLastSaved();
     }
 }
 
-function resetDisplayNameToLastSaved() {
-    self.displayName.val(Meteor.user().username);
+function updateDisplayName() {
+    var username           = Meteor.user() && Meteor.user().username,
+        userNameHasChanged = username != self.displayName.val(),
+        allowedToUpdate    = userNameHasChanged && !self.displayNameHolder.hasClass(EDITING_NAME_CLASS);
+
+    allowedToUpdate && self.displayName.val(username);
 }

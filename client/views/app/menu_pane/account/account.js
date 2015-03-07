@@ -23,7 +23,8 @@ Template.account.events({
 });
 
 function logoutOfCloud() {
-    Meteor.logout();
+    App.stopEnsuringUser();
+    Meteor.logout(App.startEnsuringUser);
 }
 
 function getAccountHoldersName() {
