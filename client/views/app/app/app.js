@@ -17,6 +17,7 @@ Template.app.rendered = function() {
     self.mainCoverPane  = this.$('.main-cover-pane');
 
     var swipeSelector = '.song-queue, .menu-pane, .users-pane, .main-cover-pane';
+    HashChanger.clearHash();
     $(document).on('swipeleft',  swipeSelector,  shiftAppRight);
     $(document).on('swiperight', swipeSelector,  shiftAppLeft);
 };
@@ -24,6 +25,7 @@ Template.app.rendered = function() {
 Template.app.destroyed = function() {
     HashChanger.stopListeningFor('menu');
     HashChanger.stopListeningFor('contributors');
+    $(document).off('swipeleft swiperight');
 }
 
 Template.app.events({
