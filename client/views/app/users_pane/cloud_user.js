@@ -8,7 +8,7 @@ Template.cloudUser.rendered = function() {
 
 Template.cloudUser.helpers({
   userTypeClass:     userTypeClass,
-  prefixedKarma:     prefixedKarma,
+  prefixedKarma:     getPrefixedKarama,
   canSetOutputClass: function() { return App.isOwner()  && 'can-set' },
   canSetAdminClass:  function() { return canSetAdmin(this.userId)  && 'can-set' },
   canSetBannedClass: function() { return canSetBanned(this.userId) && 'can-set' }
@@ -22,10 +22,8 @@ Template.cloudUser.events({
 });
 
 
-function prefixedKarma() {
-  var prefix = '';
-  if (this.karma > 0) prefix = '+';
-  return prefix + this.karma;
+function getPrefixedKarama() {
+   return CloudUsers.prefixedKarma(this.karma);
 }
 
 function userTypeClass() {

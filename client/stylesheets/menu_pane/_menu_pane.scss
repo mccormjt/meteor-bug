@@ -60,6 +60,10 @@
       transition: all ease 0.3s;
       color: lighten($primary-color, 7%);
 
+      i {
+        font-size: 27px;
+      }
+
 
       &::after {
         content: '\f13a';

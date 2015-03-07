@@ -1,38 +1,51 @@
 Accounts.config({
-  sendVerificationEmail: false,
-  loginExpirationInDays: null
+    sendVerificationEmail: false,
+    loginExpirationInDays: null
 });
 
 if (Meteor.isServer) {
-  Meteor.methods({
-    createTempUser: createTempUser
-  });
+    Meteor.methods({
+        createTempUser: createTempUser
+    });
+
+    Meteor.users.lastLoggedInUserId;
 }
 
 Meteor.methods({
-  setUserCloud:         setUserCloud,
-  upsertUserSongVote:   upsertUserSongVote,
-  updateUsername:       updateUsername
+    setUserCloud:         setUserCloud,
+    upsertUserSongVote:   upsertUserSongVote,
+    updateUsername:       updateUsername,
 });
 
 
 if (Meteor.isServer) {
-  Accounts.onCreateUser(function mergeTempProfileWithNew(options, user) {
-    var hasLoggedInBefore = user.profile && user.profile.hasLoggedInBefore,
-        isOauth = user.services && (user.services.facebook || user.services.twitter);
-console.log('HERE', options, '!!!!!!!!!!!!', user);
-    user.profile = user.profile || { hasLoggedInBefore: false, songVotes: {} };
-    if (!hasLoggedInBefore && isOauth) {
-      var tempUser      = Meteor.user();
-      var mergedProfile = _.extend(user.profile, options.profile || {}, tempUser.profile);
-      user._id          = tempUser._id;
-      user.username     = tempUser.username;
-      user.profile      = mergedProfile;
-      user.profile.hasLoggedInBefore = true;
-      Meteor.users.remove(tempUser._id);
+    Accounts.onCreateUser(function mergeTempProfileWithNew(options, user) {
+        var isOauth  = user.services && (user.services.facebook || user.services.twitter);
+        user.profile = user.profile || { isTempUser: true, songVotes: {} };
+
+        if (isOauth) {
+            var tempUser      = Meteor.user();
+            var mergedProfile = _.extend(user.profile, options.profile || {}, tempUser.profile);
+            user._id          = tempUser._id;
+            user.username     = tempUser.username;
+            user.profile      = mergedProfile;
+            user.profile.isFirstLogin = true;
+            user.profile.isTempUser   = false;
+            Meteor.users.remove(tempUser._id);
+        }
+        return user;
+    });
+}
+
+
+if (Meteor.isClient) {
+    var lastLoggedInUserId = Meteor.userId();
+    Accounts.onLogin(switchUsers);
+
+    function switchUsers() {
+        Meteor.call('switchIntoAccountFrom', lastLoggedInUserId);
+        lastLoggedInUserId = Meteor.userId();
     }
-    return user;
-  });
 }
 
 

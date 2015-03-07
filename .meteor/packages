@@ -22,3 +22,5 @@ percolate:velocityjs
 accounts-facebook
 service-configuration
 accounts-twitter
+reactive-var
+gwendall:auth-client-callbacks

@@ -1,4 +1,5 @@
 .login {
+
   & > div {
     text-align: center;
 
@@ -18,10 +19,10 @@
       font-size: 20px;
       padding: 10px 0;
       width: 275px;
-      margin: 20px auto;
+      margin: 40px auto 10px auto;
       color: lighten($primary-color, 7%);
       background-color: $third-color;
-      border-radius: 5px;
+      border-radius: 3px;
       font-weight: bold;
     }
   }

@@ -12,6 +12,10 @@ Template.menuPane.rendered = function() {
     });
 };
 
+Template.menuPane.helpers({
+    isLoggedIn: isLoggedIn
+});
+
 Template.menuPane.events({
     'click li > h2': switchToTab
 });
@@ -40,4 +44,8 @@ function toggleTab(tab, content, isOpening) {
         tab.toggleClass(ACTIVE_TAB_CLASS);
         content.velocity('finish').velocity(slideDirection, { duration: 300 });
     }
+}
+
+function isLoggedIn() {
+    return Meteor.user() && !Meteor.user().profile.isTempUser;
 }
