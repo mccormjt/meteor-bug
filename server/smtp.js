@@ -18,14 +18,15 @@ Meteor.methods({
 
 
 function sendFeedbackEmail(subject, message) {
-    var isValidArgs = Match.test(subject, String) && Match.test(message, String);
+    var isValidArgs = subject && Match.test(subject, String) 
+                   && message && Match.test(message, String);
     if (!isValidArgs) return;
     this.unblock();
 
     Email.send({
-        from: siteEmailAddress,
-        to: siteEmailAddress,
-        subject: subject,
-        text: message
+        from:     siteEmailAddress,
+        to:       siteEmailAddress,
+        subject:  subject,
+        text:     message
     });
 }

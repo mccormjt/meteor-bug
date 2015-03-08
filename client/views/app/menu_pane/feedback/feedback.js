@@ -13,6 +13,7 @@ Template.feedback.events({
 });
 
 function submitFeedback() {
+  if (!(self.subject.validateTextFieldLength(1) && self.message.validateTextFieldLength(1))) return false;
   Meteor.call('sendFeedbackEmail', self.subject.val() ,self.message.val());
   swapFadeElements(self.form, self.thankyou);
   setTimeout(resetForm, 2200);
