@@ -296,6 +296,7 @@
 .btn-expand {
   @include transition(width 0.3s ease-out);
   width: 75% !important;
+  background-image: none !important;
 
   &.find-container {
     position: absolute;
