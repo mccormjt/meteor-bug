@@ -1,214 +1,126 @@
-@import 'animations/clouds';
+@include keyframes(fc-appear) {
+  0%    { opacity: 0; display: none !important; }
+  5%    { opacity: 0; display: block !important; }
+  100%   { opacity: 1; display: block !important; }
+}
+
+@include keyframes(fc-disappear) {
+  0%    { opacity: 1; display: block !important; }
+  95%    { opacity: 0; display: block !important; }
+  100%   { opacity: 0; display: none !important; }
+}
 
 .home {
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  text-align: center;
+  font-family: 'Roboto Condensed', sans-serif;
+  text-rendering: optimizeLegibility;
 
-  height: 100%;
-  background: rgb(30, 87, 153); /* Old browsers */
-  background: -moz-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(30, 87, 153, 1)), color-stop(50%, rgba(41, 137, 216, 1)), color-stop(100%, rgba(125, 185, 232, 1))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* IE10+ */
-  background: linear-gradient(to bottom, rgba(30, 87, 153, 1) 0%, rgba(41, 137, 216, 1) 50%, rgba(125, 185, 232, 1) 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e5799', endColorstr='#7db9e8', GradientType=0); /* IE6-9 */
+  img {
+    width: 70vw;
+    margin-top: 20vh;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    @include transition(all 0.3s ease-out);
 
-  h1 {
-    color: black;
-    font-size: 5.5em;
-    text-align: center;
-    text-shadow: 0.01em 0.01em 0.05em black;
-    padding-top: 0.5em;
-
-    span:nth-child(2) {
-      font-style: italic;
-      font-weight: normal;
+    &.finded {
+      width: 50vw;
+      margin-top: 10vh;
     }
   }
 
-  h2 {
-    text-shadow: 0.05em 0.05em 0.1em black;
-    text-align: center;
-    color: #ffffff;
-    font-size: 2em;
-    font-weight: normal;
-    padding: 0 0 2em 0;
-    font-style: italic;
+  .button {
+    color: #dcdcdc;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 3px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    outline: none;
+    width: 35vw;
+    height: 55px;
+    line-height: 55px;
+    z-index: 10;
+    position: absolute;
+    top: 10vh;
+    font-size: 2.2em;
+    font-family: 'Roboto Condensed', sans-serif;
+    @include transition(background-color 0.1s ease);
+
+    display: inline-block;
+
+    background-color: #567083;
+
+
   }
 
-  #findNearCloudsOptions, #createOptions, #backButton, #findOptionsRefresh {
-    display: none;
-  }
+  .find-container {
+    display: inline-block;
+    position: absolute;
+    top: 50vh;
+    left: 10vw;
+    z-index: 10;
+    opacity: 1;
+    background-color: #506879;
+    overflow: hidden;
 
+    background-image: url('/images/search.svg');
+    background-position: 30% center;
+    background-repeat: no-repeat;
 
-  $options-dark-blue: #080068;
-  #optionHolder {
-    position: relative;
-    z-index: 1000;
-    text-align: center;
-    margin: 0 3em 3em 3em;
-    font-family: sans-serif;
+    @include transition(all 0.3s ease-out);
 
-    button.sky {
-      color: white;
-      border: none;
-      border-radius: 20px;
-      box-shadow: 0.1em 0.1em 0.1em black;
-      text-shadow: 1px 1px 2px darken($options-dark-blue,  20%);
-      cursor: pointer;
-      outline: none;
-      margin: 1em;
-      padding: 0.55em;
-      width: 6.5em;
-      font-size: 1.5em;
-
-      background: #1b00ba; /* Old browsers */
-      background: -moz-linear-gradient(top,  #1b00ba 0%, #130377 100%); /* FF3.6+ */
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1b00ba), color-stop(100%,#130377)); /* Chrome,Safari4+ */
-      background: -webkit-linear-gradient(top,  #1b00ba 0%,#130377 100%); /* Chrome10+,Safari5.1+ */
-      background: -o-linear-gradient(top,  #1b00ba 0%,#130377 100%); /* Opera 11.10+ */
-      background: -ms-linear-gradient(top,  #1b00ba 0%,#130377 100%); /* IE10+ */
-      background: linear-gradient(to bottom,  #1b00ba 0%,#130377 100%); /* W3C */
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1b00ba', endColorstr='#130377',GradientType=0 ); /* IE6-9 */
-
-
+    .find {
+      background: #506879;
       &:hover {
-        background: $options-dark-blue;
+        background: #6f8ca0;
       }
-    }
-  }
 
-  .extra-options {
-    display: table;
-    vertical-align: middle;
-    margin: auto;
-
-    & i {
-      cursor: pointer;
-    }
-  }
-
-  #backButton {
-    width: 2.5em;
-    height: 2.5em;
-    border-radius: 100%;
-    background: url('../images/backArrow.png') no-repeat center;
-    background-size: 100% 100%;
-    border: white solid 0.15em;
-    @include transition(box-shadow 0.20s ease-in-out);
-
-
-    &:hover {
-      box-shadow: 0 0 0 0.15em white;
-    }
-  }
-
-  #findOptionsRefresh {
-    padding: 0.1em;
-    padding-left: 2em;
-    color: black;
-
-    i {
-      font-size: 2.5em;
-      text-shadow: 1px 1px 2px black;
-      @include transition(color 0.20s ease-in-out);
-    }
-
-    &.spinning i {
-      @include spin(1200ms);
-      cursor: default;
-      color: whitesmoke;
-    }
-
-    html:not(.touch) & i:hover {
-      color: whitesmoke;
-    }
-  }
-
-
-  #createOptions {
-    white-space: nowrap;
-    width: 500px;
-    margin: auto;
-
-    #createName {
-      margin: 20px auto;
-      width: 341px;
-      height: 15px;
-      font-weight: bold;
-      font-size: 16px;
-      padding: 23px;
-      outline: none;
-      border-radius: 0.5em;
-      border: 2px solid #DDDDDD;
-
-      $trans: border 0.30s ease-in-out, box-shadow 0.30s ease-in-out;
-      @include transition($trans);
-
-
-      &:focus {
-        box-shadow: 0 0 15px rgba(81, 203, 238, 1);
-        border: 2px solid rgba(81, 203, 238, 0.8);
+      &:active {
+        background: #475d6c;
       }
     }
 
-    #createName_go {
-      width: 5em;
-      margin: 18px;
-      float: right;
+    .fc-input-group {
+      width: 100%;
+      display: block;
 
-      &.loadingNewCloud {
-        background: $options-dark-blue url('../images/ajax-loader-blue.gif') no-repeat center;
-        background-size: 1em 1em;
-        cursor: auto;
-        opacity: 0.7;
+      .fc-input {
+        width: 70%;
+        border: 0;
+        display: inline-block;
+        background-color: #597688;
+        padding-left: 22px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: 0.7em;
 
-        & span {
-          opacity: 0;
+        &:focus {
+          outline:none;
         }
       }
+
+      .fc-button {
+        width: 30%;
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: #6d8ca0;
+      }
     }
-
-
-    #broadcastSliderHolder {
-      text-align: center;
-      margin: auto;
-      width: 200px;
-    }
-
-    .slider-frame {
-      margin: 1em 2.5em 1em 1em;
-    }
-
-    #broadcastError {
-      width: 20em;
-      color: #ab0000;
-      display: none;
-      font-size: 1em;
-      font-weight: bold;
-      border-radius: 0.5em;
-      text-shadow: 0 0 0 1px black;
-      padding: 1em 1.5em;
-      background-color: rgba(10, 10, 10, 0.4);
-      margin: 0.5em auto;
-    }
-  }
-
-
-  #findNearCloudsOptions {
-    height: 0;
-    width: 30em;
-    margin: 1em auto 0 auto;
-    background-color: rgba(90, 90, 90, 0.7);
-    text-align: center;
-    overflow: hidden;
-    border-radius: 0.5em;
 
     #nearClouds {
       width: 100%;
       height: 85%;
+      display: none;
 
-      p {
-        /* p for no results message */
+      #no-clouds-msg {
         padding: 3em;
         text-shadow: 0.1em 0.1em 0.3em black;
         color: #ffffff;
@@ -216,19 +128,20 @@
         font-family: sans-serif;
       }
 
-      div {
+      .cloud {
+        display: block;
         text-shadow: 0.1em 0.1em 0.3em black;
         color: #ffffff;
         font-weight: bold;
         font-size: 20px;
-        padding: 16px 25px;
-        height: 60px;
+        height: 62px;
+        padding: 7px 30px;
         clear: both;
         cursor: pointer;
         @include transition(background-color 0.20s ease-in-out);
 
         &:hover {
-          background-color: rgba(90, 90, 90, 0.8);
+          background-color: darken(#506879, 10%);
         }
       }
 
@@ -244,42 +157,161 @@
         float: right;
       }
     }
+  }
 
+  .create-container {
+    display: inline-block;
+    z-index: 10;
+    opacity: 1;
+    overflow: hidden;
+    right: 10%;
+    position: absolute;
+    background-color: #506879;
+    top: 50vh;
+    @include transition(all 0.3s ease-out);
 
-    #enterID {
+    background-image: url('/images/add.svg');
+    background-position: 70% center;
+    background-repeat: no-repeat;
+
+    .create {
+      background: #506879;
+      &:hover {
+        background: #6f8ca0;
+      }
+
+      &:active {
+        background: #475d6c;
+      }
+    }
+
+    .fc-input-group {
       width: 100%;
-      height: 51px;
-      white-space: nowrap;
+      display: block;
 
-      input, button {
-        font-size: 1.1em;
-        height: 100%;
-        font-weight: bold;
-        outline: none;
-        border: none;
-        border-radius: 0 !important;
-      }
+      .fc-input {
+        width: 70%;
+        border: 0;
+        display: inline-block;
+        background-color: #597688;
+        padding-left: 22px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: 0.7em;
 
-      input {
-        text-indent: 22px;
-        color: black;
-        width: 80%;
-        background-color: #5c5c5c;
-        box-shadow: inset 0px 1px 2px 1px rgba(54, 54, 54, 0.28);
-      }
-
-
-      button {
-        color: white;
-        width: 20%;
-        background-color: #848484;
-        @include transition(background-color 0.20s ease-in-out);
-
-        &:hover {
-          background-color: #4a4a4a;
+        &:focus {
+          outline:none;
         }
       }
 
+      .fc-button {
+        width: 30%;
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: #6d8ca0;
+      }
     }
   }
+
+  .fc-toggle {
+    width: 200px;
+    background-color: #19252d;
+    height: 35px;
+    position: absolute;
+    top: 60vh;
+    left: 50vw;
+    margin-left: -100px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: inset 1px 3px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    font-size: 1.2em;
+    color: rgba(255,255,255,0.7);
+
+    .fc-toggle-btn {
+      height: 25px;
+      margin: 5px;
+      width: 90px;
+      line-height: 25px;
+      background-color: #6d8ca0;
+      border: none;
+      position: absolute;
+      right: 0;
+      border-radius: 5px;
+      box-shadow: 1px 3px 10px rgba(0,0,0,0.2);
+      @include transition(all 0.3s ease-out);
+
+      &.fc-toggle-btn-private {
+        right: 100px;
+        background-color: #a35141;
+      }
+    }
+  }
+}
+
+.btn-fade {
+  color: #51687d !important;
+  background-color: #304655 !important;
+  width: 7% !important;
+  margin: 0 !important;
+  z-index: 5 !important;
+
+  &:hover {
+    background-color: #375061;
+  }
+
+  &:active {
+    background-color: #2d4250;
+  }
+
+
+  &.create-container {
+    position: absolute;
+    top: 30vh;
+    .fc-input-group {
+      display: none;
+    }
+  }
+
+  &.find-container {
+    top: 50vh;
+    .fc-input-group {
+      display: none;
+    }
+  }
+}
+
+.btn-expand {
+  @include transition(width 0.3s ease-out);
+  width: 75% !important;
+  background-image: none !important;
+
+  &.find-container {
+    position: absolute;
+    height: 50vh;
+    top: 30vh;
+
+    #nearClouds {
+      display: block;
+    }
+  }
+
+  &.create-container {
+
+  }
+}
+
+.fc-appear {
+  @include animation('fc-appear 0.4s 1');
+}
+
+.fc-disappear {
+  @include animation('fc-disappear 0.4s 1');
+}
+
+.group-init {
+  display: none !important;
 }

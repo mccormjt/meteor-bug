@@ -1,306 +1,132 @@
-Template.home.rendered = MenuOptions;
+var self;
 
-var STD_ANIMATE_TIME = 250;
+Template.home.rendered = function() {
+    self = this;
+    self.findCon        = this.$('.find-container');
+    self.createCon      = this.$('.create-container');
+    self.find           = this.$('#find');
+    self.create         = this.$('#create');
+    self.findG          = self.findCon.find('.fc-input-group');
+    self.createG        = self.createCon.find('.fc-input-group');
+    self.image          = this.$('img');
+    self.toggle         = this.$('.fc-toggle');
+    self.toggleBtn      = this.$('.fc-toggle-btn');
+    self.publicTog      = true;
+    self.nearClouds     = this.$('#nearClouds');
 
-function MenuOptions() {
-
-    var $startOptions = $('#startOptions'),
-        $find = $('#find', $startOptions).click(toggleToNearCloudOptions),
-        $create = $('#create', $startOptions).click(toggleToCreateCloudOptions),
-        $backButton = $('#backButton').click(toggleBackToStartOptions),
-        FindOptions = new NearCloudsOptions(),
-        CreateOptions = new CreateNewCloudOptions(),
-        stateTransitionFns = [FindOptions.toggleAway,  CreateOptions.toggleAway],
-        state = -1;
-
-
-    function toggleAwayFromStartOptions(callbackFn) {
-        $startOptions.fadeOut(STD_ANIMATE_TIME, function () {
-            $backButton.fadeIn(STD_ANIMATE_TIME).css({display: 'table-cell'});
-            callbackFn();
-        });
-    }
-
-    function toggleBackToStartOptions() {
-        $backButton.fadeOut(STD_ANIMATE_TIME);
-        stateTransitionFns[state](function() {
-            $startOptions.fadeIn(STD_ANIMATE_TIME);
-        });
-        state = -1;
-    }
-
-
-    function toggleToNearCloudOptions() {
-        state = 0;
-       toggleAwayFromStartOptions(FindOptions.toggleInto);
-    }
-
-
-    function toggleToCreateCloudOptions() {
-        state = 1;
-        toggleAwayFromStartOptions(CreateOptions.toggleInto);
-    }
-
+    self.autorun(subcribeToNearClouds);
 };
 
+Template.home.helpers({
+    clouds:         getClouds,
+    cloudDistance:  cloudDistance,
+    noCloudsMsg:    getNoCloudsMsg
+});
 
-// ===================================================================================================
+Template.home.events({
+    'click .find-container':   findClicked,
+    'click .create-container': createClicked,
+    'click .fc-toggle':        toggleClicked,
+    'click #find-btn':         findGo,
+    'click #create-btn':       createGo
+});
+
+function getClouds() {
+    return Clouds.find();
+}
+
+function cloudDistance() {
+    var coords = getLocationCoords();
+    return coords && Clouds.distanceFromCloud(this, coords).toFixed(2) + ' mi';
+}
+
+function getNoCloudsMsg() {
+    if (getClouds().count() === 0) {
+        return 'Sorry, no clouds nearby :(';
+    } else {
+        return Geolocation.error().message;
+    }
+}
 
 
+function findClicked() {
+    self.find.html('');
+    self.create.html('');
+    self.findCon.removeClass('btn-fade');
+    self.createCon.addClass('btn-fade');
+    self.findCon.addClass('btn-expand');
+    self.createCon.removeClass('btn-expand');
 
-function NearCloudsOptions() {
+    self.findG.removeClass('group-init');
+    self.createG.removeClass('group-init');
 
-    var self = this,
-        $findNearCloudsOptions = $('#findNearCloudsOptions'),
-        $refresh = $('#findOptionsRefresh').click(findAndSetupNearClouds),
-        $nearClouds = $('#nearClouds', $findNearCloudsOptions),
-        $enterID_field = $('input', $findNearCloudsOptions),
-        $enterID_go_button = $('button', $findNearCloudsOptions).click(enterCloudIdHandler);
+    self.findG.addClass('fc-appear');
+    self.findG.removeClass('fc-disappear');
+    self.createG.removeClass('fc-appear');
+    self.createG.addClass('fc-disappear');
+    self.toggle.removeClass('fc-appear');
+    self.toggle.addClass('fc-disappear');
 
+    self.image.addClass('finded');
+}
 
-    self.toggleInto = function() {
-        $findNearCloudsOptions.css({display: 'block'}).animate({height: '24em', opacity: '1'}, STD_ANIMATE_TIME);
-        $refresh.stop().fadeIn(STD_ANIMATE_TIME).css({display: 'table-cell'});
-        findAndSetupNearClouds();
-    };
+function createClicked() {
+    self.find.html('');
+    self.create.html('');
+    self.findCon.addClass('btn-fade');
+    self.createCon.removeClass('btn-fade');
+    self.findCon.removeClass('btn-expand');
+    self.createCon.addClass('btn-expand');
 
-    self.toggleAway = function(callback) {
-        $refresh.stop().fadeOut(STD_ANIMATE_TIME);
-        $findNearCloudsOptions.fadeOut(STD_ANIMATE_TIME, function () {
-            $findNearCloudsOptions.css({display: 'none', height: '0', opacity: '0'});
-            callback && callback();
+    self.findG.removeClass('group-init');
+    self.createG.removeClass('group-init');
+    self.toggle.removeClass('group-init');
+
+    self.findG.removeClass('fc-appear');
+    self.findG.addClass('fc-disappear');
+    self.createG.addClass('fc-appear');
+    self.createG.removeClass('fc-disappear');
+    self.toggle.addClass('fc-appear');
+    self.toggle.removeClass('fc-disappear');
+
+    self.image.removeClass('finded');
+}
+
+function toggleClicked() {
+    if (self.publicTog) {
+        self.toggleBtn.addClass('fc-toggle-btn-private');
+        self.toggleBtn.html('Private');
+    } else {
+        self.toggleBtn.removeClass('fc-toggle-btn-private');
+        self.toggleBtn.html('Public');
+    }
+    self.publicTog = !self.publicTog;
+}
+
+function findGo() {
+
+}
+
+function createGo() {
+    var cloudName = self.$('#create-name').val();
+    Meteor.call('createCloud', cloudName, self.publicTog, getLocationCoords(), function(error, cloudId) {
+        Meteor.call('ensureCloudUser', true, cloudId, function() {
+            Router.go('app', { cloudId: cloudId });
         });
-    };
-
-
-    (function attachHoverEffectsToEnterIdField() {
-        var originalColor = $enterID_field.css('background-color');
-
-        function focusIn() {
-            $enterID_field.stop().animate({'background-color': 'white'}, STD_ANIMATE_TIME);
-        }
-
-        function focusOut() {
-            $enterID_field.stop().animate({'background-color': originalColor}, STD_ANIMATE_TIME);
-        }
-
-        $enterID_field.focus(focusIn).focusout(focusOut);
-    })();
-
-    function findAndSetupNearClouds() {
-        $nearClouds.empty();
-        $refresh.addClass('spinning').off('click');
-
-        $.when(getCurrentLocation())
-            .fail(showErrorMessageForNearByClouds)
-            .always(resetRefreshHandler)
-            .then(function (location) {
-                Meteor.call('findCloudsNear', location, function(error, clouds) {
-                    processNearCloudResults(clouds);
-                });
-            });
-
-        function resetRefreshHandler() {
-            $refresh.removeClass('spinning').click(findAndSetupNearClouds);
-        }
-
-        function processNearCloudResults(data) {
-            if (data.length > 0) {
-                $.map(data, loadNearCloudResult);
-                setupEventHandlingForNearCloudClick();
-            }
-            else {
-                showErrorMessageForNearByClouds('No CloudLists found near you');
-            }
-        }
-
-        function loadNearCloudResult(cloud) {
-            var distance = parseFloat(cloud.distance).toFixed(2),
-                result = '<div id=' + cloud._id + '><span>' + cloud.name + '</span><span>' + distance + ' mi</span></div>';
-            $nearClouds.append(result);
-        }
-
-        function setupEventHandlingForNearCloudClick() {
-            $('#nearClouds div').click(function () {
-                var cloudId = $(this).attr('id');
-                loadAppWithParams(cloudId, false);
-            });
-        };
-    }
-
-
-    function enterCloudIdHandler() {
-        var fieldValue = $enterID_field.val();
-        if (fieldValue) {
-            $.when(verifyCloudID(fieldValue))
-                .done(function (cloud) {
-                    loadAppWithParams(cloud._id, false);
-                })
-                .fail(function () {
-                    $enterID_field.val("");
-                    flashFieldForError($enterID_field, '#5c5c5c', 'Invalid ID:  ' + fieldValue);
-                });
-        }
-        else {
-            flashFieldForError($enterID_field, '#5c5c5c', 'Enter a cloud ID');
-        }
-    }
-
-
-    function showErrorMessageForNearByClouds(message) {
-        $nearClouds.append('<p>' + message + '</p>');
-    }
-}
-
-
-// ===================================================================================================
-
-
-function CreateNewCloudOptions() {
-
-    var self = this,
-        $createOptions = $('#createOptions'),
-        $createNameField = $('#createName', $createOptions),
-        $createName_go_button = $('#createName_go', $createOptions).click(createNewCloudHandler);
-
-
-    var broadcastSliderButton = new ButtonSlider('broadcast', 'Public', 'Private');
-    (function initBroadcastStateFn() {
-        $.when(getCurrentLocation())
-            .done(broadcastSliderButton.toggleOn)
-            .fail(function () {
-                broadcastSliderButton.disable(disabledBroadcastButtonHandler)
-            });
-
-        function disabledBroadcastButtonHandler() {
-            var $error = $('#broadcastError');
-            $error.stop(true).fadeIn(STD_ANIMATE_TIME).promise().done(function () {
-                setTimeout(function () {
-                    $error.fadeOut(2000)
-                }, 2000);
-            });
-        }
-    }());
-
-
-    self.toggleInto = function() {
-        $createOptions.fadeIn(STD_ANIMATE_TIME, function () {
-            $createNameField.focus();
-        });
-    };
-
-    self.toggleAway = function(callback) {
-        $createOptions.fadeOut(STD_ANIMATE_TIME, callback);
-    };
-
-
-    function createNewCloudHandler() {
-        if ($createNameField.val()) {
-            disableCreateOptions();
-            setupNewCloud();
-
-        }
-        else {
-            flashFieldForError($createNameField, 'white');
-        }
-
-        function setupNewCloud() {
-            var isPublic  = broadcastSliderButton.isOn,
-                cloudName = $createNameField.val();
-
-            if (isPublic) {
-                $.when(getCurrentLocation()).then(setup);
-            } else {
-                setup();
-            }
-
-            function setup(location) {
-                Meteor.call('createCloud', cloudName, isPublic, location, function(error, cloudId) {
-                    loadAppWithParams(cloudId, true);
-                });
-            }
-        }
-    }
-
-
-    function disableCreateOptions() {
-        $createNameField.prop('disabled', true).css('opacity', '0.7');
-        $createName_go_button.addClass('loadingNewCloud').off();
-        broadcastSliderButton.disable();
-    }
-}
-
-
-
-// ============================ Helper Functions ===================================
-
-function flashFieldForError($input, fadeBackToColor, message) {
-    $input.stop(true).animate({'background-color': 'red'}, 25).animate({'background-color': fadeBackToColor}, 1000);
-    if (message) {
-        $input.attr({placeholder: message});
-    }
-}
-
-function loadAppWithParams(cloudId, isOwner) {
-    Meteor.call('ensureCloudUser', isOwner, cloudId, function() {
-        Router.go('app', { cloudId: cloudId });
     });
 }
 
-function getCurrentLocation() {
-    var defer = $.Deferred(),
-        data = {},
-        locationOptions = { enableHighAccuracy: true, timeout: 10000000, maximumAge: 0 };
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error, locationOptions);
-    }
-    else {
-        showErrorMessageForNearByClouds("Your Browser Doesn't support Geolocation");
-    }
-
-    function success(position) {
-        data.lat = position.coords.latitude;
-        data.long = position.coords.longitude;
-        data.accuracy = getSearchRadiusFromClientAccuracy(position.coords.accuracy);
-        defer.resolve(data);
-    }
-
-    function error(error) {
-        var e;
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                e = "User denied the request for Geolocation";
-                break;
-            case error.POSITION_UNAVAILABLE:
-                e = "Location information is unavailable";
-                break;
-            case error.TIMEOUT:
-                e = "The request to get user location timed out"
-                break;
-            default:
-                e = "An unknown error occurred :(";
-                break;
-        }
-        defer.reject(e);
-    }
-
-    return defer;
+function subcribeToNearClouds() {
+    var coords = getLocationCoords();
+    coords && Meteor.subscribe('cloudsNearLocation', coords);
 }
 
-function getSearchRadiusFromClientAccuracy(accuracy_in_meters) {
-    var MAX_INACCURACY_RADIUS_MILES = 0.8,
-        accuracy_in_miles = accuracy_in_meters / 1609.34;
-    return accuracy_in_miles >= MAX_INACCURACY_RADIUS_MILES ? MAX_INACCURACY_RADIUS_MILES : accuracy_in_miles;
+function getLocationCoords() {
+    var loc = Geolocation.currentLocation();
+    return loc &&  _.pick(loc.coords, 'latitude', 'longitude', 'accuracy');
 }
 
 
-function verifyCloudID(id) {
-    var defer = $.Deferred();
 
-    Meteor.call('findCloud', id, function (error, cloud) {
-        cloud ? defer.resolve(cloud) : defer.reject();
-    });
 
-    return defer;
-}
+

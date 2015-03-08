@@ -53,6 +53,10 @@
     border-top: 1px black solid;
     border-bottom: 1px black solid;
 
+    &:last-child {
+      box-shadow: 0 0.5px 3px black;
+    }
+
     h2 {
       font-size: 25px;
       padding: 20px;
@@ -69,7 +73,11 @@
         content: '\f13a';
         float: right;
         font-size: 25px;
-        margin-top: 2px;
+        margin: 2px;
+        width: 27px;
+        height: 27px;
+        text-align: center;
+        @include transition(transform ease 0.3s);
 
         display: inline-block;
         font-family: FontAwesome;
@@ -85,7 +93,9 @@
       }
 
       &.active::after {
-        content: '\f139';
+        -ms-transform: rotate(180deg); /* IE 9 */
+        -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+        transform: rotate(180deg);
       }
     }
 

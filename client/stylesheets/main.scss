@@ -2,10 +2,8 @@
 @import 'mixins';
 @import 'animations/spinning';
 @import 'animations/loading_bars';
-@import 'animations/clouds';
 @import 'songs';
 @import 'home';
-@import 'find_create';
 @import 'app';
 @import 'controls';
 @import 'now_playing';
@@ -16,6 +14,7 @@
 @import 'menu_pane/display_name';
 @import 'menu_pane/login';
 @import 'menu_pane/account';
+@import 'menu_pane/feedback';
 @import 'users_pane';
 @import 'user';
 @import 'lock';
@@ -32,6 +31,7 @@ html, body, main {
   overflow: hidden;
   position: relative;
   background-color: $third-color;
+  font-family: sans-serif;
 }
 
 
