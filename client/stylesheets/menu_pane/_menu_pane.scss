@@ -53,6 +53,10 @@
     border-top: 1px black solid;
     border-bottom: 1px black solid;
 
+    &:last-child {
+      box-shadow: 0 0.5px 3px black;
+    }
+
     h2 {
       font-size: 25px;
       padding: 20px;

@@ -24,3 +24,4 @@ service-configuration
 accounts-twitter
 reactive-var
 gwendall:auth-client-callbacks
+email

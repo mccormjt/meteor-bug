@@ -1,0 +1,50 @@
+.feedback {
+
+  & > div {
+    height: 385px;
+  }
+
+  select, textarea, label {
+    font-weight: bold;
+    color: black;
+  }
+
+  label {
+    color: $third-color;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  textarea {
+    padding: 20px;
+    resize: none;
+  }
+
+  button {
+    font-size: 18px;
+    background-color: $third-color;
+    padding: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px;
+    @include transition(background-color ease 0.3s);
+
+    &:hover {
+      background-color: darken($third-color, 5%);
+    }
+  }
+
+  .thankyou {
+    display: none;
+    font-size: 40px;
+    text-align: center;
+    padding: 17px 10px 12px 10px;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 60px;
+    background-color: $third-color;
+  }
+}
