@@ -23,6 +23,26 @@ Meteor.methods({
 });
 
 
+Clouds.distanceFromCloud = function(cloud, location) {
+    checkLocation(location);
+
+    var lat1  = cloud.location.coordinates[1],
+        lng1  = cloud.location.coordinates[0],
+        lat2  = location.latitude,
+        lng2  = location.longitude;
+
+    var rad      = Math.PI / 180,
+        radlat1  = rad * lat1,
+        radlat2  = rad * lat2,
+        theta    = lng1 - lng2,
+        radtheta = rad * theta,
+        dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+
+    dist = Math.acos(dist) * 180/Math.PI
+    return dist * 60 * 1.1515 // to miles
+}
+
+
 function createCloud(name, isPublic, location) {
         check(name, String);
         check(isPublic, Boolean);
@@ -54,11 +74,7 @@ function findCloudsNear(location) {
         isPublic: true
     };
 
-    var clouds = Clouds.find(query, {limit: 5}).fetch();
-    _.each(clouds, function(cloud) {
-        cloud.distance = distance(location.lat, location.long, cloud.location.coordinates[1], cloud.location.coordinates[0]);
-    });
-    return clouds;
+    return Clouds.find(query, { limit: 6 });
 }
 
 function setCloudProperty(property, value, hasPermission) {
@@ -98,25 +114,11 @@ function setCloudLoadingSongState(isLoading) {
 }
 
 function checkLocation(location) {
-    check(location, {lat: Number, long: Number, accuracy: Number})
+    check(location, {latitude: Number, longitude: Number, accuracy: Number});
 }
 
 function locationToMongo(location) {
-    return { type: 'Point', coordinates: [ location.long, location.lat] };
-}
-
-function distance(lat1, lon1, lat2, lon2) {
-    var rad      = Math.PI / 180,
-        radlat1  = rad * lat1,
-        radlat2  = rad * lat2,
-        radlon1  = rad * lon1,
-        radlon2  = rad * lon2,
-        theta    = lon1 - lon2,
-        radtheta = rad * theta,
-        dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-
-    dist = Math.acos(dist) * 180/Math.PI
-    return dist * 60 * 1.1515 // to miles
+    return { type: 'Point', coordinates: [ location.longitude, location.latitude] };
 }
 
 function getRandIntStrOfLength(length) {

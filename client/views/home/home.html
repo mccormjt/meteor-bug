@@ -1,39 +1,32 @@
 <template name='home'>
-    {{> findCreate }}
-  <main class='home'>
-    <h1><span>Crowded</span><span>PLAY</span></h1>
-    <h2>Democratize the music</h2>
-
-    <div id="optionHolder">
-        <div class="extra-options">
-          <i id="backButton"></i>
-          <span id="findOptionsRefresh"><i class="fa fa-refresh fa-3x"></i></span>
-        </div>
-
-        <div id="startOptions">
-          <button class="sky" id="find">Find</button>
-          <button class="sky" id="create">Create</button>
-        </div>
-
-        <div id="createOptions">
-          <input id="createName" type="text" required placeholder="Name Your CloudList"/>
-          <button class="sky" id="createName_go">
-            <span>Go</span>
-          </button>
-          <div id="broadcastSliderHolder">
-            <div class="slider-frame" title="Choose to broadcast your CloudList location">
-              <span id="broadcast" class="slider-button">Private</span>
+    <div class='home'>
+        <img src="/images/logo_main.svg">
+        <div class="find-container button">
+            <div id="find">find</div>
+            <div id="nearClouds">
+                {{#each clouds }}
+                    {{#linkTo route='app' cloudId=_id class='cloud' }}
+                        <span class='cloud-name'>{{ name }}</span>
+                        <span class='cloud-distance'>{{ cloudDistance }}</span>
+                    {{/linkTo}}
+                {{else}}
+                    <div id='no-clouds-msg'> {{ noCloudsMsg }} </div>
+                {{/each}}
             </div>
-          </div>
-          <p id="broadcastError">*Must enable location services to broadcast</p>
+            <div class="fc-input-group group-init">
+                <input class="fc-input" type="tel" placeholder="OR ask a friend for the ID">
+                <div class="fc-button" id="find-btn">Go</div>
+            </div>
         </div>
-
-        <div id="findNearCloudsOptions">
-          <div id="nearClouds"></div>
-          <div id="enterID">
-            <input type="tel" placeholder="OR ask a friend for the cloud ID"/><button>Go</button>
-          </div>
+        <div class="create-container button">
+            <div id="create">create</div>
+            <div class="fc-input-group group-init">
+                <input id='create-name' class="fc-input" placeholder="Name your playlist">
+                <div class="fc-button" id="create-btn">Go</div>
+            </div>
+        </div>
+        <div class="fc-toggle group-init">
+            <div class="fc-toggle-btn">Public</div>
         </div>
     </div>
-  </main>
 </template>
