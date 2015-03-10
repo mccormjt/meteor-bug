@@ -9,6 +9,7 @@ Template.home.rendered = function() {
     self.findG          = self.findCon.find('.fc-input-group');
     self.createG        = self.createCon.find('.fc-input-group');
     self.image          = this.$('img');
+    self.backCon        = this.$('.back-container');
     self.toggle         = this.$('.fc-toggle');
     self.toggleBtn      = this.$('.fc-toggle-btn');
     self.publicTog      = true;
@@ -18,17 +19,18 @@ Template.home.rendered = function() {
 };
 
 Template.home.helpers({
-    clouds:         getClouds,
-    cloudDistance:  cloudDistance,
-    noCloudsMsg:    getNoCloudsMsg
+    clouds          : getClouds,
+    cloudDistance   : cloudDistance,
+    noCloudsMsg     : getNoCloudsMsg
 });
 
 Template.home.events({
-    'click .find-container':   findClicked,
-    'click .create-container': createClicked,
-    'click .fc-toggle':        toggleClicked,
-    'click #find-btn':         findGo,
-    'click #create-btn':       createGo
+    'click .find-container'     : findClicked,
+    'click .create-container'   : createClicked,
+    'click .fc-toggle'          : toggleClicked,
+    'click #find-btn'           : findGo,
+    'click #create-btn'         : createGo,
+    'click .back-container'     : backClicked
 });
 
 function getClouds() {
@@ -59,6 +61,7 @@ function findClicked() {
 
     self.findG.removeClass('group-init');
     self.createG.removeClass('group-init');
+    self.backCon.removeClass('group-init');
 
     self.findG.addClass('fc-appear');
     self.findG.removeClass('fc-disappear');
@@ -68,6 +71,7 @@ function findClicked() {
     self.toggle.addClass('fc-disappear');
 
     self.image.addClass('finded');
+    self.backCon.addClass('finded-b');
 }
 
 function createClicked() {
@@ -81,6 +85,7 @@ function createClicked() {
     self.findG.removeClass('group-init');
     self.createG.removeClass('group-init');
     self.toggle.removeClass('group-init');
+    self.backCon.removeClass('group-init');
 
     self.findG.removeClass('fc-appear');
     self.findG.addClass('fc-disappear');
@@ -90,6 +95,7 @@ function createClicked() {
     self.toggle.removeClass('fc-disappear');
 
     self.image.removeClass('finded');
+    self.backCon.removeClass('finded-b');
 }
 
 function toggleClicked() {
@@ -126,7 +132,20 @@ function getLocationCoords() {
     return loc &&  _.pick(loc.coords, 'latitude', 'longitude', 'accuracy');
 }
 
+function backClicked() {
+    self.findCon.removeClass('btn-fade');
+    self.createCon.removeClass('btn-fade');
+    self.findCon.removeClass('btn-expand');
+    self.createCon.removeClass('btn-expand');
 
+    self.find.html('find');
+    self.create.html('create');
 
+    self.findG.addClass('group-init');
+    self.createG.addClass('group-init');
+    self.toggle.addClass('group-init');
+    self.backCon.addClass('group-init');
 
-
+    self.image.removeClass('finded');
+    self.backCon.removeClass('finded-b');
+}

@@ -1,32 +1,73 @@
 <template name='home'>
-    <div class='home'>
-        <img src="/images/logo_main.svg">
-        <div class="find-container button">
-            <div id="find">find</div>
-            <div id="nearClouds">
-                {{#each clouds }}
-                    {{#linkTo route='app' cloudId=_id class='cloud' }}
-                        <span class='cloud-name'>{{ name }}</span>
-                        <span class='cloud-distance'>{{ cloudDistance }}</span>
-                    {{/linkTo}}
-                {{else}}
-                    <div id='no-clouds-msg'> {{ noCloudsMsg }} </div>
-                {{/each}}
-            </div>
-            <div class="fc-input-group group-init">
-                <input class="fc-input" type="tel" placeholder="OR ask a friend for the ID">
-                <div class="fc-button" id="find-btn">Go</div>
-            </div>
+  <div class="home" id="homer">
+    <div class='top' data-0="bottom[swing]:0vh;" data-1200="bottom:100vh;">
+      <img src="/images/logo_main.svg">
+      <div class="find-container button" >
+        <div id="find">find</div>
+        <div id="nearClouds">
+          {{#each clouds }}
+            {{#linkTo route='app' cloudId=_id class='cloud' }}
+              <span class='cloud-name'>{{ name }}</span>
+              <span class='cloud-distance'>{{ cloudDistance }}</span>
+            {{/linkTo}}
+          {{else}}
+            <div id='no-clouds-msg'> {{ noCloudsMsg }} </div>
+          {{/each}}
         </div>
-        <div class="create-container button">
-            <div id="create">create</div>
-            <div class="fc-input-group group-init">
-                <input id='create-name' class="fc-input" placeholder="Name your playlist">
-                <div class="fc-button" id="create-btn">Go</div>
-            </div>
+        <div class="fc-input-group group-init">
+          <input class="fc-input" type="tel" placeholder="OR ask a friend for the ID">
+
+          <div class="fc-button" id="find-btn">Go</div>
         </div>
-        <div class="fc-toggle group-init">
-            <div class="fc-toggle-btn">Public</div>
+      </div>
+      <div class="create-container button">
+        <div id="create">create</div>
+        <div class="fc-input-group group-init">
+          <input id='create-name' class="fc-input" placeholder="Name your playlist">
+
+          <div class="fc-button" id="create-btn">Go</div>
         </div>
+      </div>
+      <div class="back-container group-init">
+        <img id='back-arrow' src="/images/back_arrow.svg">
+      </div>
+      <div class="fc-toggle group-init">
+        <div class="fc-toggle-btn">Public</div>
+      </div>
+      <img id='cave' src="/images/cave.svg">
     </div>
+    <div class="bottom">
+      <div class="ribbon" data-start="top[swing]:90vh;" data-1200="top:20vh;">
+        <img class="ribbon-back" src="/images/ribbon_back.svg">
+        <img class="ribbon-front" src="/images/ribbon_front.svg">
+        <div class="ribbon-title" data-1550="opacity:1;" data-1650="opacity:0;">
+          <div class="r-title">Musical Democracy</div>
+          <div class="r-info dem">Voting and smart sorting ensure fairness in the party queue!</div>
+        </div>
+        <div class="ribbon-title" data-1650="opacity:0;" data-1750="opacity:1;" data-2100="opacity:1;" data-2200="opacity:0;">
+          <div class="r-title">Representing Those Listening</div>
+          <div class="r-info">We remember all your past likes & dislikes so that we can
+            bump up songs you have in common with others!</div>
+        </div>
+        <div class="ribbon-title" data-2200="opacity:0;" data-2300="opacity:1;">
+          <div class="r-title">Remote Control</div>
+          <div class="r-info">Playlist admins can change the volume, skip,
+            or pause the song all from their mobile device!</div>
+        </div>
+        <div id="a-queue" data-500="opacity:0.7;top[swing]:calc(100vh + 0vw);" data-1200="opacity:1;top:calc(20vh + 12vw);" data-2000="opacity:1;top:calc(20vh + 12vw);" data-2400="opacity:0.7;top[swing]:calc(80vh + 0vw);">
+          <img id="i-queue" src="/images/queue.svg">
+          <img id="i-song1" src="/images/song1.svg" data-1600="top[swing]:3.5vw;" data-1800="top:13.5vw;">
+          <img class="i-song2" src="/images/song2.svg" data-1550="opacity:!1;" data-1551="opacity:!0;">
+          <img class="i-song2" src="/images/song2a.svg" data-1550="opacity:!0;" data-1551="opacity:!1;" data-1600="top[swing]:13.5vw;" data-1800="top:3.5vw;">
+        </div>
+      </div>
+
+      <img id="i-mouse" src="/images/mouse.svg" data-1200="left[swing]:110vw;top[swing]:calc(70vh + 0vw);" data-1500="left:75vw;top:calc(20vh + 27.2vw);" data-1700="opacity:1;" data-1800="opacity:0;">
+      <img id="i-phone" src="/images/phone.svg" data-2000="top[swing]:calc(110vh + 0vw);" data-2400="top:calc(20vh + 18.5vw);">
+      <script type="text/javascript">
+        var s = skrollr.init();
+      </script>
+
+    </div>
+  </div>
 </template>

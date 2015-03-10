@@ -19,21 +19,29 @@
 @import 'user';
 @import 'lock';
 
+@font-face {
+  font-family: Nanum;
+  src: url('/font/NanumBarunGothic.ttf');
+}
+
 
 * {
   margin: 0;
   padding: 0;
 }
 
-html, body, main {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  background-color: $third-color;
-  font-family: sans-serif;
+html {
+  overflow-x: hidden;
 }
 
+html, body, main {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  position: relative;
+  background-color: #93afc3;
+  font-family: sans-serif;
+}
 
 /* ---------------- Broadcast slider CSS ------------ */
 .slider-frame {

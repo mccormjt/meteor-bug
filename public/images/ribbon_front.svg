@@ -10,12 +10,12 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1101.8192"
-   height="135.86981"
+   width="1325.9047"
+   height="298.2869"
    id="svg15350"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="ribbon_back.svg">
+   sodipodi:docname="ribbon_front.svg">
   <defs
      id="defs15352">
     <clipPath
@@ -126,17 +126,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.24748737"
-     inkscape:cx="550.9096"
-     inkscape:cy="67.934909"
+     inkscape:zoom="0.69999999"
+     inkscape:cx="616.36054"
+     inkscape:cy="-218.21125"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="472"
-     inkscape:window-height="383"
-     inkscape:window-x="1448"
-     inkscape:window-y="552"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -149,7 +149,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -157,25 +157,27 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(410.7605,-462.7478)">
+     transform="translate(303.31939,234.82593)">
     <rect
-       y="462.7478"
-       x="-410.7605"
-       height="135.86981"
+       y="-234.82593"
+       x="-191.14949"
+       height="235.18889"
        width="1101.8192"
-       id="rect23497"
+       id="rect23497-6-2-3"
        style="fill:#a35141;fill-opacity:1;stroke:none" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text6611-4-1"
-       y="551.30786"
-       x="-315.13144"
-       style="font-size:75.29285431px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Roboto;-inkscape-font-specification:Roboto"
-       xml:space="preserve"><tspan
-         style="font-size:66.48386383px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:NanumGothic;-inkscape-font-specification:NanumGothic"
-         y="551.30786"
-         x="-315.13144"
-         id="tspan6613-4-0"
-         sodipodi:role="line">Contribute to shared playlists.</tspan></text>
+    <rect
+       style="fill:#8c4638;fill-opacity:1"
+       id="rect17574-3-8"
+       width="1023.4821"
+       height="106.2636"
+       x="-151.97969"
+       y="-125.31651" />
+    <rect
+       style="fill:none;stroke:#bb6151;stroke-width:1.51179409;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:12.0943535, 12.0943535;stroke-dashoffset:0"
+       id="rect17926"
+       width="1009.7365"
+       height="91.470726"
+       x="-145.10692"
+       y="-117.97138" />
   </g>
 </svg>

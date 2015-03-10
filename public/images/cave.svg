@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="1914.0621"
-   height="437.06198"
+   width="1914.0623"
+   height="437.25006"
    id="svg28315"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 84">
+   sodipodi:docname="cave.svg">
   <defs
      id="defs28317" />
   <sodipodi:namedview
@@ -25,8 +25,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="957.03109"
-     inkscape:cy="218.53057"
+     inkscape:cx="383.36337"
+     inkscape:cy="218.62469"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -47,7 +47,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,16 +55,26 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(582.03109,-313.83076)">
+     transform="translate(-8140.826,-313.7368)">
     <g
-       id="g27609-5"
-       transform="matrix(3.5219591,0,0,3.5219591,515.71083,-43455.591)">
+       transform="matrix(2.0115322,0,0,2.0115322,12362.953,-25326.101)"
+       id="g29397">
       <path
          inkscape:connector-curvature="0"
-         style="fill:#243540;fill-opacity:1;stroke:none"
-         d="m -10588.156,27293 0,437.062 136.844,-235.312 45.874,79.469 91.907,-159.157 38.656,66.969 145.906,-145.875 1454.8752,-6.406 0,-36.75 -1914.0622,0 z"
-         transform="matrix(0.28393288,0,0,0.28393288,2694.6406,4678.198)"
-         id="path6359-1-6-1" />
+         id="rect28293"
+         transform="matrix(0.49713348,0,0,0.49713348,3164.7662,-821.84228)"
+         d="m -8674.0938,27299.906 -1887.2182,14.75 -26.844,408.969 0,6.625 168.125,-195.5 14.937,39.75 120.938,-118.562 9.812,25.531 179.156,-124.313 1421.0942,-4.5 0,-52.75 z"
+         style="fill:#698eab;fill-opacity:1;stroke:none" />
+      <g
+         transform="matrix(1.7508838,0,0,1.7508838,-1553.2364,-9012.8234)"
+         id="g27609-5">
+        <path
+           inkscape:connector-curvature="0"
+           id="path6359-1-6-1"
+           transform="matrix(0.28393288,0,0,0.28393288,2694.6406,4678.198)"
+           d="m -10588.156,27293 0,437.062 136.844,-235.312 45.874,79.469 91.907,-159.157 38.656,66.969 145.906,-145.875 1454.8752,-6.406 0,-36.75 -1914.0622,0 z"
+           style="fill:#243540;fill-opacity:1;stroke:none" />
+      </g>
     </g>
   </g>
 </svg>

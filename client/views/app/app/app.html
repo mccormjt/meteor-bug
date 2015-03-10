@@ -1,7 +1,9 @@
 <template name='app'>
 
+  <div class='app-container'>
+
   {{> menuPane  }}
-  
+
   {{> usersPane }}
 
   <main class='app'>
@@ -14,11 +16,15 @@
     </div>
 
     {{> controls   }}
-    
+
     {{> nowPlaying }}
 
     {{> songQueue  }}
 
     {{> addMusic   }}
   </main>
+    <script type="text/javascript">
+      document.getElementsByTagName('body')[0].style.height = "100vh";
+    </script>
+  </div>
 </template>
