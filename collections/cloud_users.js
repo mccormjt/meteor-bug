@@ -3,13 +3,16 @@ CloudUsers = new Meteor.Collection('cloudUsers');
 if (Meteor.isServer) { 
     CloudUsers._ensureIndex({ cloudId: 1, userId: 1 }, { unique: true });
     CloudUsers._ensureIndex({ cloudId: 1 });
+
+    Meteor.methods({
+        switchIntoAccountFrom: switchIntoAccountFrom
+    });
 }
 
 Meteor.methods({
     ensureCloudUser:                ensureCloudUser,
     setCloudUserProperty:           setCloudUserProperty,
-    incNumSongsAddedForCloudUser:   incNumSongsAddedForCloudUser,
-    switchIntoAccountFrom:          switchIntoAccountFrom
+    incNumSongsAddedForCloudUser:   incNumSongsAddedForCloudUser
 });
 
 
@@ -23,7 +26,7 @@ function ensureCloudUser(isOwner, cloudId) {
     cloudId = cloudId || App.cloudId();
     check(cloudId, String);
     var user        = Meteor.user(),
-        query       = { userId: user._id, cloudId: cloudId },
+        query       = getCloudUserQuery(user._id, cloudId),
         cloudUser   = CloudUsers.findOne(query);
 
     if (cloudUser) {
@@ -54,39 +57,44 @@ function incNumSongsAddedForCloudUser() {
 
 
 function switchIntoAccountFrom(fromUserId) {
-    var hasChangedUsers = fromUserId && Meteor.userId() != fromUserId;
+    var hasChangedUsers = fromUserId && Meteor.userId() != fromUserId,
+        isRealUserLogin = !Meteor.user().profile.isTempUser;
+
     if (hasChangedUsers) {
-        copyCloudUserDataFrom(fromUserId);
-        removeUserFromCloud(fromUserId, true);
+        var fromUser      = Meteor.users.findOne(fromUserId),
+            fromCloudUser = CloudUsers.findOne(getCloudUserQuery(fromUserId)),
+            toUser        = Meteor.user(),
+            toUserProfile = toUser.profile;
+
+        removeUserFromCloud(fromUserId);
+        ensureCloudUser(false);
+        copyCloudUserMetaDataFrom(fromCloudUser);
+
+        if (isRealUserLogin) {
+            Meteor.call('extendUserFrom', fromUser);
+            Songs.chownUserSongsAndVotes(fromUserId, toUser._id);
+        } else {
+            Songs.removeUserSongsAndVotes(fromUserId);
+        }
     }
 }
 
-function copyCloudUserDataFrom(fromUserId) {
-    var fromCloudUser = CloudUsers.findOne({ cloudId: App.cloudId(), userId: fromUserId });
-    if (!fromCloudUser) return;
-
-    var metaData        = _.omit(fromCloudUser, '_id', 'userId', 'username', 'cloudId'),
-        toCloudUserId   = ensureCloudUser(false, fromCloudUser.cloudId);
-
-    CloudUsers.update(toCloudUserId, { $set: metaData });
+function copyCloudUserMetaDataFrom(fromCloudUser) {
+    var metaData      = _.omit(fromCloudUser, '_id', 'userId', 'cloudId');
+    var toCloudUser   = CloudUsers.findOne(getCloudUserQuery());
+    metaData.username = toCloudUser.username || metaData.username;
+    metaData.isOwner && Clouds.update(App.cloudId(), { $set: { createdByUserId: toCloudUser.userId } });
+    CloudUsers.update(toCloudUser._id, { $set: metaData });
 }
 
-function removeUserFromCloud(userId, shouldRemoveCloudUserEntry) {
+function removeUserFromCloud(userId) {
+    CloudUsers.remove(getCloudUserQuery(userId));
     var user = Meteor.users.findOne(userId);
-    if (!user) return;
+    user && user.profile.isTempUser && Meteor.users.remove(userId);
+}
 
-    var cloudId        = user.profile.currentCloudId,
-        userVote       = {},
-        cloudUserQuery = { cloudId: cloudId, userId: userId };
-
-    Songs.remove({ cloudId: cloudId, addedByUserId: userId });
-    userVote['userVotes.' + userId] = '';
-    Songs.update({ cloudId: cloudId }, { $unset: userVote }, { multi: true });
-    user.isTempUser && Meteor.users.remove(userId);
-
-    if (shouldRemoveCloudUserEntry) {
-        CloudUsers.remove(cloudUserQuery);
-    } else {
-        CloudUsers.update(cloudUserQuery, { voteScore: 0 });
-    }
+function getCloudUserQuery(userId, cloudId) {
+    userId  =  userId || Meteor.userId(),
+    cloudId = cloudId || App.cloudId();
+    return { userId: userId, cloudId: cloudId };
 }

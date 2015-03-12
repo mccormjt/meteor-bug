@@ -34,10 +34,10 @@ function setupDesktopPlayer(player, onendedFn, errorHandler) {
     };
 
     player.setCurrentTime = function(currentTimeVal) {
-        audio.oncanplay = function() {
+        currentTimeVal && (audio.oncanplay = function() {
+            audio.oncanplay   = null;
             audio.currentTime = currentTimeVal;
-            audio.oncanplay = null;
-        };
+        });
     };
 
     player.src = function(src, callback) {
@@ -79,7 +79,7 @@ function setupMobilePlayer(player, onendedFn, errorHandler) {
     };
 
     player.setCurrentTime = function(currentTimeVal) {
-        media.seekTo(currentTimeVal * 1000);
+        currentTimeVal && media.seekTo(currentTimeVal * 1000);
     };
 
     player.src = function(setSrc, callback) {

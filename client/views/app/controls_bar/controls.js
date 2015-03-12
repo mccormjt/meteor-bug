@@ -99,6 +99,7 @@ function loadSong(song) {
     if (self.isLoadingSong) return;
     self.isLoadingSong = true;
     Meteor.call('setCloudLoadingSongState', true);
+    Meteor.call('setCloudNowPlayingSongId', song._id);
     Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
         if (song._id != App.cloud().nowPlayingSongId) return;
         var time = App.cloud().nowPlayingTime;
@@ -111,7 +112,6 @@ function loadSong(song) {
             }, 300);
         });
     });
-    Meteor.call('setCloudNowPlayingSongId', song._id);
 }
 
 
