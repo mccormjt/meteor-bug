@@ -67,8 +67,10 @@ function loadSearchResults(query) {
     self.searchHolder.addClass(SEARCHING_CLASS);
     if (query) {
         Backend.getQueryResultsFromGrooveShark(query, function(results) {
-            Session.set(SONG_SEARCH_RESULTS, results);
-            self.searchHolder.removeClass(SEARCHING_CLASS);
+          MissedSongs.filterOutMissedSongs(results, function (error, results) {
+              Session.set(SONG_SEARCH_RESULTS, results);
+              self.searchHolder.removeClass(SEARCHING_CLASS);
+          });
         });
     } else {
         clearMusicPane();
