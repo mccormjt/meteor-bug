@@ -142,6 +142,7 @@ function playerErrorHandler(player, failedSongCallback, reloadCallback) {
             return;
         } else if (alreadyTriedHandling) {
             alreadyTriedHandling = false;
+            MissedSongs.reportMissedSong(App.cloud().nowPlayingSongId);
             failedSongCallback();
         } else {
             isHandling = alreadyTriedHandling = true;
