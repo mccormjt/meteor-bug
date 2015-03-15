@@ -1,0 +1,18 @@
+<template name='previousSongs'>
+  <div class='previous-songs'>
+    <div class='sort-options'>
+      <span class='active'>Name</span><span>Artist</span>
+    </div>
+
+    <div class='sorted-songs'>
+        <div class='name-sorted-songs active'>
+          {{#each nameSortedSongs }}
+            {{> addSong }}
+          {{/each}}
+        </div>
+
+        <div class='artist-sorted-songs'>
+        </div>
+    </div>
+  </div>
+</template>

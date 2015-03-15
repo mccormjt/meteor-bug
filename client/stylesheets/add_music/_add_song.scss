@@ -1,0 +1,32 @@
+.add-music .music-mode-songs .add-song {
+  height: 66px;
+
+  .album-art {
+    width: 66px;
+  }
+
+  .queue-status {
+    float: right;
+    margin: 14px 16px;
+    font-size: 40px;
+    @include primary-hover;
+
+    &::after {
+      content: '\f055';
+    }
+  }
+
+  &.in-queue {
+    opacity: 0.2;
+    background-color: black;
+
+    .queue-status {
+      cursor: default;
+
+      &::after {
+        content: '\f058';
+        color: $third-color;
+      }
+    }
+  }
+}

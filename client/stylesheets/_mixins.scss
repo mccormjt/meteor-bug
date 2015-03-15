@@ -12,6 +12,14 @@
   transition: $trans;
 }
 
+@mixin transform($transformation) {
+  -webkit-transform: $transformation;
+  -moz-transform:    $transformation;
+  -ms-transform:     $transformation;
+  -o-transform:      $transformation;
+  transform:         $transformation;
+}
+
 @mixin input-placeholder {
   &::-webkit-input-placeholder {@content}
   &:-moz-placeholder           {@content}

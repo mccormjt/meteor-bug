@@ -8,7 +8,10 @@
 @import 'controls';
 @import 'now_playing';
 @import 'song_queue';
-@import 'add_music';
+@import 'add_music/add_music';
+@import 'add_music/add_song';
+@import 'add_music/previous_songs';
+@import 'add_music/search_results';
 @import 'menu_pane/menu_pane';
 @import 'menu_pane/current_playlist';
 @import 'menu_pane/display_name';

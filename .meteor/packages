@@ -18,10 +18,10 @@ mdg:geolocation
 aldeed:console-me
 percolate:synced-cron
 percolate:migrations
-percolate:velocityjs
 accounts-facebook
 service-configuration
 accounts-twitter
 reactive-var
 gwendall:auth-client-callbacks
 email
+percolate:momentum
