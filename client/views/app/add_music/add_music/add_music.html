@@ -4,6 +4,7 @@
       <span>ADD MUSIC</span>
       <i class="fa fa-times-circle-o fa-2x"></i>
     </h4>
+
     <div class='add-music-mode'>
       <span class='previous-songs-mode fa'>Previous Songs</span>
       <span class='search-songs-mode fa active'>
@@ -11,9 +12,11 @@
       </span>
     </div>
 
-    <div class='music-mode-songs'>
-      {{> previousSongs }}
-      {{> searchResults }}
-    </div>
+    {{#if isAddMusicPaneOpen }}
+      <div class='music-mode-songs'>
+        {{> previousSongs }}
+        {{> searchResults }}
+      </div>
+    {{/if}}
   </div>
 </template>

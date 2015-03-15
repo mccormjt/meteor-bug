@@ -2,7 +2,6 @@ var self,
     ACTIVE_CLASS = 'active';
 
 Template.previousSongs.rendered = function() {
-    if (this.rendered) return;
     self = this;
     self.nameSortOption    = self.$('.sort-options span:first-child');
     self.artistSortOption  = self.$('.sort-options span:last-child');
@@ -11,13 +10,17 @@ Template.previousSongs.rendered = function() {
 };
 
 Template.previousSongs.helpers({
-    nameSortedSongs: getNameSortedUserSongs
+    isActiveClass:    isActiveClass,
+    nameSortedSongs:  getNameSortedUserSongs
 });
 
 Template.previousSongs.events({
     'click .sort-options span:not(.active)': toggleSortOption
 });
 
+function isActiveClass() {
+    return $('.previous-songs-mode').hasClass(ACTIVE_CLASS) && ACTIVE_CLASS;
+}
 
 function getNameSortedUserSongs() {
     return _.sortBy(getUserSongs(), 'songName');

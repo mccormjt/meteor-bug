@@ -5,23 +5,25 @@ var self,
 
 Template.addMusic.created = function() {
     self = this;
+    self.isAddMusicPaneOpen = new ReactiveVar(false);
     HashChanger.listenFor('add-music', showAddMusicPane, hideAddMusicPane);
 };
 
 Template.addMusic.rendered = function() {
-    if (self.rendered) return;
     self.musicPane            = self.$('.add-music');
     self.previousSongsMode    = self.$('.previous-songs-mode');
-    self.previousSongs        = self.$('.previous-songs');
     self.searchMode           = self.$('.search-songs-mode');
     self.searchInput          = self.$('input');
-    self.searchResults        = self.$('.search-results');
     setupTypeWatch();
 };
 
 Template.addMusic.destroyed = function() {
     HashChanger.stopListeningFor('add-music');
 };
+
+Template.addMusic.helpers({
+    isAddMusicPaneOpen: isAddMusicPaneOpen
+});
 
 Template.addMusic.events({
     'click h4':                                             toggleAddMusicStateHash,
@@ -32,9 +34,12 @@ Template.addMusic.events({
     'click .queue-status:not(.in-queue .queue-status)':     queueSong,
 });
 
+function isAddMusicPaneOpen() {
+    return self.isAddMusicPaneOpen.get();
+}
+
 function toggleAddMusicStateHash() {
-    var isPaneOpen = self.musicPane.hasClass(ACTIVE_CLASS);
-    isPaneOpen ? HashChanger.clearHash() : HashChanger.hashSetterFnFor('add-music')();
+    isAddMusicPaneOpen() ? HashChanger.clearHash() : HashChanger.hashSetterFnFor('add-music')();
 }
 
 function showAddMusicPane() {
@@ -47,6 +52,7 @@ function hideAddMusicPane() {
 
 function toggleMusicPane(topVal, isOpen) {
     clearMusicPane();
+    self.isAddMusicPaneOpen.set(isOpen);
     self.musicPane.toggleClass(ACTIVE_CLASS, isOpen)
                   .velocity({ top: topVal }, { duration: 325, easing: 'ease' });
 }
@@ -66,14 +72,14 @@ function setupTypeWatch() {
 }
 
 function toggleAddMusicMode() {
-    self.previousSongsMode.toggleClass(ACTIVE_CLASS);
-    self.previousSongs.toggleClass(ACTIVE_CLASS);
-    self.searchMode.toggleClass(ACTIVE_CLASS);
-    self.searchResults.toggleClass(ACTIVE_CLASS);
+    var query = '.previous-songs-mode, .search-songs-mode,'
+                + '.previous-songs, .search-results';
+    self.$(query).toggleClass(ACTIVE_CLASS);
 }
 
 function queueSong(event) {
-    Meteor.call('queueSong', this.songName, this.artistName, this.songID, getSongPriorityForUser());
+    var groovesharkSongId = this.songID || this.groovesharkSongId;
+    Meteor.call('queueSong', this.songName, this.artistName, groovesharkSongId, getSongPriorityForUser());
 }
 
 function toggleSearchFocusClass() {
