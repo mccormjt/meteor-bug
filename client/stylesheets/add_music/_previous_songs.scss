@@ -2,6 +2,31 @@
   @include transform(translate(-100%, 0));
   text-align: center;
 
+  .no-previous-songs {
+    border: 1px solid $contrast-color-primary;
+    border-radius: 5px;
+    box-shadow: inset -1px -1px 3px darken($third-color, 10%);
+    padding: 15px;
+    background-color: $third-color;
+
+    h6 {
+      font-size: 34px;
+      text-shadow: 1px 1px 2px darken($third-color, 10%);
+
+      &::before {
+        content: '\f001';
+        padding-right: 19px;
+        font-size: 43px;
+        color: $contrast-color-primary;
+      }
+    }
+
+    p {
+      font-size: 16.5px;
+      color: $contrast-color-primary;
+    }
+  }
+
   .sort-options {
     background-color: none;
     margin: 0 auto 15px auto;
@@ -49,6 +74,45 @@
 
       &.active {
         display: block;
+      }
+    }
+
+    .artist-sorted-songs {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+
+      .artist-container {
+        background-color: $third-color;
+        text-align: left;
+
+        h6 {
+          border-radius: 5px;
+          font-size: 20px;
+          background-color: $contrast-color-primary;
+          box-sizing: border-box;
+          padding: 19px 16px 14px 16px;
+          margin: 0;
+          box-shadow: 0 1px 2px darken($third-color, 5%);
+          cursor: pointer;
+          position: relative;
+          @include transition(background-color ease 0.2s);
+
+          .no-touch &:hover, &.active {
+            background-color: darken($contrast-color-primary, 12%);
+          }
+
+          &::after {
+            margin: -4px 0 0 2px;
+          }
+        }
+
+        & > div {
+          @extend %box-item-holder;
+          background-color: $third-color;
+          padding: 0;
+          display: none;
+        }
       }
     }
   }

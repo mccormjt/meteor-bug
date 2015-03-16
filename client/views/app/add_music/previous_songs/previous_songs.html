@@ -1,18 +1,43 @@
 <template name='previousSongs'>
   <div class='previous-songs {{ isActiveClass }}'>
-    <div class='sort-options'>
-      <span class='active'>Name</span><span>Artist</span>
-    </div>
 
-    <div class='sorted-songs'>
-        <div class='name-sorted-songs active'>
-          {{#each nameSortedSongs }}
-            {{> addSong }}
-          {{/each}}
-        </div>
+    {{#if hasAnyPreviousSongs }}
 
-        <div class='artist-sorted-songs'>
-        </div>
-    </div>
+      <div class='sort-options'>
+        <span class='active'>Name</span><span>Artist</span>
+      </div>
+
+      <div class='sorted-songs'>
+          <div class='name-sorted-songs active'>
+            {{#each nameSortedSongs }}
+              {{> addSong }}
+            {{/each}}
+          </div>
+
+          <div class='artist-sorted-songs'>
+            {{#each artistSortedSongs }}
+              <div class='artist-container'>
+                <h6 class='after-toggle-arrow'>
+                  <i class=''></i>
+                  <span>{{ artistName }}</span>
+                </h6>
+                <div class='artist-songs'>
+                  {{#each artistSongs }}
+                    {{> addSong }}
+                  {{/each}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+      </div>
+
+    {{else}}
+
+      <div class='no-previous-songs'>
+        <h6 class='fa'>No Previous Songs Yet</h6>
+        <p>Start adding &amp; liking songs to build up your collection!</p>
+      </div>
+
+    {{/if}}
   </div>
 </template>
