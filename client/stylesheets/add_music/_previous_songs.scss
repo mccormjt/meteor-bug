@@ -120,10 +120,16 @@
             position: absolute;
             top: 0;
             left: 0;
-            @include transition(color 0.3s ease);
+            @include transition(color 0.1s ease);
 
             .no-touch &:hover {
               color: white;
+            }
+
+            &:active {
+              border-color: white;
+              color: white;
+              background-color: $secondary-color;
             }
           }
         }
