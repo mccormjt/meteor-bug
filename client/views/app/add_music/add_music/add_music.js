@@ -14,16 +14,13 @@ Template.addMusic.rendered = function() {
     self.previousSongsMode    = self.$('.previous-songs-mode');
     self.searchMode           = self.$('.search-songs-mode');
     self.searchInput          = self.$('input');
+    self.isAddMusicPaneOpen   = false;
     setupTypeWatch();
 };
 
 Template.addMusic.destroyed = function() {
     HashChanger.stopListeningFor('add-music');
 };
-
-Template.addMusic.helpers({
-    isAddMusicPaneOpen: isAddMusicPaneOpen
-});
 
 Template.addMusic.events({
     'click h4':                                    toggleAddMusicStateHash,
@@ -33,12 +30,8 @@ Template.addMusic.events({
     'keyup input':                                 Util.stopEventPropagation,
 });
 
-function isAddMusicPaneOpen() {
-    return self.isAddMusicPaneOpen.get();
-}
-
 function toggleAddMusicStateHash() {
-    isAddMusicPaneOpen() ? HashChanger.clearHash() : HashChanger.hashSetterFnFor('add-music')();
+    self.isAddMusicPaneOpen ? HashChanger.clearHash() : HashChanger.hashSetterFnFor('add-music')();
 }
 
 function showAddMusicPane() {
@@ -51,7 +44,7 @@ function hideAddMusicPane() {
 
 function toggleMusicPane(topVal, isOpen) {
     clearMusicPane();
-    self.isAddMusicPaneOpen.set(isOpen);
+    self.isAddMusicPaneOpen = isOpen;
     self.musicPane.toggleClass(ACTIVE_CLASS, isOpen)
                   .velocity({ top: topVal }, { duration: 325, easing: 'ease' });
 }

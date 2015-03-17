@@ -12,7 +12,6 @@ Template.previousSongs.rendered = function() {
 };
 
 Template.previousSongs.helpers({
-    isActiveClass:        isActiveClass,
     hasAnyPreviousSongs:  hasAnyPreviousSongs,
     nameSortedSongs:      getNameSortedSongs,
     artistSortedSongs:    getArtistSortedSongs
@@ -24,9 +23,6 @@ Template.previousSongs.events({
     'click .artist-container .shuffle':      queueShuffleArtistSongs
 });
 
-function isActiveClass() {
-    return $('.previous-songs-mode').hasClass(ACTIVE_CLASS) && ACTIVE_CLASS;
-}
 
 function hasAnyPreviousSongs() {
     return getNameSortedSongs().length;
