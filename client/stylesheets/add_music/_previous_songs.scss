@@ -83,19 +83,21 @@
       padding: 0;
 
       .artist-container {
-        background-color: $third-color;
+        background: none;
+        box-shadow: none;
         text-align: left;
 
         h6 {
-          border-radius: 5px;
+          border-radius: 100px 25px 25px 100px;
           font-size: 20px;
           background-color: $contrast-color-primary;
           box-sizing: border-box;
-          padding: 19px 16px 14px 16px;
+          padding: 19px 16px 14px 73px;
           margin: 0;
           box-shadow: 0 1px 2px darken($third-color, 5%);
           cursor: pointer;
           position: relative;
+          z-index: 5;
           @include transition(background-color ease 0.2s);
 
           .no-touch &:hover, &.active {
@@ -105,12 +107,37 @@
           &::after {
             margin: -4px 0 0 2px;
           }
+
+          .shuffle {
+            color: $contrast-color-primary;
+            font-size: 25px;
+            height: 100%;
+            padding: 15px;
+            border-radius: 100%;
+            border: 2px solid $contrast-color-primary;
+            box-sizing: border-box;
+            background-color: $third-color;
+            position: absolute;
+            top: 0;
+            left: 0;
+            @include transition(color 0.3s ease);
+
+            .no-touch &:hover {
+              color: white;
+            }
+          }
         }
 
-        & > div {
+        .artist-songs {
           @extend %box-item-holder;
           background-color: $third-color;
-          padding: 0;
+          padding: 50px 25px 0 25px;
+          margin: 0 0 -40px 0;
+          width: 100%;
+          border-radius: 20px 0 10px 10px;
+          box-shadow: 0 2px 3px darken($third-color, 5%);
+          position: relative;
+          top: -40px;
           display: none;
         }
       }

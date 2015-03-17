@@ -26,12 +26,11 @@ Template.addMusic.helpers({
 });
 
 Template.addMusic.events({
-    'click h4':                                             toggleAddMusicStateHash,
-    'click .previous-songs-mode:not(.active)':              toggleAddMusicMode,
-    'click .search-songs-mode:not(.active)':                toggleAddMusicMode,
-    'focus input, blur input':                              toggleSearchFocusClass,
-    'keyup input':                                          Util.stopEventPropagation,
-    'click .queue-status:not(.in-queue .queue-status)':     queueSong,
+    'click h4':                                    toggleAddMusicStateHash,
+    'click .previous-songs-mode:not(.active)':     toggleAddMusicMode,
+    'click .search-songs-mode:not(.active)':       toggleAddMusicMode,
+    'focus input, blur input':                     toggleSearchFocusClass,
+    'keyup input':                                 Util.stopEventPropagation,
 });
 
 function isAddMusicPaneOpen() {
@@ -77,11 +76,6 @@ function toggleAddMusicMode() {
     self.$(query).toggleClass(ACTIVE_CLASS);
 }
 
-function queueSong(event) {
-    var groovesharkSongId = this.songID || this.groovesharkSongId;
-    Meteor.call('queueSong', this.songName, this.artistName, groovesharkSongId, getSongPriorityForUser());
-}
-
 function toggleSearchFocusClass() {
     self.searchMode.toggleClass('focused');
 }
@@ -96,23 +90,4 @@ function loadSearchResults(query) {
     } else {
         clearMusicPane();
     }
-}
-
-function getSongPriorityForUser() {
-    var userId = Meteor.userId(),
-        highestOverallPriority,
-        usersLowestPriority;
-
-    Songs.find({ isQueued: true }).forEach(function(song) {
-        if (song.addedByUserId == userId) {
-            usersLowestPriority || (usersLowestPriority = song.priority);
-            usersLowestPriority = Math.max(usersLowestPriority, song.priority);
-        } else if (!usersLowestPriority) {
-            highestOverallPriority || (highestOverallPriority = song.priority);
-            highestOverallPriority = Math.min(highestOverallPriority, song.priority);
-        }
-  });
-
-  usersLowestPriority && usersLowestPriority++;
-  return usersLowestPriority || highestOverallPriority || 1;
 }

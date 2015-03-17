@@ -20,7 +20,8 @@ Template.previousSongs.helpers({
 
 Template.previousSongs.events({
     'click .sort-options span:not(.active)': toggleSortOption,
-    'click .artist-container h6':            toggleBetweenArtists
+    'click .artist-container h6':            toggleBetweenArtists,
+    'click .artist-container .shuffle':      queueShuffleArtistSongs
 });
 
 function isActiveClass() {
@@ -40,11 +41,16 @@ function getArtistSortedSongs() {
     var artistSortedGroups = _.map(artistGroupedSongs, function(artistSongs, artistName) {
         return { artistName: artistName, artistSongs: artistSongs };
     });
-    return _.sortBy(artistSortedGroups, 'artistName');
+
+    return _.sortBy(artistSortedGroups, function(artist) {
+        return artist.artistName.toLowerCase();
+    });
 }
 
 function cacheNameSortedSongs() {
-    nameSortedSongs.set(_.sortBy(getUsersUpvotedSongs(), 'songName'));
+    nameSortedSongs.set(_.sortBy(getUsersUpvotedSongs(), function(song) {
+        return song.songName.toLowerCase();
+    }));
 }
 
 function getUsersUpvotedSongs() {
@@ -77,4 +83,19 @@ function toggleArtist(artistHeader, artistSongs) {
     artistHeader.toggleClass(ACTIVE_CLASS, !isOpen);
     var slideDirection = isOpen ? 'slideUp' : 'slideDown';
     artistSongs.velocity('finish').velocity(slideDirection, { duration: 300 });
+}
+
+function queueShuffleArtistSongs(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    var songPriority  = App.getUserSongPriority(),
+        shuffledSongs = _.shuffle(this.artistSongs);
+
+    _.each(shuffledSongs, function(song) {
+        if (!Songs.isQueued(song.guid)) {
+            Meteor.call('queueSong', song.songName, song.artistName, song.groovesharkSongId, songPriority);
+            songPriority++;
+        }
+    });
 }

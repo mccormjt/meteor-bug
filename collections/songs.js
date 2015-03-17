@@ -13,10 +13,13 @@ Meteor.methods({
     skipNowPlayingSong: skipNowPlayingSong
 });
 
-
 Songs.createSongGuid = function(songName, artistName) {
     return (songName + '@' + artistName).replace(/[\. ,:-]+/g, '').toLowerCase();
-}
+};
+
+Songs.isQueued = function(guid) {
+    return !! Songs.findOne({ guid: guid, cloudId: App.cloudId(), isQueued: true });
+};
 
 Songs.voteCountFor = function(song) {
     var votes = _.values(song.userVotes);

@@ -1,12 +1,17 @@
 Template.addSong.helpers({
-  inQueueClass: inQueueClass
+    inQueueClass: inQueueClass
+});
+
+Template.addSong.events({
+    'click .queue-status:not(.in-queue .queue-status)': queueSong
 });
 
 function inQueueClass() {
     var guid = Songs.createSongGuid(this.songName, this.artistName);
-    return isQueued(guid) ? 'in-queue' : ''
+    return Songs.isQueued(guid) ? 'in-queue' : '';
 }
 
-function isQueued(guid) {
-    return !! Songs.findOne({ guid: guid, isQueued: true });
+function queueSong(event) {
+    var groovesharkSongId = this.songID || this.groovesharkSongId;
+    Meteor.call('queueSong', this.songName, this.artistName, groovesharkSongId, App.getUserSongPriority());
 }
