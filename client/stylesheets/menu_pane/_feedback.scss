@@ -30,7 +30,7 @@
     border: none;
     border-radius: 3px;
     margin-top: 10px;
-    @include transition(background-color ease 0.3s);
+    transition: background-color ease 0.3s;
 
     &:hover {
       background-color: darken($third-color, 5%);

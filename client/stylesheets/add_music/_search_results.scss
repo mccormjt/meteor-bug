@@ -1,6 +1,6 @@
 .add-music .search-results {
   @extend %box-item-holder;
-  @include transform(translate(100%, 0));
+  transform: translate(100%, 0);
 
   .no-results {
     color: $text-color;

@@ -1,11 +1,11 @@
-@include keyframes(fc-appear) {
-  0%    { opacity: 0; display: none !important; }
-  5%    { opacity: 0; display: block !important; }
+@keyframes fc-appear {
+  0%     { opacity: 0; display: none !important; }
+  5%     { opacity: 0; display: block !important; }
   100%   { opacity: 1; display: block !important; }
 }
 
-@include keyframes(fc-disappear) {
-  0%    { opacity: 1; display: block !important; }
+@keyframes fc-disappear {
+  0%     { opacity: 1; display: block !important; }
   95%    { opacity: 0; display: block !important; }
   100%   { opacity: 0; display: none !important; }
 }
@@ -26,7 +26,7 @@
     margin-left: auto;
     margin-right: auto;
     display: block;
-    @include transition(all 0.3s ease-out);
+    transition: all 0.3s ease-out;
 
     &.finded {
       width: 50vw;
@@ -49,13 +49,9 @@
     top: 10vh;
     font-size: 2.2em;
     font-family: 'Roboto Condensed', sans-serif;
-    @include transition(background-color 0.1s ease);
-
+    transition: background-color 0.1s ease;
     display: inline-block;
-
     background-color: #567083;
-
-
   }
 
   .find-container {
@@ -72,10 +68,11 @@
     background-position: 30% center;
     background-repeat: no-repeat;
 
-    @include transition(all 0.3s ease-out);
+    transition: all 0.3s ease-out;
 
     .find {
       background: #506879;
+
       &:hover {
         background: #6f8ca0;
       }
@@ -101,7 +98,7 @@
         font-size: 0.7em;
 
         &:focus {
-          outline:none;
+          outline: none;
         }
       }
 
@@ -138,7 +135,7 @@
         padding: 7px 30px;
         clear: both;
         cursor: pointer;
-        @include transition(background-color 0.20s ease-in-out);
+        transition: background-color 0.20s ease-in-out;
 
         &:hover {
           background-color: darken(#506879, 10%);
@@ -168,7 +165,7 @@
     position: absolute;
     background-color: #506879;
     top: 50vh;
-    @include transition(all 0.3s ease-out);
+    transition: all 0.3s ease-out;
 
     background-image: url('/images/add.svg');
     background-position: 70% center;
@@ -176,6 +173,7 @@
 
     .create {
       background: #506879;
+
       &:hover {
         background: #6f8ca0;
       }
@@ -201,7 +199,7 @@
         font-size: 0.7em;
 
         &:focus {
-          outline:none;
+          outline: none;
         }
       }
 
@@ -242,7 +240,7 @@
       right: 0;
       border-radius: 5px;
       box-shadow: 1px 3px 10px rgba(0,0,0,0.2);
-      @include transition(all 0.3s ease-out);
+      transition: all 0.3s ease-out;
 
       &.fc-toggle-btn-private {
         right: 100px;
@@ -271,6 +269,7 @@
   &.create-container {
     position: absolute;
     top: 30vh;
+
     .fc-input-group {
       display: none;
     }
@@ -285,7 +284,7 @@
 }
 
 .btn-expand {
-  @include transition(width 0.3s ease-out);
+  transition: width 0.3s ease-out;
   width: 75% !important;
 
   &.find-container {
@@ -304,11 +303,11 @@
 }
 
 .fc-appear {
-  @include animation('fc-appear 0.4s 1');
+  animation: fc-appear 0.4s 1;
 }
 
 .fc-disappear {
-  @include animation('fc-disappear 0.4s 1');
+  animation: fc-disappear 0.4s 1;
 }
 
 .group-init {

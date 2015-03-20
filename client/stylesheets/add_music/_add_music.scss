@@ -32,7 +32,8 @@
       &:before {
         background: url('/images/grooveshark_symbol_white.png') no-repeat center;
         background-size: 100%;
-        @include size(55px, 55px);
+        width: 55px;
+        height: 55px;
         content: ' ';
         display: inline-block;
         position: absolute;
@@ -67,8 +68,7 @@
       display: inline-block;
       position: relative;
       white-space: nowrap;
-      $trans: color 0.3s ease, width 0.3s ease, text-shadow 0.3s ease;
-      @include transition($trans);
+      transition: color 0.3s ease, width 0.3s ease, text-shadow 0.3s ease;
     }
 
     .previous-songs-mode, .search-songs-mode {
@@ -112,7 +112,7 @@
           color: white;
           box-shadow: inset 1px 1px 3px darken($secondary-color, 8%);
 
-          @include input-placeholder {
+          &::placeholder {
             color: $text-sub-color-2;
           }
         }
@@ -133,7 +133,7 @@
         background-size: 25px 25px;
         background-position: 360px 16.5px;
         
-        @include input-placeholder {
+        &::placeholder {
           color: $third-color;
           text-align: center;
           transition: color ease 0.3s;
@@ -182,11 +182,11 @@
       padding: 5px 0 300px 0;
       position: absolute;
       opacity: 0;
-      @include transition(all ease 0.3s);
+      transition: all ease 0.3s;
 
       &.active {
         opacity: 1;
-        @include transform(translate(0, 0));
+        transform: translate(0, 0);
       }
     }
   }

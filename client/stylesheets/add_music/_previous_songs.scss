@@ -1,5 +1,5 @@
 .add-music .previous-songs {
-  @include transform(translate(-100%, 0));
+  transform: translate(-100%, 0);
   text-align: center;
 
   .no-previous-songs {
@@ -98,7 +98,7 @@
           cursor: pointer;
           position: relative;
           z-index: 5;
-          @include transition(background-color ease 0.2s);
+          transition: background-color ease 0.15s;
 
           .no-touch &:hover, &.active {
             background-color: darken($contrast-color-primary, 12%);
