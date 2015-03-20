@@ -4,12 +4,10 @@ var MAX_NEAR_CLOUD_METERS = 600;
 if (Meteor.isServer) { 
     Clouds._ensureIndex({ location: '2dsphere' });
     Clouds._ensureIndex({ createdByUserId: 1 });
-    Clouds._ensureIndex({ _id: 1 });
 
     Meteor.methods({
         createCloud:            createCloud,
-        findCloudsNear:         findCloudsNear,
-        findCloud:              findCloud,
+        findCloudById:          findCloudById,
         updateCloudActiveness:  updateCloudActiveness
     });
 }
@@ -22,6 +20,17 @@ Meteor.methods({
     setCloudLoadingSongState:  setCloudLoadingSongState
 });
 
+
+Clouds.getFindNearQuery = function(location) {
+    checkLocation(location);
+
+    var maxDist     = MAX_NEAR_CLOUD_METERS + location.accuracy * 2,
+        geometry    = locationToMongo(location),
+        nearSphere  = { $nearSphere: { $geometry: geometry, $maxDistance: maxDist } },
+        query       = { location: nearSphere, isPublic: true };
+
+    return query;
+};
 
 Clouds.distanceFromCloud = function(cloud, location) {
     checkLocation(location);
@@ -59,22 +68,6 @@ function createCloud(name, isPublic, location) {
                         volume: 0.55, isLoadingSong: false };
         mongoLocation && _.extend(cloud, { location: mongoLocation });
         return Clouds.insert(cloud);
-}
-
-
-function findCloudsNear(location) {
-    checkLocation(location);
-
-    var query = 
-    { 
-        location: { $nearSphere: { 
-            $geometry:    locationToMongo(location),
-            $maxDistance: MAX_NEAR_CLOUD_METERS + location.accuracy * 2
-        }},
-        isPublic: true
-    };
-
-    return Clouds.find(query, { limit: 6 });
 }
 
 function setCloudProperty(property, value, hasPermission) {
@@ -131,13 +124,13 @@ function getRandIntStrOfLength(length) {
 
 function createCloudId() {
     var id = getRandIntStrOfLength(6);
-    while (findCloud(id)) {
+    while (findCloudById(id)) {
         id += getRandIntStrOfLength(1);
     }
     return id;
 }
 
-function findCloud(id) {
+function findCloudById(id) {
     check(id, String);
     return Clouds.find({ _id: id }).fetch()[0];
 }

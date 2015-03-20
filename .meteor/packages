@@ -7,11 +7,9 @@ meteor-platform
 iron:router
 chrismbeckett:fontawesome4
 pfafman:font-awesome-4
-stevezhu:sass
 mizzao:jquery-ui
 mizzao:bootstrap-3
 mrt:isolate-value
-jabbslad:basic-auth
 accounts-password
 
 mdg:geolocation
@@ -25,3 +23,5 @@ reactive-var
 gwendall:auth-client-callbacks
 email
 percolate:momentum
+fourseven:scss
+jabbslad:basic-auth

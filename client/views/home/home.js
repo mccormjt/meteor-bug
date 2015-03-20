@@ -118,15 +118,10 @@ function createGo() {
 
 function subcribeToNearClouds() {
     var coords = getLocationCoords();
-    coords && Meteor.subscribe('cloudsNearLocation', coords);
+    coords && self.subscribe('cloudsNearLocation', coords);
 }
 
 function getLocationCoords() {
     var loc = Geolocation.currentLocation();
     return loc &&  _.pick(loc.coords, 'latitude', 'longitude', 'accuracy');
 }
-
-
-
-
-
