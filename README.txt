@@ -1,5 +1,5 @@
-CloudList - Web Front End
+CrowdPlay - Web Front End
 
-Version 0.5
+Version 0.7
 
-Desccription: Web front end for CloudList that will be built up to version 1.0 for the first official stable release
+Desccription: Web front end for CrowdPlay that will be built up to version 1.0 for the first official stable release
