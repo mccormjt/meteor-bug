@@ -15,7 +15,7 @@
    id="svg16475"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="New document 3">
+   sodipodi:docname="logo_small.svg">
   <defs
      id="defs16477">
     <clipPath
@@ -76,20 +76,20 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="79.914092"
-     inkscape:cy="81.187786"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="91.853569"
+     inkscape:cy="50.880418"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g16715-5"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="472"
+     inkscape:window-width="563"
      inkscape:window-height="383"
-     inkscape:window-x="65"
-     inkscape:window-y="638"
+     inkscape:window-x="486"
+     inkscape:window-y="349"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata16480">
@@ -99,7 +99,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -312,19 +312,27 @@
            transform="matrix(1.4668353,0.41214426,-0.41214426,1.4668353,15633.008,-23590.123)"
            d="m -2573.1875,24474.125 -51.8125,11.437 -0.031,0.09 8.9374,40.188 52.4063,-12.782 -9.5,-38.937 z"
            style="fill:#a35141;fill-opacity:1" />
-        <text
+        <g
            transform="matrix(0.99845453,0.05557466,-0.05557466,0.99845453,0,0)"
-           xml:space="preserve"
            style="font-size:56.8098793px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
-           x="2319.0232"
-           y="11185.866"
-           id="text16711-0"
-           sodipodi:linespacing="125%"><tspan
-             sodipodi:role="line"
-             id="tspan16713-3"
-             x="2319.0232"
-             y="11185.866"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:Breamcatcher;-inkscape-font-specification:Breamcatcher Bold">BETA</tspan></text>
+           id="text16711-0">
+          <path
+             d="m 2322.9431,11141.27 c 2.5375,0.08 4.6773,0.569 6.4195,1.478 1.7421,0.909 3.1435,2.12 4.2039,3.635 1.0605,1.477 1.8179,3.201 2.2724,5.17 0.4924,1.969 0.7385,4.053 0.7385,6.249 0,3.371 -0.6059,6.211 -1.8179,8.522 -1.2119,2.31 -2.7458,4.128 -4.6016,5.453 l 0,0.171 c 1.8179,0.303 3.2192,1.041 4.204,2.215 1.0225,1.137 1.5338,2.481 1.5338,4.034 0,1.136 -0.1894,2.197 -0.5681,3.181 -0.3787,0.947 -1.0604,1.78 -2.0451,2.5 -0.9469,0.682 -2.2535,1.231 -3.9199,1.647 -1.6664,0.417 -3.8063,0.625 -6.4195,0.625 l 0,-44.88 m 3.579,30.28 c 2.1966,-1.591 3.8252,-3.408 4.8856,-5.454 1.0605,-2.083 1.5907,-4.658 1.5907,-7.726 0,-1.515 -0.1325,-3.011 -0.3976,-4.488 -0.2273,-1.477 -0.606,-2.802 -1.1362,-3.976 -0.5303,-1.212 -1.212,-2.235 -2.0452,-3.068 -0.7953,-0.833 -1.7611,-1.401 -2.8973,-1.704 l 0,26.416 m 0,11.305 c 2.0451,0 3.5222,-0.435 4.4312,-1.306 0.9468,-0.909 1.4202,-1.97 1.4202,-3.182 0,-0.492 -0.1136,-0.965 -0.3408,-1.42 -0.1894,-0.492 -0.4924,-0.928 -0.909,-1.307 -0.3787,-0.416 -0.8522,-0.738 -1.4202,-0.965 -0.5682,-0.265 -1.2309,-0.398 -1.9884,-0.398 -0.1894,0 -0.3977,0.02 -0.6249,0.06 -0.1894,0 -0.3787,0.02 -0.5681,0.06 l 0,8.464"
+             style="font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;font-family:Breamcatcher;-inkscape-font-specification:Breamcatcher Bold"
+             id="path19508" />
+          <path
+             d="m 2342.4715,11185.866 0,-44.255 9.1464,0 0,3.579 -5.5106,0 0,26.871 5.3969,0 0,2.727 -5.3969,0 0,7.67 6.0219,0 0,3.408 -9.6577,0"
+             style="font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;font-family:Breamcatcher;-inkscape-font-specification:Breamcatcher Bold"
+             id="path19510" />
+          <path
+             d="m 2360.1589,11185.866 0,-40.676 -4.7152,0 0,-3.579 12.8958,0 0,3.579 -4.6016,0 0,40.676 -3.579,0"
+             style="font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;font-family:Breamcatcher;-inkscape-font-specification:Breamcatcher Bold"
+             id="path19512" />
+          <path
+             d="m 2380.8616,11174.788 -6.3059,0 -1.9315,11.078 -3.5222,0 8.8623,-46.3 8.4647,46.3 -3.6358,0 -1.9316,-11.078 m -5.8514,-2.727 5.397,0 -2.5565,-14.884 -0.2272,0 -2.6133,14.884"
+             style="font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ffffff;font-family:Breamcatcher;-inkscape-font-specification:Breamcatcher Bold"
+             id="path19514" />
+        </g>
       </g>
     </g>
   </g>
