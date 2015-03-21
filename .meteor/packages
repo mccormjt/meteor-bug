@@ -20,7 +20,6 @@ accounts-facebook
 service-configuration
 accounts-twitter
 reactive-var
-gwendall:auth-client-callbacks
 email
 percolate:momentum
 fourseven:scss

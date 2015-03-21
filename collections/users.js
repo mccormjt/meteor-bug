@@ -33,13 +33,15 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
-    var lastLoggedInUserId = Meteor.userId();
-    Accounts.onLogin(switchUsers);
+    Meteor.startup(function() {
+        var lastLoggedInUserId = Meteor.userId();
+        Accounts.onLogin(switchUsers);
 
-    function switchUsers() {
-        Meteor.call('switchIntoAccountFrom', lastLoggedInUserId);
-        lastLoggedInUserId = Meteor.userId();
-    }
+        function switchUsers() {
+            Meteor.call('switchIntoAccountFrom', lastLoggedInUserId);
+            lastLoggedInUserId = Meteor.userId();
+        }
+    });
 }
 
 
