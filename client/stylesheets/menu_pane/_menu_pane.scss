@@ -13,6 +13,8 @@
     background: #243441; /* Old browsers */
     background: linear-gradient(to bottom,  #243441 0%,#1d2a34 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#243441', endColorstr='#1d2a34',GradientType=0 ); /* IE6-9 */
+    position: relative;
+    z-index: 100;
 
     a {
       width: 100%;
