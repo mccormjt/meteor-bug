@@ -1,6 +1,6 @@
 var self;
-    paneShiftPercent = '415px',
-    animateTime      = 350,
+    paneShiftAmount  = '415px',
+    animateTime      = 300,
     isMenuPaneOpen   = false,
     isUsersPaneOpen  = false;
 
@@ -36,12 +36,12 @@ Template.app.events({
 
 function openMenuPane() {
     isMenuPaneOpen = true;
-    toggleAppPane(self.menuPane, paneShiftPercent, 'fadeIn');
+    toggleAppPane(self.menuPane, paneShiftAmount, 'fadeIn');
 }
 
 function openUsersPane() {
     isUsersPaneOpen = true;
-    toggleAppPane(self.usersPane, '-' + paneShiftPercent, 'fadeIn');
+    toggleAppPane(self.usersPane, '-' + paneShiftAmount, 'fadeIn');
 }
 
 function closeMenuPane() {
@@ -55,8 +55,8 @@ function closeUsersPane() {
 }
 
 function toggleAppPane(pane, shiftAppTo, fadeDirection) {
-    self.mainApp.velocity('stop').velocity({ marginLeft: shiftAppTo }, { duration: animateTime, easing: 'ease' });
-    self.mainCoverPane.add(pane).velocity('stop').velocity(fadeDirection, { duration: animateTime, easing: 'ease' });
+    self.mainApp.velocity('finish').velocity({ marginLeft: shiftAppTo }, { duration: animateTime, easing: 'ease' });
+    self.mainCoverPane.add(pane).velocity('finish').velocity(fadeDirection, { duration: animateTime, easing: 'ease' });
 }
 
 function shiftAppLeft() {

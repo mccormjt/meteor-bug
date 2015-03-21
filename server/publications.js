@@ -19,5 +19,6 @@ Meteor.publish('cloudUsers', function(cloudId) {
 });
 
 Meteor.publish('cloudsNearLocation', function(location) {
-    return Meteor.call('findCloudsNear', location);
+    var query = Clouds.getFindNearQuery(location);
+    return Clouds.find(query, { limit: 6 });
 });

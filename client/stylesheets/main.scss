@@ -1,14 +1,18 @@
 @import 'variables';
 @import 'mixins';
-@import 'animations/spinning';
 @import 'animations/loading_bars';
+@import 'includes/loading_screen';
+@import 'toggle_arrow';
 @import 'songs';
 @import 'home';
 @import 'app';
 @import 'controls';
 @import 'now_playing';
 @import 'song_queue';
-@import 'add_music';
+@import 'add_music/add_music';
+@import 'add_music/add_song';
+@import 'add_music/previous_songs';
+@import 'add_music/search_results';
 @import 'menu_pane/menu_pane';
 @import 'menu_pane/current_playlist';
 @import 'menu_pane/display_name';
@@ -41,41 +45,6 @@ html, body, main {
   position: relative;
   background-color: $third-color;
   font-family: sans-serif;
-}
-
-/* ---------------- Broadcast slider CSS ------------ */
-.slider-frame {
-  position: relative;
-  display: inline-block;
-  margin: 0 auto;
-  width: 120px;
-  height: 30px;
-  background-color: rgb(246, 249, 251);
-  border-radius: 6px;
-  box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.25),
-              2px 2px 7px black;
-}
-
-.slider-button {
-  display: block;
-  margin-left: -3px;
-  width: 75px;
-  height: 30px;
-  line-height: 27px;
-  background: #6c7176;
-  border-radius: 6px;
-  @include transition(all 0.25s ease-in-out);
-  color: white;
-  font-family:sans-serif;
-  font-size:12px;
-  font-weight:bold;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: inset 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
-}
-.slider-button.on {
-  margin-left: 50px;
-  background: #088c00;
 }
 
 .row > div {

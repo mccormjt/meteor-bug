@@ -11,14 +11,8 @@
   h1 {
     text-shadow: 2px 2px 3px rgba(0,0,0,0.4);
     background: #243441; /* Old browsers */
-    background: -moz-linear-gradient(top,  #243441 0%, #1d2a34 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#243441), color-stop(100%,#1d2a34)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top,  #243441 0%,#1d2a34 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top,  #243441 0%,#1d2a34 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top,  #243441 0%,#1d2a34 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #243441 0%,#1d2a34 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#243441', endColorstr='#1d2a34',GradientType=0 ); /* IE6-9 */
-
 
     a {
       width: 100%;
@@ -74,34 +68,9 @@
         font-size: 27px;
       }
 
-
-      &::after {
-        content: '\f13a';
-        float: right;
-        font-size: 25px;
-        margin: 2px;
-        width: 27px;
-        height: 27px;
-        text-align: center;
-        @include transition(transform ease 0.3s);
-
-        display: inline-block;
-        font-family: FontAwesome;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        transform: translate(0, 0);
-      }
-
       &.active, .no-touch &:hover {
         background-color: darken($primary-color, 12%);
         color: white;
-      }
-
-      &.active::after {
-        -ms-transform: rotate(180deg); /* IE 9 */
-        -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
-        transform: rotate(180deg);
       }
     }
 

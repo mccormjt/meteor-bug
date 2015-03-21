@@ -1,3 +1,5 @@
+var requestPermissions = { requestPermissions: ['email'] };
+
 Template.login.events({
     'click .fa-facebook-square': loginWithFacebook,
     'click .fa-twitter-square':  loginWithTwitter
@@ -5,11 +7,14 @@ Template.login.events({
 
 
 function loginWithFacebook() {
-    App.stopEnsuringUser();
-    Meteor.loginWithFacebook({}, App.startEnsuringUser);
+    loginWith(Meteor.loginWithFacebook);
 }
 
 function loginWithTwitter() {
+    loginWith(Meteor.loginWithTwitter);
+}
+
+function loginWith(loginFn) {
     App.stopEnsuringUser();
-    Meteor.loginWithTwitter({}, App.startEnsuringUser);
+    loginFn(requestPermissions, App.stopEnsuringUser);
 }

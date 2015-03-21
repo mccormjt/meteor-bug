@@ -1,0 +1,193 @@
+.add-music {
+  color: $text-color;
+  background-color: $secondary-color;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  margin-top: -60px;
+
+  &.active {
+    i {
+      opacity: 1;
+    }
+  }
+
+  h4 {
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    padding: 20px;
+    margin: 0 0 20px 0;
+    background-color: $third-color;
+    box-shadow: 0 -1px 2px black,
+                0  1px 2px black;
+
+    span {
+      position: relative;
+      top: 2px;
+      padding-left: 60px;
+
+      &:before {
+        background: url('/images/grooveshark_symbol_white.png') no-repeat center;
+        background-size: 100%;
+        width: 55px;
+        height: 55px;
+        content: ' ';
+        display: inline-block;
+        position: absolute;
+        top: -18px;
+        left: 0;
+      }
+    }
+
+    i {
+      float: right;
+      margin-top: -10px;
+      opacity: 0;
+      color: $primary-color;
+      font-size: 42px;
+      text-shadow: 1px 1px 3px darken($third-color, 5%);
+    }
+  }
+
+  .add-music-mode {
+    text-align: center;
+    margin: 40px auto 15px auto;
+    width: 470px;
+    height: 60px;
+
+    .previous-songs-mode, .search-songs-mode, .search-songs-mode input {
+      width: 60px;
+      height: 55px;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 20px;
+      float: left;
+      display: inline-block;
+      position: relative;
+      white-space: nowrap;
+      transition: color 0.3s ease, width 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .previous-songs-mode, .search-songs-mode {
+      box-shadow: 1px 1px 2px darken($third-color, 5%);
+
+      &.active {
+        width: 400px;
+      }
+    }
+
+    .previous-songs-mode {
+      font-weight: bold;
+      padding: 19px;
+      background-color: $contrast-color-primary;
+      color: $contrast-color-primary;
+      border-radius: 5px 0 0 5px;
+      cursor: pointer;
+      margin-left: 5px;
+
+      &.active, &::before {
+        color: white;
+        text-shadow: 1px 1px 2px black;
+      }
+
+      &.active {
+        cursor: default;
+      }
+
+      &::before {
+        content: '\f0ca';
+        float: left;
+      }
+    }
+
+    .search-songs-mode {
+      border-radius: 0 5px 5px 0;
+
+      &.active {
+        input {
+          cursor: text;
+          color: white;
+          box-shadow: inset 1px 1px 3px darken($secondary-color, 8%);
+
+          &::placeholder {
+            color: $text-sub-color-2;
+          }
+        }
+      }  
+
+      input {
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        line-height: 1.2;
+        outline: none;
+        border: none;
+        background-color: $third-color;
+        color: $third-color;
+        padding: 12px 45px 12px 12px;
+        border-radius: 0 5px 5px 0;
+        background-repeat: no-repeat;
+        background-size: 25px 25px;
+        background-position: 360px 16.5px;
+        
+        &::placeholder {
+          color: $third-color;
+          text-align: center;
+          transition: color ease 0.3s;
+        }
+      }
+
+      &::after {
+        pointer-events: none;
+        content: '\f002';
+        color: $text-sub-color-2;
+        font-size: 18px;
+        text-shadow: 1px 1px 2px darken($third-color, 5%);
+        transition: color 0.25s ease;
+        position: absolute;
+        top: 20px;
+        right: 18px;
+      }
+
+      &.focused::after {
+        color: $text-color;
+      }
+
+      &.searching {
+        input {
+          background-image: url('/images/ajax-loader-dark.gif');
+        }
+
+        &:after {
+          display: none;
+        }
+      }    
+    }
+  }
+
+  .music-mode-songs {
+    clear: both;
+    width: 460px;
+    height: 100%;
+    margin: auto;
+    position: relative;
+
+    & > div {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 5px 0 300px 0;
+      position: absolute;
+      opacity: 0;
+      transition: all ease 0.3s;
+
+      &.active {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+    }
+  }
+}

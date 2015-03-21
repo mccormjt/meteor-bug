@@ -127,7 +127,7 @@ function createGo() {
 
 function subcribeToNearClouds() {
     var coords = getLocationCoords();
-    coords && Meteor.subscribe('cloudsNearLocation', coords);
+    coords && self.subscribe('cloudsNearLocation', coords);
 }
 
 function getLocationCoords() {

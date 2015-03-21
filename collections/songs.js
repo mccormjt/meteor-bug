@@ -1,6 +1,7 @@
 Songs = new Meteor.Collection('songs');
 if (Meteor.isServer) { 
     Songs._ensureIndex({ cloudId: 1, guid: 1 }, { unique: true });
+    Songs._ensureIndex({ cloudId: 1, addedByUserId: 1 });
     Songs._ensureIndex({ cloudId: 1 });
 }
 
@@ -12,10 +13,13 @@ Meteor.methods({
     skipNowPlayingSong: skipNowPlayingSong
 });
 
-
 Songs.createSongGuid = function(songName, artistName) {
     return (songName + '@' + artistName).replace(/[\. ,:-]+/g, '').toLowerCase();
-}
+};
+
+Songs.isQueued = function(guid) {
+    return !! Songs.findOne({ guid: guid, cloudId: App.cloudId(), isQueued: true });
+};
 
 Songs.voteCountFor = function(song) {
     var votes = _.values(song.userVotes);
@@ -41,6 +45,23 @@ Songs.comparator = function(s1, s2) {
 };
 
 
+if (Meteor.isServer) {
+     Songs.chownUserSongsAndVotes = function(fromUserId, toUserId) {
+        var userVoteField = {};
+        userVoteField['userVotes.' + fromUserId] = 'userVotes.' + toUserId;
+        Songs.update({ cloudId: App.cloudId() }, { $rename: userVoteField }, { multi: true });
+        Songs.update({ cloudId: App.cloudId(), addedByUserId: fromUserId }, { $set: { addedByUserId: toUserId } }, { multi: true });
+    }
+
+    Songs.removeUserSongsAndVotes = function(userId) {
+        var userVote = {};
+        Songs.remove({ cloudId: App.cloudId(), addedByUserId: userId });
+        userVote['userVotes.' + userId] = '';
+        Songs.update({ cloudId: App.cloudId() }, { $unset: userVote }, { multi: true });
+    }
+}
+
+
 function findOrCreateSong(songName, artistName, groovesharkSongId) {
     check(songName, String);
     check(artistName, String);
@@ -57,14 +78,12 @@ function findOrCreateSong(songName, artistName, groovesharkSongId) {
     return song;
 }
 
-
 function skipNowPlayingSong() {
     var nowPlayingSongId = App.cloud().nowPlayingSongId;
     if (!nowPlayingSongId) return;
     unqueueSong(nowPlayingSongId);
     Clouds.update({ _id: App.cloudId() }, { $set: { nowPlayingSongId: '' } });
 }
-
 
 function setIsQueued(songId, isQueued, priority, addedByUserId) {
     check(songId, String);
@@ -76,7 +95,6 @@ function setIsQueued(songId, isQueued, priority, addedByUserId) {
     Meteor.call('updateCloudActiveness');
 }
 
-
 function queueSong(songName, artistName, groovesharkSongId, priority) {
     var song = findOrCreateSong(songName, artistName, groovesharkSongId);
     voteForCloudSong(song.guid, 1);
@@ -85,13 +103,11 @@ function queueSong(songName, artistName, groovesharkSongId, priority) {
     setIsQueued(song._id, true, priority, Meteor.userId());
 }
 
-
 function unqueueSong(songId) {
     var song = Songs.findOne(songId);
     CloudUsers.update({ userId: song.addedByUserId, cloudId: App.cloudId() }, { $inc: { voteScore: Songs.voteCountFor(song) } }) 
     setIsQueued(songId, false, 0, '');
 }
-
 
 function voteForCloudSong(guid, newVote) {
     check(guid, String);
@@ -104,14 +120,12 @@ function voteForCloudSong(guid, newVote) {
     Songs.update(songQuery, { $set: userVote });
 }
 
-
 function upsertUserSongVotesIntoCloud() {
     _.each(App.userSongVotes(), function(song) {
         var cloudSong = findOrCreateSong(song.songName, song.artistName, song.groovesharkSongId);
         voteForCloudSong(cloudSong.guid, song.vote);
     });
 }
-
 
 function findCloudSong(guid) {
     return Songs.findOne({ cloudId: App.cloudId(), guid: guid });

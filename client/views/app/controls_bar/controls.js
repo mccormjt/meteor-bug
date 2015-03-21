@@ -46,7 +46,7 @@ function setupAudioPlayer() {
     self.player = new CrossPlayer(skipNowPlayingSong, reloadNowPlaying);
     self.autorun(ensureNowPlayingSrc);
     self.autorun(updatePlayerPauseState);
-    trackNowPlayingTime();
+  //  trackNowPlayingTime(); Makes app inefficeint and data is not used yet
     $(window).keyup(function onSpacebar(e) { e.keyCode == 32 && togglePauseState() });
 }
 
@@ -99,6 +99,7 @@ function loadSong(song) {
     if (self.isLoadingSong) return;
     self.isLoadingSong = true;
     Meteor.call('setCloudLoadingSongState', true);
+    Meteor.call('setCloudNowPlayingSongId', song._id);
     Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
         if (song._id != App.cloud().nowPlayingSongId) return;
         var time = App.cloud().nowPlayingTime;
@@ -111,7 +112,6 @@ function loadSong(song) {
             }, 300);
         });
     });
-    Meteor.call('setCloudNowPlayingSongId', song._id);
 }
 
 

@@ -1,0 +1,27 @@
+.after-toggle-arrow {
+
+  &::after {
+    content: '\f13a';
+    float: right;
+    font-size: 25px;
+    margin: 2px;
+    width: 27px;
+    height: 27px;
+    text-align: center;
+    transition: transform ease 0.3s;
+
+    display: inline-block;
+    font-family: FontAwesome;
+    text-rendering: auto;
+    transform: translate(0, 0);
+
+    /* autoprefixer: off */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* autoprefixer: on */
+  }
+
+  &.active::after {
+    transform: rotate(180deg);
+  }
+}

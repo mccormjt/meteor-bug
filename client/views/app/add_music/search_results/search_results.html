@@ -1,0 +1,11 @@
+<template name='searchResults'>
+  <div class='search-results active'>
+    {{#each songResults }}
+      {{> addSong }}
+    {{else}}
+      {{#if hasNoResults }}
+        <p class='no-results'>No results <span>:(</span></p>
+      {{/if}}
+    {{/each }}
+  </div>
+</template>
