@@ -50,9 +50,8 @@ function cacheNameSortedSongs() {
 }
 
 function getUsersUpvotedSongs() {
-    return _.filter(Meteor.user().profile.songVotes, function(song) {
-        return song.vote == 1;
-    });
+    var songVotes = Meteor.user() && Meteor.user().profile.songVotes;
+    return _.filter(songVotes, function(song) { return song.vote == 1 });
 }
 
 function toggleSortOption() {

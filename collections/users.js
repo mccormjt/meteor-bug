@@ -38,7 +38,10 @@ if (Meteor.isClient) {
         Accounts.onLogin(switchUsers);
 
         function switchUsers() {
-            Meteor.call('switchIntoAccountFrom', lastLoggedInUserId);
+            if (App.cloudId() && lastLoggedInUserId) {
+                var switchUsersCallback = Util.wrapMeteorMethod('switchIntoAccountFrom', lastLoggedInUserId);
+                Meteor.call('setUserCloud', App.cloudId(), switchUsersCallback);
+            }
             lastLoggedInUserId = Meteor.userId();
         }
     });
@@ -82,9 +85,11 @@ function createTempUser() {
 function updateUsername(name) {
     check(name, String);
     if (!Meteor.users.isValidUsername(name)) return;
-    name = name.replace(/\s+/g, '-');
+
+    name = name.trim().replace(/\s+/g, '-');
     var uniqueName = getUniqueUsernameFrom(name);
     var userId = Meteor.userId();
+
     Meteor.users.update(userId, { $set: { username: uniqueName } });
     CloudUsers.update({ cloudId: Meteor.user().profile.currentCloudId, userId: userId }, { $set: { username: uniqueName } });
     return uniqueName;
