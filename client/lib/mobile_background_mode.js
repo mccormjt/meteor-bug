@@ -1,4 +1,5 @@
-var backgroundModeInactivityCheck;
+var backgroundModeInactivityCheckInterval,
+    isBackgroundModeEnabled;
 
 Meteor.startup(function setupBackgroundMode() {
     if (!Meteor.isCordova) return;
@@ -11,12 +12,19 @@ Meteor.startup(function setupBackgroundMode() {
 });
 
 function updateBackgroundModeState() {
-    if (App.isOutput()) {
+    var isEnabled           = cordova.plugins.backgroundMode.isEnabled();
+    var hasNotChangedState  = isEnabled === isBackgroundModeEnabled;
+    isBackgroundModeEnabled = isEnabled;
+
+    if (hasNotChangedState) {
+        return;
+    }
+    else if (App.isOutput()) {
         cordova.plugins.backgroundMode.setDefaults({ text:'CrowdPlay Running'}); // Android customization
         cordova.plugins.backgroundMode.enable();
-        backgroundModeInactivityCheck = setInterval(Util.wrapMeteorMethod('disableInactiveCloudBackgroundMode', 0.5), Time.hoursToMiliseconds(0.09));
+        backgroundModeInactivityCheckInterval = setInterval(Util.wrapMeteorMethod('disableInactiveCloudBackgroundMode', 0.5), Time.hoursToMiliseconds(0.09));
     } else {
-        clearInterval(backgroundModeInactivityCheck);
+        clearInterval(backgroundModeInactivityCheckInterval);
         cordova.plugins.backgroundMode.disable();
     }
 }
