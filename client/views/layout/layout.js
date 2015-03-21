@@ -1,5 +1,6 @@
 Template.layout.rendered = function() {
   $('meta[name="viewport"]').attr('content', generateViewPortContent(viewportSize()));
+  self.autorun(addRouteClassToBody);
 };
 
 function viewportSize() {
@@ -15,4 +16,9 @@ function generateViewPortContent(viewportSize) {
           + 'maximum-scale=' + viewportSize + ', '
           + 'minimum-scale=' + viewportSize + ', '
           + 'width=device-width, height=device-height, target-densitydpi=device-dpi';
+}
+
+function addRouteClassToBody() {
+    var routeName = Router.current().route.getName();
+    $('body').addClass(routeName);
 }

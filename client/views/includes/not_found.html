@@ -1,30 +1,48 @@
 <template name='notFound'>
   <main>
-    <img src='/images/logo_circle_large.png' />
-    <h1>404</h1>
-    <h2>Uh oh, looks like you took a wrong turn</h2>
+    <img class="top-img" src='/images/404_1.svg' />
+    <img class="bottom-img" src='/images/404_2.svg' />
   </main>
 
   <style>
     main {
       width: 100%;
-      padding: 75px;
       text-align: center;
-      color: white;
+      background-color: #243540;
     }
 
     img {
-      width: 350px;
-      height: 350px;
-      margin: auto;
+      width: 94%;
+      margin-left: 3%;
+      margin-right: 3%;
     }
 
-    h1 {
-      font-size: 50px;
+    .top-img {
+      max-width: 800px;
+      margin-top: 8%;
     }
 
-    h2 {
-      font-weight: normal;
+    .bottom-img {
+      max-width: 1000px;
+      margin-top: 25px;
+    }
+
+    @media all and (max-width: 600px)  {
+      .top-img {
+        margin-top: 30%;
+      }
+    }
+
+    @media all and (max-width: 800px)  {
+      .top-img {
+        margin-top: 20%;
+      }
+    }
+
+    @media all and (max-width: 1000px)  {
+      .top-img {
+        margin-top: 15%;
+      }
     }
   </style>
 </template>

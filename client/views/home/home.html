@@ -1,42 +1,49 @@
 <template name='home'>
   <div class="home" id="homer">
     <div class='top' data-0="bottom[swing]:0vh;" data-1200="bottom:100vh;">
-      <img src="/images/logo_main.svg">
-      <div class="find-container button" >
-        <div id="find">find</div>
-        <div id="nearClouds">
-          {{#each clouds }}
-            {{#linkTo route='app' cloudId=_id class='cloud' }}
-              <span class='cloud-name'>{{ name }}</span>
-              <span class='cloud-distance'>{{ cloudDistance }}</span>
-            {{/linkTo}}
-          {{else}}
-            <div id='no-clouds-msg'> {{ noCloudsMsg }} </div>
-          {{/each}}
-        </div>
-        <div class="fc-input-group group-init">
-          <input class="fc-input" type="tel" placeholder="OR ask a friend for the ID">
+      <div class="top-inner">
+        <img src="/images/logo_main.svg">
+        <div class="find-container button" >
+          <div id="find">find</div>
+          <div id="nearClouds">
+            {{#each clouds }}
+              {{#linkTo route='app' cloudId=_id class='cloud' }}
+                <span class='cloud-name'>{{ name }}</span>
+                <span class='cloud-distance'>{{ cloudDistance }}</span>
+              {{/linkTo}}
+            {{else}}
+              <div id='no-clouds-msg'> {{ noCloudsMsg }} </div>
+            {{/each}}
+          </div>
+          <div class="fc-input-group group-init">
+            <input id="find-in" class="fc-input" type="tel" placeholder="OR ask a friend for the ID">
 
-          <div class="fc-button" id="find-btn">Go</div>
+            <div class="fc-button" id="find-btn">Go</div>
+          </div>
         </div>
-      </div>
-      <div class="create-container button">
-        <div id="create">create</div>
-        <div class="fc-input-group group-init">
-          <input id='create-name' class="fc-input" placeholder="Name your playlist">
+        <div class="create-container button">
+          <div id="create">create</div>
+          <div class="fc-input-group group-init">
+            <input id='create-name' class="fc-input" placeholder="Name your playlist">
 
-          <div class="fc-button" id="create-btn">Go</div>
+            <div class="fc-button" id="create-btn">Go</div>
+          </div>
+        </div>
+        <div class="back-container back-init">
+          <img id='back-arrow' src="/images/back_arrow.svg">
+        </div>
+        <div class="fc-toggle group-init">
+          <div class="fc-toggle-btn">Public</div>
         </div>
       </div>
-      <div class="back-container group-init">
-        <img id='back-arrow' src="/images/back_arrow.svg">
-      </div>
-      <div class="fc-toggle group-init">
-        <div class="fc-toggle-btn">Public</div>
-      </div>
+        <div class="go-down" onclick="$('html, body').animate({ scrollTop: 1200 }, 1000);">
+          <p>learn more</p>
+          <img class="i-chevron" src="/images/chevron.svg">
+        </div>
       <img id='cave' src="/images/cave.svg">
     </div>
     <div class="bottom">
+      <div class="bottom-inner">
       <div class="ribbon" data-start="top[swing]:90vh;" data-1200="top:20vh;">
         <img class="ribbon-back" src="/images/ribbon_back.svg">
         <img class="ribbon-front" src="/images/ribbon_front.svg">
@@ -67,7 +74,7 @@
       <script type="text/javascript">
         var s = skrollr.init();
       </script>
-
+        </div>
     </div>
   </div>
 </template>

@@ -12,6 +12,7 @@ Template.home.rendered = function() {
     self.backCon        = this.$('.back-container');
     self.toggle         = this.$('.fc-toggle');
     self.toggleBtn      = this.$('.fc-toggle-btn');
+    self.findIn         = this.$('#find-in');
     self.publicTog      = true;
     self.nearClouds     = this.$('#nearClouds');
 
@@ -61,7 +62,7 @@ function findClicked() {
 
     self.findG.removeClass('group-init');
     self.createG.removeClass('group-init');
-    self.backCon.removeClass('group-init');
+    self.backCon.removeClass('back-init');
 
     self.findG.addClass('fc-appear');
     self.findG.removeClass('fc-disappear');
@@ -85,7 +86,7 @@ function createClicked() {
     self.findG.removeClass('group-init');
     self.createG.removeClass('group-init');
     self.toggle.removeClass('group-init');
-    self.backCon.removeClass('group-init');
+    self.backCon.removeClass('back-init');
 
     self.findG.removeClass('fc-appear');
     self.findG.addClass('fc-disappear');
@@ -110,7 +111,9 @@ function toggleClicked() {
 }
 
 function findGo() {
-
+    Meteor.call('findCloud', self.findIn.val(), function(error, cloud) {
+        alert("heellloo");
+    });
 }
 
 function createGo() {
@@ -143,8 +146,10 @@ function backClicked() {
 
     self.findG.addClass('group-init');
     self.createG.addClass('group-init');
-    self.toggle.addClass('group-init');
-    self.backCon.addClass('group-init');
+    self.backCon.addClass('back-init');
+
+    self.toggle.removeClass('fc-appear');
+    self.toggle.addClass('fc-disappear');
 
     self.image.removeClass('finded');
     self.backCon.removeClass('finded-b');
