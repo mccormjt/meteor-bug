@@ -111,8 +111,12 @@ function toggleClicked() {
 }
 
 function findGo() {
-    Meteor.call('findCloud', self.findIn.val(), function(error, cloud) {
-        alert("heellloo");
+    Meteor.call('findCloudById', self.findIn.val(), function(error, cloud) {
+        if(cloud) {
+            Router.go('app', {cloudId: cloud._id});
+        } else {
+            alert("no cloud sir..");
+        }
     });
 }
 

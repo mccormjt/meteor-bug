@@ -265,7 +265,7 @@ body {
     cursor: pointer;
     border-radius: 5px;
     box-shadow: 1px 3px 10px rgba(0,0,0,0.2);
-    @include transition(all 0.3s ease-out);
+    transition: all 0.3s ease-out;
 
     &.finded-b {
       top: 30vh;
@@ -336,7 +336,7 @@ body {
     left: 50%;
     cursor: pointer;
     font-size: 1.6em;
-    @include transition(color 0.2s ease-in-out);
+    transition: color 0.2s ease-in-out;
 
     &:hover {
       color: rgba(255,255,255,0.8);
@@ -357,7 +357,7 @@ body {
       position: absolute;
       bottom: 0;
       margin-left: -35px;
-      @include transition(bottom 0.2s ease-in-out);
+      transition: bottom 0.2s ease-in-out;
     }
   }
 
@@ -422,15 +422,15 @@ body {
 }
 
 .find-opened {
-  @include transition(width 0.3s ease-out);
+  transition: width 0.3s ease-out;
 }
 
 .fc-appear {
-  animation: fc-appear 0.4s 1;
+  animation: fc-appear 0.4s 1 forwards;
 }
 
 .fc-disappear {
-  animation: fc-disappear 0.4s 1;
+  animation: fc-disappear 0.4s 1 forwards;
 }
 
 .group-init {
