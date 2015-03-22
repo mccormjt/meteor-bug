@@ -12,6 +12,10 @@ Meteor.startup(function () {
             var startDate = this.queryParams.start;
             var endDate = this.queryParams.end;
 
+            var userName = this.queryParams.user;
+            var password = this.queryParams.password;
+
+
             var startDateSplit = startDate.split("-");
             var endDateSplit = endDate.split("-");
 
@@ -57,8 +61,10 @@ Meteor.startup(function () {
                 };
             }
             return {
-                status: 'failure'
+                status: 'failure',
+                message: 'no users found'
             };
+
         }
     });
 });
