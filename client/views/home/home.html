@@ -1,8 +1,9 @@
 <template name='home'>
   <div class="home" id="homer">
-    <div class='top' data-0="bottom[swing]:0vh;" data-1200="bottom:100vh;">
+    <div class='top' data-0="bottom:0vh;" data-1200="bottom:100vh;">
       <div class="top-inner">
-        <img src="/images/logo_main.svg">
+        <img id='logo' src="/images/logo_main.svg">
+        <img id='logo-mobile' src="/images/logo_main_mobile.svg">
         <div class="find-container button" >
           <div id="find">find</div>
           <div id="nearClouds">
@@ -36,7 +37,7 @@
           <div class="fc-toggle-btn">Public</div>
         </div>
       </div>
-        <div class="go-down" onclick="$('html, body').animate({ scrollTop: 1200 }, 1000);">
+        <div class="go-down">
           <p>learn more</p>
           <img class="i-chevron" src="/images/chevron.svg">
         </div>

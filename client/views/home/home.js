@@ -39,7 +39,8 @@ Template.home.events({
     'click .fc-toggle'          : toggleClicked,
     'click #find-btn'           : findGo,
     'click #create-btn'         : createGo,
-    'click .back-container'     : backClicked
+    'click .back-container'     : backClicked,
+    'click .go-down'            : scrollToLand
 });
 
 function getClouds() {
@@ -165,4 +166,8 @@ function backClicked() {
 
     self.image.removeClass('finded');
     self.backCon.removeClass('finded-b');
+}
+
+function scrollToLand() {
+    $('html, body').animate({ scrollTop: 1200 }, 1000);
 }
