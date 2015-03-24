@@ -1,4 +1,5 @@
-var self;
+var self,
+    SCROLL_CLASS = 'scroll-y';
 
 Template.home.rendered = function() {
     self = this;
@@ -16,7 +17,14 @@ Template.home.rendered = function() {
     self.publicTog      = true;
     self.nearClouds     = this.$('#nearClouds');
 
+    $('html').addClass(SCROLL_CLASS);
+    self.skrollr = skrollr.init();
     self.autorun(subcribeToNearClouds);
+};
+
+Template.home.destroyed = function() {
+    self.skrollr.destroy();
+    $('html').removeClass(SCROLL_CLASS);
 };
 
 Template.home.helpers({
