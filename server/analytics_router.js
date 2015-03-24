@@ -9,12 +9,9 @@ Meteor.startup(function () {
 
     Restivus.addRoute('userstats', {
         get: function () {
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             var startDate = this.queryParams.start;
-            var endDate = this.queryParams.end;
-
-            var userName = this.queryParams.user;
-            var password = this.queryParams.password;
-
+            var endDate = this.queryParams.end
 
             var startDateSplit = startDate.split("-");
             var endDateSplit = endDate.split("-");
@@ -30,40 +27,65 @@ Meteor.startup(function () {
             var endMonth = endDateSplit[0].trim() - 1;
             var endDay = endDateSplit[1].trim();
             end.setFullYear(endYear, endMonth, endDay);
-            var users = Meteor.users.find({
-                'createdAt': {
-                    $gte: new Date(start),
-                    $lt: new Date(end)
+
+            var userData = [];
+            var tempUserData = [];
+            var loggedUserData = [];
+            var accumUsersData = [];
+            var labels = [];
+
+            while (start < end) {
+
+                var newEnd = new Date();
+                newEnd.setDate(start.getDate() + 7);
+
+                labels.push(start.getDate() + " " + monthNames[start.getMonth()] + " " + start.getFullYear());
+
+                var users = Meteor.users.find({
+                    'createdAt': {
+                        $gte: new Date(start),
+                        $lt: new Date(newEnd)
+                    }
+                }).fetch();
+
+
+                var totalUsers = 0;
+                var tempUsers = 0;
+                var loggedUsers = 0;
+                for (var i = 0; i < users.length; i++) {
+                    var user = users[i];
+                    totalUsers++;
+                    if (user.profile.isTempUser) {
+                        tempUsers++;
+                    } else {
+                        loggedUsers++;
+                    }
                 }
-            }).fetch();
 
-            var totalUsers = 0;
-            var tempUsers = 0;
-            var loggedUsers = 0;
+                userData.push(totalUsers);
+                tempUserData.push(tempUsers);
+                loggedUserData.push(loggedUsers);
 
-            for (var i = 0; i < users.length; i++) {
-                var user = users[i];
-                totalUsers++;
-                if (user.profile.isTempUser) {
-                    tempUsers++;
+                if (accumUsersData.length == 0) {
+                    accumUsersData.push(totalUsers);
                 } else {
-                    loggedUsers++;
+                    var acc = accumUsersData[accumUsersData.length - 1];
+                    acc = acc + totalUsers;
+                    accumUsersData.push(acc);
                 }
+
+                start.setDate(start.getDate() + 7);
             }
 
-
-            if (totalUsers > 0) {
-                return {
-                    status: 'success',
-                    totalUsers: totalUsers,
-                    tempUsers: tempUsers,
-                    loggedUsers: loggedUsers
-                };
-            }
             return {
-                status: 'failure',
-                message: 'no users found'
+                status: 'success',
+                totalUsers: userData,
+                tempUsers: tempUserData,
+                loggedUsers: loggedUserData,
+                accTotalUsers: accumUsersData,
+                labels: labels
             };
+
 
         }
     });
