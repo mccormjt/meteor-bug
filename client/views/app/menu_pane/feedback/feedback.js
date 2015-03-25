@@ -9,7 +9,8 @@ Template.feedback.rendered = function() {
 };
 
 Template.feedback.events({
-    'submit form': submitFeedback
+    'submit form':     submitFeedback,
+    'keyup textarea':  Util.stopEventPropagation
 });
 
 function submitFeedback() {
