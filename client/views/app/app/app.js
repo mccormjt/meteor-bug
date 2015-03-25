@@ -1,13 +1,14 @@
 var self;
     paneShiftAmount  = '415px',
-    animateTime      = 300,
-    isMenuPaneOpen   = false,
-    isUsersPaneOpen  = false;
+    animateTime      = 300;
 
 Template.app.created = function() {
     self = this;
+    self.isMenuPaneOpen  = false,
+    self.isUsersPaneOpen = false;
     HashChanger.listenFor('menu', openMenuPane, closeMenuPane);
     HashChanger.listenFor('contributors', openUsersPane, closeUsersPane);
+    
 }
 
 Template.app.rendered = function() {
@@ -35,22 +36,22 @@ Template.app.events({
 });
 
 function openMenuPane() {
-    isMenuPaneOpen = true;
+    self.isMenuPaneOpen = true;
     toggleAppPane(self.menuPane, paneShiftAmount, 'fadeIn');
 }
 
 function openUsersPane() {
-    isUsersPaneOpen = true;
+    self.isUsersPaneOpen = true;
     toggleAppPane(self.usersPane, '-' + paneShiftAmount, 'fadeIn');
 }
 
 function closeMenuPane() {
-    isMenuPaneOpen = false;
+    self.isMenuPaneOpen = false;
     toggleAppPane(self.menuPane, '0', 'fadeOut');
 }
 
 function closeUsersPane() {
-    isUsersPaneOpen = false;
+    self.isUsersPaneOpen = false;
     toggleAppPane(self.usersPane, '0', 'fadeOut');
 }
 
@@ -60,17 +61,17 @@ function toggleAppPane(pane, shiftAppTo, fadeDirection) {
 }
 
 function shiftAppLeft() {
-    if (isUsersPaneOpen) {
+    if (self.isUsersPaneOpen) {
         HashChanger.clearHash();
-    } else if (!isMenuPaneOpen) {
+    } else if (!self.isMenuPaneOpen) {
          HashChanger.hashSetterFnFor('menu')();
     }
 }
 
 function shiftAppRight() {
-    if (isMenuPaneOpen) {
+    if (self.isMenuPaneOpen) {
         HashChanger.clearHash();
-    } else if (!isUsersPaneOpen) {
+    } else if (!self.isUsersPaneOpen) {
         HashChanger.hashSetterFnFor('contributors')();
     }
 }
