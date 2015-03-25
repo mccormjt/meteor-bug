@@ -8,7 +8,6 @@ Template.app.created = function() {
     self.isUsersPaneOpen = false;
     HashChanger.listenFor('menu', openMenuPane, closeMenuPane);
     HashChanger.listenFor('contributors', openUsersPane, closeUsersPane);
-    
 }
 
 Template.app.rendered = function() {
