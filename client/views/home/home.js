@@ -17,9 +17,25 @@ Template.home.rendered = function() {
     self.publicTog      = true;
     self.nearClouds     = this.$('#nearClouds');
 
+    if(!window.isMobileDevice()) {
+        if ($(window).width() < 1100) {
+            setByWidth(true); // this sets the skrollr attributes for medium browser sizes
+        } else {
+            setByWidth(false); // this sets it for larger/fullscreen browser sizes
+        }
+    }
+
     $('html').addClass(SCROLL_CLASS);
     self.skrollr = skrollr.init();
     self.autorun(subcribeToNearClouds);
+
+    if(window.isMobileDevice()) {
+        this.$('.home').addClass('on-mobile');
+        self.find.html('');
+        self.findCon.addClass('btn-expand');
+        self.findG.removeClass('group-init');
+        self.findG.addClass('fc-appear');
+    }
 };
 
 Template.home.destroyed = function() {
@@ -43,6 +59,32 @@ Template.home.events({
     'click .go-down'            : scrollToLand
 });
 
+function setByWidth(width) {
+    if(width) { // medium width (half-screenish)
+        $(".ribbon").attr("data-1200", "top:20vh;");
+        $("#a-queue").attr("data-1200", "opacity:1;top:calc(20vh + 12vw);");
+        $("#a-queue").attr("data-2200", "opacity:1;top:calc(20vh + 12vw);");
+        $("#i-song1").attr("data-1800", "top[swing]:3.5vw;");
+        $("#i-song1").attr("data-2000", "top:13.5vw;");
+        $("#i-song2-1").attr("data-1750", "top:13.5vw; opacity:!1;");
+        $("#i-song2-2").attr("data-1800", "top[swing]:13.5vw;");
+        $("#i-song2-2").attr("data-2000", "top:3.5vw;");
+        $("#i-mouse").attr("data-1700", "left:75vw;top:calc(20vh + 27.2vw);");
+        $("#i-phone").attr("data-2600", "top:calc(20vh + 18.5vw);");
+    } else { // large width (full-screenish)
+        $(".ribbon").attr("data-1200", "top:20vh;");
+        $("#a-queue").attr("data-1200", "opacity:1;top:calc(20vh + 9vw);");
+        $("#a-queue").attr("data-2200", "opacity:1;top:calc(20vh + 9vw);");
+        $("#i-song1").attr("data-1800", "top[swing]:2.7vw;");
+        $("#i-song1").attr("data-2000", "top:10vw;");
+        $("#i-song2-1").attr("data-1750", "top:10vw; opacity:!1;");
+        $("#i-song2-2").attr("data-1800", "top[swing]:10vw;");
+        $("#i-song2-2").attr("data-2000", "top:2.7vw;");
+        $("#i-mouse").attr("data-1700", "left:68vw;top:calc(20vh + 20.2vw);");
+        $("#i-phone").attr("data-2600", "top:calc(20vh + 14.5vw);");
+    }
+}
+
 function getClouds() {
     return Clouds.find();
 }
@@ -54,7 +96,7 @@ function cloudDistance() {
 
 function getNoCloudsMsg() {
     if (getClouds().count() === 0) {
-        return 'Sorry, no clouds nearby :(';
+        return 'Loading public playlists near you';
     } else {
         return Geolocation.error().message;
     }
@@ -62,26 +104,28 @@ function getNoCloudsMsg() {
 
 
 function findClicked() {
-    self.find.html('');
-    self.create.html('');
-    self.findCon.removeClass('btn-fade');
-    self.createCon.addClass('btn-fade');
-    self.findCon.addClass('btn-expand');
-    self.createCon.removeClass('btn-expand');
+    if(!window.isMobileDevice()) {
+        self.find.html('');
+        self.create.html('');
+        self.findCon.removeClass('btn-fade');
+        self.createCon.addClass('btn-fade');
+        self.findCon.addClass('btn-expand');
+        self.createCon.removeClass('btn-expand');
 
-    self.findG.removeClass('group-init');
-    self.createG.removeClass('group-init');
-    self.backCon.removeClass('back-init');
+        self.findG.removeClass('group-init');
+        self.createG.removeClass('group-init');
+        self.backCon.removeClass('back-init');
 
-    self.findG.addClass('fc-appear');
-    self.findG.removeClass('fc-disappear');
-    self.createG.removeClass('fc-appear');
-    self.createG.addClass('fc-disappear');
-    self.toggle.removeClass('fc-appear');
-    self.toggle.addClass('fc-disappear');
+        self.findG.addClass('fc-appear');
+        self.findG.removeClass('fc-disappear');
+        self.createG.removeClass('fc-appear');
+        self.createG.addClass('fc-disappear');
+        self.toggle.removeClass('fc-appear');
+        self.toggle.addClass('fc-disappear');
 
-    self.image.addClass('finded');
-    self.backCon.addClass('finded-b');
+        self.image.addClass('finded');
+        self.backCon.addClass('finded-b');
+    }
 }
 
 function createClicked() {
@@ -169,5 +213,5 @@ function backClicked() {
 }
 
 function scrollToLand() {
-    $('html, body').animate({ scrollTop: 1200 }, 1000);
+    self.skrollr.animateTo(1200);
 }

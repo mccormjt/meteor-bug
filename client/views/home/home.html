@@ -1,6 +1,6 @@
 <template name='home'>
   <div class="home" id="homer">
-    <div class='top' data-0="bottom:0vh;" data-1200="bottom:100vh;">
+    <div class='top' data-0="bottom[swing]:0vh;" data-1200="bottom:100vh;">
       <div class="top-inner">
         <img id='logo' src="/images/logo_main.svg">
         <img id='logo-mobile' src="/images/logo_main_mobile.svg">
@@ -39,13 +39,13 @@
       </div>
         <div class="go-down">
           <p>learn more</p>
-          <img class="i-chevron" src="/images/chevron.svg">
+          <img class="i-chevron" id="i-chev" src="/images/chevron.svg">
         </div>
       <img id='cave' src="/images/cave.svg">
     </div>
     <div class="bottom">
       <div class="bottom-inner">
-        <div class="ribbon" data-start="top[swing]:90vh;" data-1200="top:20vh;">
+        <div class="ribbon" data-start="top[swing]:90vh;" data-1200="top:15vh;">
           <img class="ribbon-back" src="/images/ribbon_back.svg">
           <img class="ribbon-front" src="/images/ribbon_front.svg">
           <div class="ribbon-title" data-1550="opacity:1;" data-1650="opacity:0;">
@@ -62,16 +62,16 @@
             <div class="r-info">Playlist admins can change the volume, skip,
               or pause the song all from their mobile device!</div>
           </div>
-          <div id="a-queue" data-500="opacity:0.7;top[swing]:calc(100vh + 0vw);" data-1200="opacity:1;top:calc(20vh + 12vw);" data-2000="opacity:1;top:calc(20vh + 12vw);" data-2400="opacity:0.7;top[swing]:calc(80vh + 0vw);">
+          <div id="a-queue" data-500="opacity:0.7;top[swing]:calc(100vh + 0vw);" data-1200="opacity:1;top:calc(15vh + 24vw);" data-2200="opacity:1;top:calc(15vh + 24vw);" data-2800="opacity:0.7;top[swing]:calc(100vh + 0vw);">
             <img id="i-queue" src="/images/queue.svg">
-            <img id="i-song1" src="/images/song1.svg" data-1600="top[swing]:3.5vw;" data-1800="top:13.5vw;">
-            <img class="i-song2" src="/images/song2.svg" data-1550="opacity:!1;" data-1551="opacity:!0;">
-            <img class="i-song2" src="/images/song2a.svg" data-1550="opacity:!0;" data-1551="opacity:!1;" data-1600="top[swing]:13.5vw;" data-1800="top:3.5vw;">
+            <img id="i-song1" src="/images/song1.svg" data-1800="top[swing]:4.67vw;" data-2000="top:18vw;">
+            <img class="i-song2" id='i-song2-1' src="/images/song2.svg" data-1750="top:18vw; opacity:!1;" data-1751="opacity:!0;">
+            <img class="i-song2" id='i-song2-2' src="/images/song2a.svg" data-1750="opacity:!0;" data-1751="opacity:!1;" data-1800="top[swing]:18vw;" data-2000="top:4.67vw;">
           </div>
         </div>
 
-        <img id="i-mouse" src="/images/mouse.svg" data-1200="left[swing]:110vw;top[swing]:calc(70vh + 0vw);" data-1500="left:75vw;top:calc(20vh + 27.2vw);" data-1700="opacity:1;" data-1800="opacity:0;">
-        <img id="i-phone" src="/images/phone.svg" data-2000="top[swing]:calc(110vh + 0vw);" data-2400="top:calc(20vh + 18.5vw);">
+        <img id="i-mouse" src="/images/mouse.svg" data-1200="left[swing]:-10vw;top[swing]:calc(80vh + 0vw);" data-1700="left:82vw;top:calc(15vh + 44.2vw);" data-1800="opacity:1;" data-1900="opacity:0;">
+        <img id="i-phone" src="/images/phone.svg" data-2000="top[swing]:calc(110vh + 0vw);" data-2600="top:calc(15vh + 28.5vw);">
       </div>
     </div>
   </div>
