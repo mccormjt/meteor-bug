@@ -48,8 +48,9 @@ if (Meteor.isClient) {
 }
 
 
-Meteor.users.isValidUsername = function(username) {
-    return username != Meteor.user().username && username.length >= 4;
+Meteor.users.isValidUsernameFormat = function(username) {
+    username = username.trim();
+    return username.length >= 4;
 }
 
 function setUserCloud(cloudId) {
@@ -84,7 +85,7 @@ function createTempUser() {
 
 function updateUsername(name) {
     check(name, String);
-    if (!Meteor.users.isValidUsername(name)) return;
+    if (!Meteor.users.isValidUsernameFormat(name)) return;
 
     name = name.trim().replace(/\s+/g, '-');
     var uniqueName = getUniqueUsernameFrom(name);

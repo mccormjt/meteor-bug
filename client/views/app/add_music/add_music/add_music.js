@@ -27,7 +27,7 @@ Template.addMusic.events({
     'click .previous-songs-mode:not(.active)':     toggleAddMusicMode,
     'click .search-songs-mode:not(.active)':       toggleAddMusicMode,
     'focus input, blur input':                     toggleSearchFocusClass,
-    'keyup input':                                 Util.stopEventPropagation,
+    'keyup input':                                 Util.stopEventPropagation
 });
 
 function toggleAddMusicStateHash() {
