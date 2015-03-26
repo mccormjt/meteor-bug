@@ -25,6 +25,7 @@ CloudUsers.prefixedKarma = function(karma) {
 function ensureCloudUser(isOwner, cloudId) {
     cloudId = cloudId || App.cloudId();
     check(cloudId, String);
+    
     var user        = Meteor.user(),
         query       = getCloudUserQuery(user._id, cloudId),
         cloudUser   = CloudUsers.findOne(query);
