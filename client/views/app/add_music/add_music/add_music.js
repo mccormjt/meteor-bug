@@ -27,7 +27,7 @@ Template.addMusic.events({
     'click .previous-songs-mode:not(.active)':     toggleAddMusicMode,
     'click .search-songs-mode:not(.active)':       toggleAddMusicMode,
     'focus input, blur input':                     toggleSearchFocusClass,
-    'keyup input':                                 Util.stopEventPropagation,
+    'keyup input':                                 Util.stopEventPropagation
 });
 
 function toggleAddMusicStateHash() {
@@ -46,7 +46,7 @@ function toggleMusicPane(topVal, isOpen) {
     clearMusicPane();
     self.isAddMusicPaneOpen = isOpen;
     self.musicPane.toggleClass(ACTIVE_CLASS, isOpen)
-                  .velocity({ top: topVal }, { duration: 325, easing: 'ease' });
+        .velocity({ top: topVal }, { duration: 325, easing: 'ease' });
 }
 
 function clearMusicPane() {

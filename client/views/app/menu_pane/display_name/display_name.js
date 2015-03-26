@@ -5,13 +5,14 @@ Template.displayName.rendered = function() {
     self = this;
     self.displayNameHolder = self.$('.display-name-holder');
     self.displayName       = self.$('input', self.displayNameHolder);
-    self.autorun(updateDisplayName);
+    self.autorun(updateDisplayNameInputField);
     setupDisplayNameTypeWatch();
 };
 
 Template.displayName.events({
     'focus input': startEditingDisplayName,
-    'blur  input': stopEditingDisplayName
+    'blur  input': stopEditingDisplayName,
+    'keyup input': Util.stopEventPropagation
 });
 
 
@@ -23,8 +24,8 @@ function setupDisplayNameTypeWatch() {
     });
 
     function toggleIsValidUsernameClass() {
-        var isValidUsername = Meteor.users.isValidUsername(self.displayName.val());
-        self.displayNameHolder.toggleClass('invalid', !isValidUsername);
+        var isValidUsernameFormat = Meteor.users.isValidUsernameFormat(self.displayName.val());
+        self.displayNameHolder.toggleClass('invalid', !isValidUsernameFormat);
     }
 }
 
@@ -33,23 +34,32 @@ function startEditingDisplayName() {
 }
 
 function stopEditingDisplayName() {
-    var username = self.displayName.val();
+    var username      = self.displayName.val().trim(),
+        isValidFormat = Meteor.users.isValidUsernameFormat(username),
+        isValidUpdate = isValidFormat && username != getCurrentUsername();
+
     self.displayNameHolder.removeClass(EDITING_NAME_CLASS + ' invalid');
 
-    if (Meteor.users.isValidUsername(username)) {
+    if (isValidUpdate) {
         Meteor.call('updateUsername', username);
         self.displayNameHolder.addClass('saving');
         clearTimeout(self.savingTimer);
         self.savingTimer = setTimeout(function() {
             self.displayNameHolder.removeClass('saving');
         }, 1500);
+    } else {
+        self.displayName.val(getCurrentUsername());
     }
 }
 
-function updateDisplayName() {
-    var username           = Meteor.user() && Meteor.user().username,
+function updateDisplayNameInputField() {
+    var username           = getCurrentUsername(),
         userNameHasChanged = username != self.displayName.val(),
         allowedToUpdate    = userNameHasChanged && !self.displayNameHolder.hasClass(EDITING_NAME_CLASS);
 
     allowedToUpdate && self.displayName.val(username);
+}
+
+function getCurrentUsername() {
+    return Meteor.user() && Meteor.user().username;
 }
