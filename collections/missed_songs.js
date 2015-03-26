@@ -15,11 +15,11 @@ MissedSongs.reportMissedSong = Util.wrapMeteorMethod("reportMissedSong");
 
 function reportMissedSong(groovesharkSongId) {
     check(groovesharkSongId, String);
-
     var query = { groovesharkSongId: groovesharkSongId };
     var modification = { $inc: { count: 1 } };
+    var options = { upsert: true };
 
-    MissedSongs.upsert(query, modification);
+    MissedSongs.update(query, modification, options);
 }
 
 function filterOutMissedSongs(results) {

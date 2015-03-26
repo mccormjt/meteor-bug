@@ -99,10 +99,11 @@ function loadSong(song) {
     Meteor.call('setCloudLoadingSongState', true);
     Meteor.call('setCloudNowPlayingSongId', song._id);
     self.lastStreamingLinkRequest && self.lastStreamingLinkRequest.abort();
-    
-    self.lastStreamingLinkRequest = Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
+
+    var successCallback = function(data) {
         if (song._id != App.cloud().nowPlayingSongId) return;
         var time = App.cloud().nowPlayingTime;
+
         self.player.src(data.stream_url, function() {
             setTimeout(function() {
                 Meteor.call('setCloudLoadingSongState', false);
@@ -110,7 +111,17 @@ function loadSong(song) {
                 updatePlayerPauseState();
             }, 300);
         });
-    });
+    };
+
+    var errorCallback = function (jqXhr, textReason, error) {
+        if (jqXhr.status >= 500) {
+            MissedSongs.reportMissedSong(song.groovesharkSongId);
+            Meteor.call('setCloudLoadingSongState', false);
+            skipNowPlayingSong();
+        }
+    }
+
+    self.lastStreamingLinkRequest = Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, successCallback, errorCallback);
 }
 
 

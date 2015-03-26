@@ -20,7 +20,7 @@ function setupDesktopPlayer(player, onendedFn, errorHandler) {
 
     audio.onerror = function() { errorHandler.handleError() };
 
-    player.play  = function() { audio.play()  };
+    player.play  = function() { audio.play() };
 
     player.pause = function() { audio.pause() };
 
