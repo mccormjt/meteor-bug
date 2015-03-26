@@ -46,7 +46,7 @@ function setupAudioPlayer() {
     self.player = new CrossPlayer(skipNowPlayingSong, reloadNowPlaying);
     self.autorun(ensureNowPlayingSrc);
     self.autorun(updatePlayerPauseState);
-  //  trackNowPlayingTime(); Makes app inefficeint and data is not used yet
+    // trackNowPlayingTime(); Makes app inefficeint and data is not used yet
     $(window).keyup(function onSpacebar(e) { e.keyCode == 32 && togglePauseState() });
 }
 

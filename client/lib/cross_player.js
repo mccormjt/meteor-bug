@@ -141,13 +141,20 @@ function playerErrorHandler(player, failedSongCallback, reloadCallback) {
         if (isHandling) {
             return;
         } else if (alreadyTriedHandling) {
-            alreadyTriedHandling = false;
             MissedSongs.reportMissedSong(App.cloud().nowPlayingSongId);
+            alreadyTriedHandling = false;
             failedSongCallback();
         } else {
-            isHandling = alreadyTriedHandling = true;
-            startResetTimer();
-            setTimeout(reloadCallback, 250); // in case of multiple error calls
+            player.getCurrentTime(function(currentTime) {
+                if (currentTime > 10 * 1000) {
+                    alreadyTriedHandling = false;
+                    failedSongCallback();
+                } else {
+                    isHandling = alreadyTriedHandling = true;
+                    startResetTimer();
+                    setTimeout(reloadCallback, 250); // in case of multiple error calls
+                }
+            });
         }
         Util.log('ERROR', error);
     };
