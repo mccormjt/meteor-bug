@@ -146,7 +146,7 @@ function playerErrorHandler(player, failedSongCallback, reloadCallback) {
             failedSongCallback();
         } else {
             player.getCurrentTime(function(currentTime) {
-                if (currentTime > 10 * 1000) {
+                if (currentTime > 10) {
                     alreadyTriedHandling = false;
                     failedSongCallback();
                 } else {
