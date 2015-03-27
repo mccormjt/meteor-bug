@@ -34,9 +34,12 @@ function initializeControls() {
     var playerControls = self.$('.player-controls');
     if (App.isAdmin()) {
         playerControls.fadeIn(300);
+        $('.controls').removeClass('slim');
         self.volumeSlider.rangeslider({ polyfill: false });
     } else {
         playerControls.hide();
+        self.volumeSlider = $('.volume-slider input');
+        $('.controls').addClass('slim');
         self.volumeSlider.rangeslider('destroy');
     }
 }

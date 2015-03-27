@@ -55,6 +55,13 @@
   .controls {
     background-color: $secondary-color;
     height: 55px;
+    overflow: hidden;
+    width: 100vw;
+    transition: all 0.3s ease-in-out;
+
+    &.slim {
+      height: 3px !important;
+    }
   }
 
   .now-playing {
