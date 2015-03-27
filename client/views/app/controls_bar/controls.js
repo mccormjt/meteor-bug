@@ -46,7 +46,7 @@ function setupAudioPlayer() {
     self.player = new CrossPlayer(skipNowPlayingSong, reloadNowPlaying);
     self.autorun(ensureNowPlayingSrc);
     self.autorun(updatePlayerPauseState);
-  //  trackNowPlayingTime(); Makes app inefficeint and data is not used yet
+    // trackNowPlayingTime(); Makes app inefficeint and data is not used yet
     $(window).keyup(function onSpacebar(e) { e.keyCode == 32 && togglePauseState() });
 }
 
@@ -96,22 +96,32 @@ function reloadNowPlaying() {
 
 
 function loadSong(song) {
-    if (self.isLoadingSong) return;
-    self.isLoadingSong = true;
     Meteor.call('setCloudLoadingSongState', true);
     Meteor.call('setCloudNowPlayingSongId', song._id);
-    Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, function(data) {
+    self.lastStreamingLinkRequest && self.lastStreamingLinkRequest.abort();
+
+    var successCallback = function(data) {
         if (song._id != App.cloud().nowPlayingSongId) return;
         var time = App.cloud().nowPlayingTime;
+
         self.player.src(data.stream_url, function() {
             setTimeout(function() {
-                self.isLoadingSong = false;
                 Meteor.call('setCloudLoadingSongState', false);
                 self.player.setCurrentTime(time);
                 updatePlayerPauseState();
             }, 300);
         });
-    });
+    };
+
+    var errorCallback = function (jqXhr, textReason, error) {
+        if (jqXhr.status >= 500) {
+            MissedSongs.reportMissedSong(song.groovesharkSongId);
+            Meteor.call('setCloudLoadingSongState', false);
+            skipNowPlayingSong();
+        }
+    }
+
+    self.lastStreamingLinkRequest = Backend.getGrooveSharkStreamingUrl(song.groovesharkSongId, successCallback, errorCallback);
 }
 
 

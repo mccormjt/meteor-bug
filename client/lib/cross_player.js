@@ -20,7 +20,7 @@ function setupDesktopPlayer(player, onendedFn, errorHandler) {
 
     audio.onerror = function() { errorHandler.handleError() };
 
-    player.play  = function() { audio.play()  };
+    player.play  = function() { audio.play() };
 
     player.pause = function() { audio.pause() };
 
@@ -141,13 +141,20 @@ function playerErrorHandler(player, failedSongCallback, reloadCallback) {
         if (isHandling) {
             return;
         } else if (alreadyTriedHandling) {
-            alreadyTriedHandling = false;
             MissedSongs.reportMissedSong(App.cloud().nowPlayingSongId);
+            alreadyTriedHandling = false;
             failedSongCallback();
         } else {
-            isHandling = alreadyTriedHandling = true;
-            startResetTimer();
-            setTimeout(reloadCallback, 250); // in case of multiple error calls
+            player.getCurrentTime(function(currentTime) {
+                if (currentTime > 10) {
+                    alreadyTriedHandling = false;
+                    failedSongCallback();
+                } else {
+                    isHandling = alreadyTriedHandling = true;
+                    startResetTimer();
+                    setTimeout(reloadCallback, 250); // in case of multiple error calls
+                }
+            });
         }
         Util.log('ERROR', error);
     };

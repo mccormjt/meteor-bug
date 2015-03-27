@@ -18,9 +18,9 @@ ddp@1.1.0
 deps@1.0.7
 ejson@1.0.6
 email@1.0.6
-facebook@1.1.4
+facebook@1.2.0
 fastclick@1.0.3
-fourseven:scss@2.0.1_4
+fourseven:scss@2.0.1_5
 geojson-utils@1.0.3
 html-tools@1.0.4
 htmljs@1.0.4
@@ -53,6 +53,7 @@ mobile-status-bar@1.0.3
 mongo@1.1.0
 mongo-livedata@1.0.8
 mrt:isolate-value@2.0.2
+nimble:restivus@0.6.2
 npm-bcrypt@0.7.8_1
 oauth@1.1.4
 oauth1@1.1.4
@@ -61,7 +62,7 @@ observe-sequence@1.0.5
 ordered-dict@1.0.3
 percolate:migrations@0.7.3
 percolate:momentum@0.7.2
-percolate:synced-cron@1.1.1
+percolate:synced-cron@1.2.0
 percolate:velocityjs@1.2.1_1
 pfafman:font-awesome-4@4.3.0
 random@1.0.3

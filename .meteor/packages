@@ -4,7 +4,6 @@
 # but you can also edit it by hand.
 
 meteor-platform
-iron:router
 chrismbeckett:fontawesome4
 pfafman:font-awesome-4
 mizzao:jquery-ui
@@ -24,3 +23,6 @@ email
 percolate:momentum
 fourseven:scss
 jabbslad:basic-auth
+iron:router
+nimble:restivus
+http

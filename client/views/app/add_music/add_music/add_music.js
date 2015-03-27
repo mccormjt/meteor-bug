@@ -46,7 +46,7 @@ function toggleMusicPane(topVal, isOpen) {
     clearMusicPane();
     self.isAddMusicPaneOpen = isOpen;
     self.musicPane.toggleClass(ACTIVE_CLASS, isOpen)
-                  .velocity({ top: topVal }, { duration: 325, easing: 'ease' });
+        .velocity({ top: topVal }, { duration: 325, easing: 'ease' });
 }
 
 function clearMusicPane() {
