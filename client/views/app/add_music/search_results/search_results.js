@@ -9,5 +9,5 @@ function getSearchResults() {
 
 function hasNoResults() {
     var results = getSearchResults();
-    return results && results.length;
+    return results && !results.length;
 }
