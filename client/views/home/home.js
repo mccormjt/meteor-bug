@@ -96,7 +96,7 @@ function cloudDistance() {
 
 function getNoCloudsMsg() {
     if (getClouds().count() === 0) {
-        return 'Loading public playlists near you';
+        return 'Loading public playlists near you...';
     } else {
         return Geolocation.error().message;
     }
