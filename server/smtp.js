@@ -3,7 +3,7 @@ var siteEmailAddress = 'crowdplay.fm@gmail.com';
 Meteor.startup(function () {
     smtp = {
         username: 'crowdplay.fm',
-        password: 'mus!cJammer36$!',
+        password: 'c94y8$F$5g5t#$',
         server:   'smtp.gmail.com',
         port: 465
     }
