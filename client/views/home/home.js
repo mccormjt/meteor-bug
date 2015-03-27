@@ -16,10 +16,30 @@ Template.home.rendered = function() {
     self.findIn         = this.$('#find-in');
     self.publicTog      = true;
     self.nearClouds     = this.$('#nearClouds');
+    self.errorMsg       = this.$('.error-msg');
+    self.findText       = 'find';
+    self.createText       = 'create';
+
+    if(!window.isMobileDevice()) {
+        if ($(window).width() < 1100) {
+            setByWidth(true); // this sets the skrollr attributes for medium browser sizes
+        } else {
+            setByWidth(false); // this sets it for larger/fullscreen browser sizes
+        }
+    }
 
     $('html').addClass(SCROLL_CLASS);
     self.skrollr = skrollr.init();
     self.autorun(subcribeToNearClouds);
+
+    if(window.isMobileDevice()) {
+        this.$('.home').addClass('on-mobile');
+        self.findText = 'find playlist near you';
+        self.find.html(self.findText);
+
+        this.$('#logo').hide();
+        this.$('#logo-mobile').show();
+    }
 };
 
 Template.home.destroyed = function() {
@@ -39,8 +59,35 @@ Template.home.events({
     'click .fc-toggle'          : toggleClicked,
     'click #find-btn'           : findGo,
     'click #create-btn'         : createGo,
-    'click .back-container'     : backClicked
+    'click .back-container'     : backClicked,
+    'click .go-down'            : scrollToLand
 });
+
+function setByWidth(width) {
+    if(width) { // medium width (half-screenish)
+        $(".ribbon").attr("data-1200", "top:20vh;");
+        $("#a-queue").attr("data-1200", "opacity:1;top:calc(20vh + 12vw);");
+        $("#a-queue").attr("data-2200", "opacity:1;top:calc(20vh + 12vw);");
+        $("#i-song1").attr("data-1800", "top[swing]:3.5vw;");
+        $("#i-song1").attr("data-2000", "top:13.5vw;");
+        $("#i-song2-1").attr("data-1750", "top:13.5vw; opacity:!1;");
+        $("#i-song2-2").attr("data-1800", "top[swing]:13.5vw;");
+        $("#i-song2-2").attr("data-2000", "top:3.5vw;");
+        $("#i-mouse").attr("data-1700", "left:75vw;top:calc(20vh + 27.2vw);");
+        $("#i-phone").attr("data-2600", "top:calc(20vh + 18.5vw);");
+    } else { // large width (full-screenish)
+        $(".ribbon").attr("data-1200", "top:20vh;");
+        $("#a-queue").attr("data-1200", "opacity:1;top:calc(20vh + 9vw);");
+        $("#a-queue").attr("data-2200", "opacity:1;top:calc(20vh + 9vw);");
+        $("#i-song1").attr("data-1800", "top[swing]:2.7vw;");
+        $("#i-song1").attr("data-2000", "top:10vw;");
+        $("#i-song2-1").attr("data-1750", "top:10vw; opacity:!1;");
+        $("#i-song2-2").attr("data-1800", "top[swing]:10vw;");
+        $("#i-song2-2").attr("data-2000", "top:2.7vw;");
+        $("#i-mouse").attr("data-1700", "left:68vw;top:calc(20vh + 20.2vw);");
+        $("#i-phone").attr("data-2600", "top:calc(20vh + 14.5vw);");
+    }
+}
 
 function getClouds() {
     return Clouds.find();
@@ -53,12 +100,11 @@ function cloudDistance() {
 
 function getNoCloudsMsg() {
     if (getClouds().count() === 0) {
-        return 'Sorry, no clouds nearby :(';
+        return 'No public playlists near you. Waiting for playlist to be created.';
     } else {
         return Geolocation.error().message;
     }
 }
-
 
 function findClicked() {
     self.find.html('');
@@ -96,6 +142,8 @@ function createClicked() {
     self.toggle.removeClass('group-init');
     self.backCon.removeClass('back-init');
 
+    self.toggle.show();
+
     self.findG.removeClass('fc-appear');
     self.findG.addClass('fc-disappear');
     self.createG.addClass('fc-appear');
@@ -119,22 +167,30 @@ function toggleClicked() {
 }
 
 function findGo() {
-    Meteor.call('findCloudById', self.findIn.val(), function(error, cloud) {
-        if(cloud) {
-            Router.go('app', {cloudId: cloud._id});
-        } else {
-            alert("no cloud sir..");
-        }
-    });
+    if(self.findIn.val().length == 0) {
+        displayError('Please type in the playlist ID');
+    } else {
+        Meteor.call('findCloudById', self.findIn.val(), function (error, cloud) {
+            if (cloud) {
+                Router.go('app', {cloudId: cloud._id});
+            } else {
+                displayError('That is not an active playlist');
+            }
+        });
+    }
 }
 
 function createGo() {
     var cloudName = self.$('#create-name').val();
-    Meteor.call('createCloud', cloudName, self.publicTog, getLocationCoords(), function(error, cloudId) {
-        Meteor.call('ensureCloudUser', true, cloudId, function() {
-            Router.go('app', { cloudId: cloudId });
+    if (cloudName == '') {
+        displayError('Please enter a playlist name');
+    } else {
+        Meteor.call('createCloud', cloudName, self.publicTog, getLocationCoords(), function (error, cloudId) {
+            Meteor.call('ensureCloudUser', true, cloudId, function () {
+                Router.go('app', {cloudId: cloudId});
+            });
         });
-    });
+    }
 }
 
 function subcribeToNearClouds() {
@@ -153,8 +209,8 @@ function backClicked() {
     self.findCon.removeClass('btn-expand');
     self.createCon.removeClass('btn-expand');
 
-    self.find.html('find');
-    self.create.html('create');
+    self.find.html(self.findText);
+    self.create.html(self.createText);
 
     self.findG.addClass('group-init');
     self.createG.addClass('group-init');
@@ -163,6 +219,24 @@ function backClicked() {
     self.toggle.removeClass('fc-appear');
     self.toggle.addClass('fc-disappear');
 
+    setTimeout(function () {
+        self.toggle.hide();
+    }, 600);
+
+
     self.image.removeClass('finded');
     self.backCon.removeClass('finded-b');
+}
+
+function scrollToLand() {
+    self.skrollr.animateTo(1200);
+}
+
+function displayError(message) {
+    self.errorMsg.html(message);
+    self.errorMsg.css('display', 'block');
+    self.errorMsg.css('animation', 'error-fade 2s');
+    setTimeout(function () {
+        self.errorMsg.css('display', 'none');
+    }, 2000);
 }
