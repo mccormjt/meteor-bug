@@ -9,7 +9,7 @@ if (Meteor.isServer) {
     SyncedCron.add({
         name:     'Soft Delete Clouds that have not been used in a while',
         schedule: function(parser) { return parser.text('every 1 hour') }, 
-        job:      function() { return softDeleteInactiveClouds(20) }
+        job:      function() { return softDeleteInactiveClouds(12) }
     });
 }
 
