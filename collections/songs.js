@@ -6,11 +6,12 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-    voteForCloudSong: voteForCloudSong,
-    upsertUserSongVotesIntoCloud: upsertUserSongVotesIntoCloud,
-    queueSong:   queueSong,
-    unqueueSong: unqueueSong,
-    skipNowPlayingSong: skipNowPlayingSong
+    voteForCloudSong:              voteForCloudSong,
+    upsertUserSongVotesIntoCloud:  upsertUserSongVotesIntoCloud,
+    queueSong:                     queueSong,
+    unqueueSong:                   unqueueSong,
+    skipNowPlayingSong:            skipNowPlayingSong,
+    incSongPlayCount:              incSongPlayCount
 });
 
 Songs.createSongGuid = function(songName, artistName) {
@@ -71,7 +72,7 @@ function findOrCreateSong(songName, artistName, groovesharkSongId) {
     var song = findCloudSong(guid);
 
     if (!song) {
-        song = { guid: guid, songName: songName, artistName: artistName, isQueued: false, priority: 0,
+        song = { guid: guid, songName: songName, artistName: artistName, isQueued: false, priority: 0, timesPlayed: 0,
                   timeQueued: null, groovesharkSongId: groovesharkSongId, cloudId: App.cloudId(), userVotes: {} };
         song._id = Songs.insert(song);
     }
@@ -91,11 +92,12 @@ function setIsQueued(songId, isQueued, priority, addedByUserId) {
     check(addedByUserId, String);
     var songParams = { isQueued: isQueued, addedByUserId: addedByUserId, priority: priority };
     isQueued && _.extend(songParams, { timeQueued: Date.now() });
-    Songs.update({ _id: songId }, { $set: songParams });
+    Songs.update(songId, { $set: songParams });
     Meteor.call('updateCloudActiveness');
 }
 
 function queueSong(songName, artistName, groovesharkSongId, priority) {
+    Util.unblockMeteorMethod(this);
     var song = findOrCreateSong(songName, artistName, groovesharkSongId);
     voteForCloudSong(song.guid, 1);
     Meteor.call('upsertUserSongVote', song, 1);
@@ -104,12 +106,19 @@ function queueSong(songName, artistName, groovesharkSongId, priority) {
 }
 
 function unqueueSong(songId) {
+    Util.unblockMeteorMethod(this);
     var song = Songs.findOne(songId);
     CloudUsers.update({ userId: song.addedByUserId, cloudId: App.cloudId() }, { $inc: { voteScore: Songs.voteCountFor(song) } }) 
     setIsQueued(songId, false, 0, '');
 }
 
+function incSongPlayCount(songId) {
+    Util.unblockMeteorMethod(this);
+    Songs.update(songId, { $inc: { timesPlayed: 1 } });
+}
+
 function voteForCloudSong(guid, newVote) {
+    Util.unblockMeteorMethod(this);
     check(guid, String);
     check(newVote, Match.OneOf(1, 0, -1));
 
@@ -121,6 +130,7 @@ function voteForCloudSong(guid, newVote) {
 }
 
 function upsertUserSongVotesIntoCloud() {
+    Util.unblockMeteorMethod(this);
     _.each(App.userSongVotes(), function(song) {
         var cloudSong = findOrCreateSong(song.songName, song.artistName, song.groovesharkSongId);
         voteForCloudSong(cloudSong.guid, song.vote);

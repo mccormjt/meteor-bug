@@ -49,7 +49,7 @@ function setupAudioPlayer() {
     self.player = new CrossPlayer(skipNowPlayingSong, reloadNowPlaying);
     self.autorun(ensureNowPlayingSrc);
     self.autorun(updatePlayerPauseState);
-    // trackNowPlayingTime(); Makes app inefficeint and data is not used yet
+    trackNowPlayingTime();
     $(window).keyup(function onSpacebar(e) { e.keyCode == 32 && togglePauseState() });
 }
 
@@ -75,7 +75,6 @@ function syncLocalVolumeFromMaster() {
         self.volumeSlider.val(cloudVolume).change();
     }
 }
-
 
 function ensureNowPlayingSrc(computation, reload) {
     var nowPlayingSongId = App.cloud().nowPlayingSongId;
@@ -105,6 +104,7 @@ function loadSong(song) {
 
     var successCallback = function(data) {
         if (song._id != App.cloud().nowPlayingSongId) return;
+        Meteor.call('incSongPlayCount', song._id);
         var time = App.cloud().nowPlayingTime;
 
         self.player.src(data.stream_url, function() {

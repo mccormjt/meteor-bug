@@ -28,9 +28,10 @@ function softDeleteClouds(cloudsToDeleteQuery) {
    var clouds = Clouds.find(cloudsToDeleteQuery).fetch();
     _.each(clouds, function(cloud) {
         var cloudQuery = { cloudId: cloud._id };
-        cloud.songs = Songs.find(cloudQuery).fetch();
+        cloud.songs = Songs.find(_.extend({ timesPlayed: { $gt: 0 } }, cloudQuery)).fetch();
         cloud.cloudUsers = CloudUsers.find(cloudQuery).fetch();
         InactiveClouds.insert(cloud);
+        
         Songs.remove(cloudQuery);
         CloudUsers.remove(cloudQuery);
         Clouds.remove(cloud._id);

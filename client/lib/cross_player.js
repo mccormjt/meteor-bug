@@ -145,18 +145,15 @@ function playerErrorHandler(player, failedSongCallback, reloadCallback) {
             alreadyTriedHandling = false;
             failedSongCallback();
         } else {
-            player.getCurrentTime(function(currentTime) {
-                if (currentTime > 10) {
-                    alreadyTriedHandling = false;
-                    failedSongCallback();
-                } else {
-                    isHandling = alreadyTriedHandling = true;
-                    startResetTimer();
-                    setTimeout(reloadCallback, 250); // in case of multiple error calls
-                }
-            });
+            if (App.cloud().nowPlayingTime > 10) {
+                alreadyTriedHandling = false;
+                failedSongCallback();
+            } else {
+                isHandling = alreadyTriedHandling = true;
+                startResetTimer();
+                setTimeout(reloadCallback, 250); // in case of multiple error calls
+            }
         }
-        Util.log('ERROR', error);
     };
 
     handler.reset = function() {
