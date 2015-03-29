@@ -49,7 +49,7 @@ function setupAudioPlayer() {
     self.player = new CrossPlayer(skipNowPlayingSong, reloadNowPlaying);
     self.autorun(ensureNowPlayingSrc);
     self.autorun(updatePlayerPauseState);
-    trackNowPlayingTime();
+  //  trackNowPlayingTime(); makes everthing slow and inefficient
     $(window).keyup(function onSpacebar(e) { e.keyCode == 32 && togglePauseState() });
 }
 
