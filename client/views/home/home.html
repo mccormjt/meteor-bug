@@ -13,7 +13,10 @@
                 <span class='cloud-distance'>{{ cloudDistance }}</span>
               {{/linkTo}}
             {{else}}
-              <div id='no-clouds-msg'> {{ noCloudsMsg }} </div>
+                {{#if isLoadingClouds }} 
+                  <img id='loading-clouds' src='/images/white_ajax_spinner.svg' /> 
+                {{/if}}
+                <div id='no-clouds-msg'> {{ noCloudsMsg }} </div>
             {{/each}}
           </div>
           <div class="fc-input-group group-init">

@@ -50,6 +50,7 @@ Template.home.destroyed = function() {
 Template.home.helpers({
     clouds          : getClouds,
     cloudDistance   : cloudDistance,
+    isLoadingClouds : isLoadingClouds,
     noCloudsMsg     : getNoCloudsMsg
 });
 
@@ -99,11 +100,19 @@ function cloudDistance() {
 }
 
 function getNoCloudsMsg() {
-    if (getClouds().count() === 0) {
-        return 'No public playlists near you. Waiting for playlist to be created.';
-    } else {
+    if (Geolocation.error()) {
         return Geolocation.error().message;
+    } 
+    else if (isLoadingClouds()) {
+        return 'Loading Playlists';
+    } 
+    else if (!Clouds.findOne()) {
+        return "Sorry, couldn't find any playlists near you :(";
     }
+}
+
+function isLoadingClouds() {
+    return !(Geolocation.error() || (Geolocation.latLng() && Template.instance().subscriptionsReady()));
 }
 
 function findClicked() {
