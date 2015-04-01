@@ -194,12 +194,7 @@ function createGo() {
     if (cloudName == '') {
         displayError('Please enter a playlist name');
     } else {
-        Meteor.call('createCloud', cloudName, self.publicTog, getLocationCoords(), function (error, cloudId) {
-            console.log('CLOUDID---AFTERRRR!!!!!!!!!', error, cloudId);
-            Meteor.call('ensureCloudUser', true, cloudId, function () {
-                Router.go('app', {cloudId: cloudId});
-            });
-        });
+        Router.go('app', {cloudId: _.random(1000, 99999999)});
     }
 }
 
