@@ -4,25 +4,9 @@
 # but you can also edit it by hand.
 
 meteor-platform
-chrismbeckett:fontawesome4
-pfafman:font-awesome-4
-mizzao:jquery-ui
-mizzao:bootstrap-3
-mrt:isolate-value
 accounts-password
-
 mdg:geolocation
-aldeed:console-me
-percolate:synced-cron
-percolate:migrations
-accounts-facebook
-service-configuration
-accounts-twitter
 reactive-var
-email
-percolate:momentum
 fourseven:scss
 jabbslad:basic-auth
 iron:router
-nimble:restivus
-http

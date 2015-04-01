@@ -53,9 +53,9 @@ Clouds.distanceFromCloud = function(cloud, location) {
 
 
 function createCloud(name, isPublic, location) {
+    Util.log('CREATE CLOUD!!!!!!!!!!!!!!');
         check(name, String);
         check(isPublic, Boolean);
-        Meteor.call('softDeleteUsersClouds');
 
         var mongoLocation;
         if (isPublic) {
