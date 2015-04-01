@@ -26,25 +26,6 @@ if (Meteor.isServer) {
         user.profile = mergedProfile;
         return user;
     });
-
-    Accounts.onLogin(function updateLoginCount(login) {
-        Meteor.users.update(login.user._id, { $inc: { 'profile.loginCount': 1 } });
-    });
-}
-
-if (Meteor.isClient) {
-    Meteor.startup(function() {
-        var lastLoggedInUserId = Meteor.userId();
-        Accounts.onLogin(switchUsers);
-
-        function switchUsers() {
-            if (App.cloudId() && lastLoggedInUserId) {
-                var switchUsersCallback = Util.wrapMeteorMethod('switchIntoAccountFrom', lastLoggedInUserId);
-                Meteor.call('setUserCloud', App.cloudId(), switchUsersCallback);
-            }
-            lastLoggedInUserId = Meteor.userId();
-        }
-    });
 }
 
 
