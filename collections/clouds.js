@@ -53,20 +53,12 @@ Clouds.distanceFromCloud = function(cloud, location) {
 
 
 function createCloud(name, isPublic, location) {
-    Util.log('CREATE CLOUD!!!!!!!!!!!!!!');
         check(name, String);
         check(isPublic, Boolean);
-
-        var mongoLocation;
-        if (isPublic) {
-            checkLocation(location);
-            mongoLocation = locationToMongo(location);
-        }
 
         var cloud = { _id: createCloudId(), name: name, isPublic: isPublic, createdByUserId: Meteor.userId(), 
                         lastActiveAt: Date.now(), nowPlayingSongId: '', nowPlayingTime: 0, isPaused: true, 
                         volume: 0.55, isLoadingSong: false };
-        mongoLocation && _.extend(cloud, { location: mongoLocation });
         return Clouds.insert(cloud);
 }
 
