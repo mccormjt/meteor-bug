@@ -3,7 +3,7 @@ Found a meteor bug that occurs on a deployed, minified project to remote server.
 
 
 
-STEPS TO REPRODUCT:
+STEPS TO REPRODUCE:
 
 1. Deploy minified project to meteor remote server
 2. Try going to a url like: "/app/1234" to trigger the route in question
