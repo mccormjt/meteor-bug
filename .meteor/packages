@@ -5,8 +5,4 @@
 
 meteor-platform
 accounts-password
-mdg:geolocation
-reactive-var
-fourseven:scss
-jabbslad:basic-auth
 iron:router
